@@ -56,13 +56,83 @@ public class Factura implements Serializable {
     
     @Column(name = "estado")
     private Boolean estado;
+    @Column(name = "ID_inf")
+    private int idInf;
+    @Column(name="numFactura")
+    private String numFactura;
     @Column(name = "ID_tipo_factura")    
     private int iDtipofactura;
+    @Column(name="id_tipo_pago")
+    private int idTipoPago;
+    @Column(name="numeroTarjeta")
+    private String numeroTarjeta;
+    @Column(name="cantidadPago")
+    private double cantidadPago;
+    @Column(name="id_razon_social")
+    private int idRazonSocial;
     
 
+    
+    
     public Factura() {
     }
 
+    public int getIdTipoPago() {
+        return idTipoPago;
+    }
+
+    public void setIdTipoPago(int idTipoPago) {
+        this.idTipoPago = idTipoPago;
+    }
+
+    public double getCantidadPago() {
+        return cantidadPago;
+    }
+
+    public void setCantidadPago(double cantidadPago) {
+        this.cantidadPago = cantidadPago;
+    }
+
+    
+    
+    public String getNumeroTarjeta() {
+        return numeroTarjeta;
+    }
+
+    public void setNumeroTarjeta(String numeroTarjeta) {
+        this.numeroTarjeta = numeroTarjeta;
+    }
+
+    public int getIdRazonSocial() {
+        return idRazonSocial;
+    }
+
+    public void setIdRazonSocial(int idRazonSocial) {
+        this.idRazonSocial = idRazonSocial;
+    }
+
+    
+    
+    public String getNumFactura() {
+        return numFactura;
+    }
+
+    public void setNumFactura(String numFactura) {
+        this.numFactura = numFactura;
+    }
+
+    
+    
+    public int getIdInf() {
+        return idInf;
+    }
+
+    public void setIdInf(int idInf) {
+        this.idInf = idInf;
+    }
+
+    
+    
     public Integer getiDFactura() {
         return iDFactura;
     }

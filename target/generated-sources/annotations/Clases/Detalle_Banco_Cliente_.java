@@ -10,6 +10,7 @@ public abstract class Detalle_Banco_Cliente_ {
 
 	public static volatile SingularAttribute<Detalle_Banco_Cliente, Integer> Id_cliente;
 	public static volatile SingularAttribute<Detalle_Banco_Cliente, Double> tasa_interes;
+	public static volatile SingularAttribute<Detalle_Banco_Cliente, Boolean> estado;
 	public static volatile SingularAttribute<Detalle_Banco_Cliente, Integer> cuota;
 	public static volatile SingularAttribute<Detalle_Banco_Cliente, String> fecha_inicio;
 	public static volatile SingularAttribute<Detalle_Banco_Cliente, Integer> numero_prestamo;

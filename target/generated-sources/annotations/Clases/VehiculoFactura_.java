@@ -8,8 +8,10 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(VehiculoFactura.class)
 public abstract class VehiculoFactura_ {
 
+	public static volatile SingularAttribute<VehiculoFactura, Boolean> estado;
 	public static volatile SingularAttribute<VehiculoFactura, Integer> idVehiculo;
 	public static volatile SingularAttribute<VehiculoFactura, Integer> idFactura;
+	public static volatile SingularAttribute<VehiculoFactura, Integer> idFacturaVehiculo;
 	public static volatile SingularAttribute<VehiculoFactura, String> cantidad;
 
 }

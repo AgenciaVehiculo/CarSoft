@@ -28,6 +28,19 @@ public class Validaciones {
             }
     }
     
+    public static boolean validacionTarjetas(String texto){
+        Pattern pat = Pattern.compile("^(?:4\\d([\\- ])?\\d{6}\\1\\d{5}|(?:4\\d{3}|5[1-5]\\d{2}|6011)([\\- ])?\\d{4}\\d{4}\\d{4})$");
+        Matcher mat = pat.matcher(texto);
+        
+        if(mat.matches()){
+            return true;
+        }
+        else{
+            return false;
+        }
+        
+    }
+    
     public static boolean validacionDecimales(String texto){
         Pattern pat = Pattern.compile("^\\d*\\.?\\d*$");
         Matcher mat = pat.matcher(texto);
@@ -41,6 +54,17 @@ public class Validaciones {
        
     }
     
+    public static boolean ValidacionNombreMayusculaYDemasMinus(String num){
+        Pattern pat = null;
+        Matcher mat = null;
+        pat = Pattern.compile("^(?=.{3,40}$)[A-ZÑÁÉÍÓÚ][a-zñáéíóú]+(?: [a-zñáéíóúA-ZÑÁÉÍÓÚ]+)?+(?: [a-zñáéíóúA-ZÑÁÉÍÓÚ]+)?$");
+        mat =pat.matcher(num);
+        if (mat.find()){
+            return true;
+        } else{
+        return false;
+        }
+}
     
     
 }

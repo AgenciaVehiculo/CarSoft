@@ -36,11 +36,23 @@ public class VehiculoFactura implements Serializable {
     private int idFactura;
     @Column(name = "vin")
     private String cantidad;
-    
+    @Column(name="estado")
+    private boolean estado;
 
     
     public VehiculoFactura() {
     }
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+    
+    
+    
 
     public int getIdFacturaVehiculo() {
         return idFacturaVehiculo;

@@ -23,6 +23,16 @@ public class FrmMenu extends javax.swing.JFrame {
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/Img/CarSoft-removebg-preview.png")).getImage());
         this.setExtendedState(MAXIMIZED_BOTH);
+        this.btnClientes.setBackground( new Color(14, 209, 69));
+        this.btnEmpleados.setBackground( new Color(14, 209, 69));
+        this.btnBancos.setBackground( new Color(14, 209, 69));
+        this.btnPedidos.setBackground( new Color(14, 209, 69));
+        this.btnVehículos.setBackground( new Color(14, 209, 69));
+        this.btnPiezas.setBackground( new Color(14, 209, 69));
+        this.btnVentas.setBackground( new Color(14, 209, 69));
+        this.btnCerrar.setBackground( new Color(14, 209, 69));
+        this.btnSalir.setBackground( new Color(236, 28, 36));
+        
         //jLabel5.setForeground(Color.WHITE);
         //jFrame.setForeground(Color.CYAN);
         //btnVehículos.setBackground(Color.green);
@@ -76,7 +86,7 @@ public class FrmMenu extends javax.swing.JFrame {
         btnClientes.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Cliente.png"))); // NOI18N
         btnClientes.setText("Clientes");
-        btnClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnClientesActionPerformed(evt);
@@ -88,7 +98,7 @@ public class FrmMenu extends javax.swing.JFrame {
         btnVentas.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Ventas.png"))); // NOI18N
         btnVentas.setText("Ventas");
-        btnVentas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnVentas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnVentas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVentasActionPerformed(evt);
@@ -100,7 +110,7 @@ public class FrmMenu extends javax.swing.JFrame {
         btnEmpleados.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnEmpleados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Empleado.png"))); // NOI18N
         btnEmpleados.setText("Empleados");
-        btnEmpleados.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEmpleados.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnEmpleados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEmpleadosActionPerformed(evt);
@@ -116,7 +126,7 @@ public class FrmMenu extends javax.swing.JFrame {
         btnBancos.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnBancos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Banco.png"))); // NOI18N
         btnBancos.setText("Bancos");
-        btnBancos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBancos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnBancos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBancosActionPerformed(evt);
@@ -128,7 +138,7 @@ public class FrmMenu extends javax.swing.JFrame {
         btnPiezas.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnPiezas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Pieza.png"))); // NOI18N
         btnPiezas.setText("Piezas");
-        btnPiezas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnPiezas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnPiezas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPiezasActionPerformed(evt);
@@ -140,7 +150,7 @@ public class FrmMenu extends javax.swing.JFrame {
         btnVehículos.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnVehículos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Vehiculo.png"))); // NOI18N
         btnVehículos.setText("Vehículos");
-        btnVehículos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnVehículos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnVehículos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVehículosActionPerformed(evt);
@@ -152,7 +162,7 @@ public class FrmMenu extends javax.swing.JFrame {
         btnPedidos.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnPedidos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Pedidos.png"))); // NOI18N
         btnPedidos.setText("Pedidos");
-        btnPedidos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnPedidos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnPedidos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPedidosActionPerformed(evt);
@@ -174,7 +184,7 @@ public class FrmMenu extends javax.swing.JFrame {
         btnCerrar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Cerrar sesion.png"))); // NOI18N
         btnCerrar.setText("Cerrar Sesión");
-        btnCerrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCerrar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCerrarActionPerformed(evt);
@@ -186,7 +196,7 @@ public class FrmMenu extends javax.swing.JFrame {
         btnSalir.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Salir.png"))); // NOI18N
         btnSalir.setText("Salir");
-        btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalirActionPerformed(evt);
@@ -273,31 +283,30 @@ public class FrmMenu extends javax.swing.JFrame {
     private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
         FrmCliente m = new FrmCliente();
         m.setVisible(true);
-        FrmMenu me = new FrmMenu();
-        me.setVisible(false);
-        this.setVisible(false);
+        //FrmMenu me = new FrmMenu();
+       // me.setVisible(false);
+       // this.setVisible(false);
     }//GEN-LAST:event_btnClientesActionPerformed
 
     private void btnPiezasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPiezasActionPerformed
         FrmPieza m = new FrmPieza();
         m.setVisible(true);
-        FrmMenu me = new FrmMenu();
-        me.setVisible(false);
-        this.setVisible(false);
+        //FrmMenu me = new FrmMenu();
+        //this.setVisible(false);
     }//GEN-LAST:event_btnPiezasActionPerformed
 
     private void btnEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpleadosActionPerformed
         FrmEmpleados m = new FrmEmpleados();
         m.setVisible(true);
-        FrmMenu me = new FrmMenu();
-        me.setVisible(false);
-        this.setVisible(false);
+        //FrmMenu me = new FrmMenu();
+        //me.setVisible(false);
+        //this.setVisible(false);
     }//GEN-LAST:event_btnEmpleadosActionPerformed
 
     private void btnVehículosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVehículosActionPerformed
         FrmVehiculos v= new FrmVehiculos();
         v.setVisible(true);
-        this.setVisible(false);
+        //this.setVisible(false);
 
         // TODO add your handling code here:
     }//GEN-LAST:event_btnVehículosActionPerformed
@@ -305,14 +314,17 @@ public class FrmMenu extends javax.swing.JFrame {
     private void btnBancosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBancosActionPerformed
         FrmBanco b = new FrmBanco();
         b.setVisible(true);
-        this.setVisible(false);
+        //b.setAuxiliarBienvenida(txtBienvenido.getText());
+       // b.setAux(lIDEmpleado.getText());
+        
+        //this.setVisible(false);
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBancosActionPerformed
 
     private void btnPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPedidosActionPerformed
         FrmPedidos p = new FrmPedidos();
         p.setVisible(true);
-        this.setVisible(false);
+        //this.setVisible(false);
 
         // TODO add your handling code here:
     }//GEN-LAST:event_btnPedidosActionPerformed
@@ -320,40 +332,7 @@ public class FrmMenu extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmMenu().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBancos;

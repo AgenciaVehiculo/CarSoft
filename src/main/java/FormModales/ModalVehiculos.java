@@ -202,6 +202,7 @@ public class ModalVehiculos extends javax.swing.JDialog {
         jPanel2.add(jLabel46);
         jLabel46.setBounds(517, 11, 230, 35);
 
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Seleccionar.png"))); // NOI18N
         jButton2.setText("Seleccionar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -209,7 +210,7 @@ public class ModalVehiculos extends javax.swing.JDialog {
             }
         });
         jPanel2.add(jButton2);
-        jButton2.setBounds(490, 106, 120, 39);
+        jButton2.setBounds(520, 106, 130, 39);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/buscar.png"))); // NOI18N
         jButton1.setText("Buscar");
@@ -219,7 +220,7 @@ public class ModalVehiculos extends javax.swing.JDialog {
             }
         });
         jPanel2.add(jButton1);
-        jButton1.setBounds(375, 106, 102, 39);
+        jButton1.setBounds(375, 106, 130, 39);
 
         jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Fondo.jpg"))); // NOI18N
         jLabel19.setText("jLabel19");
@@ -378,7 +379,7 @@ public class ModalVehiculos extends javax.swing.JDialog {
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
                                 NumeroAsientosdao.findNumero_Asientos(e.getId_numero_asientos()).getNumero_Asientos(),
-                                formato1.format(aux)
+                                String.format("%,.2f",aux)
                                                          
                             
                         });
@@ -401,7 +402,7 @@ public class ModalVehiculos extends javax.swing.JDialog {
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
                                 NumeroAsientosdao.findNumero_Asientos(e.getId_numero_asientos()).getNumero_Asientos(),
-                                formato1.format(aux)
+                                String.format("%,.2f",aux)
                                                          
                             
                         });
@@ -424,7 +425,7 @@ public class ModalVehiculos extends javax.swing.JDialog {
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
                                 NumeroAsientosdao.findNumero_Asientos(e.getId_numero_asientos()).getNumero_Asientos(),
-                                formato1.format(aux)
+                                String.format("%,.2f",aux)
                                                          
                             
                         });
@@ -447,7 +448,7 @@ public class ModalVehiculos extends javax.swing.JDialog {
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
                                 NumeroAsientosdao.findNumero_Asientos(e.getId_numero_asientos()).getNumero_Asientos(),
-                                formato1.format(aux)
+                                String.format("%,.2f",aux)
                                                          
                             
                         });
@@ -472,7 +473,7 @@ public class ModalVehiculos extends javax.swing.JDialog {
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
                                 NumeroAsientosdao.findNumero_Asientos(e.getId_numero_asientos()).getNumero_Asientos(),
-                                formato1.format(aux)
+                               String.format("%,.2f",aux)
                                                          
                             
                         });
@@ -497,7 +498,7 @@ public class ModalVehiculos extends javax.swing.JDialog {
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
                                 NumeroAsientosdao.findNumero_Asientos(e.getId_numero_asientos()).getNumero_Asientos(),
-                                formato1.format(aux)
+                                String.format("%,.2f",aux)
                                                          
                             
                         });
@@ -522,7 +523,7 @@ public class ModalVehiculos extends javax.swing.JDialog {
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
                                 NumeroAsientosdao.findNumero_Asientos(e.getId_numero_asientos()).getNumero_Asientos(),
-                                formato1.format(aux)
+                                String.format("%,.2f",aux)
                                                          
                             
                         });
@@ -547,7 +548,7 @@ public class ModalVehiculos extends javax.swing.JDialog {
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
                                 NumeroAsientosdao.findNumero_Asientos(e.getId_numero_asientos()).getNumero_Asientos(),
-                                formato1.format(aux)
+                                String.format("%,.2f",aux)
                                                          
                             
                         });
@@ -572,7 +573,7 @@ public class ModalVehiculos extends javax.swing.JDialog {
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
                                 NumeroAsientosdao.findNumero_Asientos(e.getId_numero_asientos()).getNumero_Asientos(),
-                                formato1.format(aux)
+                                String.format("%,.2f",aux)
                                                          
                             
                         });
@@ -597,7 +598,7 @@ public class ModalVehiculos extends javax.swing.JDialog {
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
                                 NumeroAsientosdao.findNumero_Asientos(e.getId_numero_asientos()).getNumero_Asientos(),
-                                formato1.format(aux)
+                                String.format("%,.2f",aux)
                                                          
                             
                         });
@@ -622,7 +623,7 @@ public class ModalVehiculos extends javax.swing.JDialog {
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
                                 NumeroAsientosdao.findNumero_Asientos(e.getId_numero_asientos()).getNumero_Asientos(),
-                                formato1.format(aux)
+                                String.format("%,.2f",aux)
                                                          
                             
                         });
@@ -647,7 +648,7 @@ public class ModalVehiculos extends javax.swing.JDialog {
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
                                 NumeroAsientosdao.findNumero_Asientos(e.getId_numero_asientos()).getNumero_Asientos(),
-                                formato1.format(aux)
+                                String.format("%,.2f",aux)
                                                          
                             
                         });
@@ -672,7 +673,7 @@ public class ModalVehiculos extends javax.swing.JDialog {
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
                                 NumeroAsientosdao.findNumero_Asientos(e.getId_numero_asientos()).getNumero_Asientos(),
-                                formato1.format(aux)
+                                String.format("%,.2f",aux)
                                                          
                             
                         });
@@ -697,7 +698,7 @@ public class ModalVehiculos extends javax.swing.JDialog {
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
                                 NumeroAsientosdao.findNumero_Asientos(e.getId_numero_asientos()).getNumero_Asientos(),
-                                formato1.format(aux)
+                                String.format("%,.2f",aux)
                                                          
                             
                         });
@@ -722,7 +723,7 @@ public class ModalVehiculos extends javax.swing.JDialog {
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
                                 NumeroAsientosdao.findNumero_Asientos(e.getId_numero_asientos()).getNumero_Asientos(),
-                                formato1.format(aux)
+                                String.format("%,.2f",aux)
                                                          
                             
                         });

@@ -11,6 +11,7 @@ public abstract class PiezaFactura_ {
 	public static volatile SingularAttribute<PiezaFactura, Integer> idPieza;
 	public static volatile SingularAttribute<PiezaFactura, Integer> idFactura;
 	public static volatile SingularAttribute<PiezaFactura, Integer> cantidad;
+	public static volatile SingularAttribute<PiezaFactura, Integer> idFacturaPieza;
 
 }
 

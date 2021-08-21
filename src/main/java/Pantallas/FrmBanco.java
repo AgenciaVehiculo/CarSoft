@@ -11,6 +11,8 @@ import Clases.Detalle_Banco_Cliente;
 import Clases.Marca;
 import Clases.Persona;
 import Clases.Tipo_Documento;
+import FormModales.ModalBanco;
+import FormModales.ModalCliente;
 import JPAController.BancoJpaController;
 import JPAController.ClienteJpaController;
 import JPAController.Detalle_Banco_ClienteJpaController;
@@ -18,8 +20,10 @@ import JPAController.PersonaJpaController;
 import JPAController.Tipo_DocumentoJpaController;
 import com.sun.glass.events.KeyEvent;
 import java.awt.Color;
+import java.awt.event.KeyAdapter;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -30,15 +34,20 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
  * @author Usuario
  */
-public class FrmBanco extends javax.swing.JFrame {
+public final class FrmBanco extends javax.swing.JFrame {
 
     /**
      * Creates new form Empleados
@@ -86,7 +95,11 @@ public class FrmBanco extends javax.swing.JFrame {
         btnBuscar2.setBackground( new Color(14, 209, 69));
         btnDesactivar1.setEnabled(false);
         habilitarAgregarPrestamo();
-        
+       // comboFilter(String.valueOf(cmbIDBancoPrestamo1.getSelectedIndex()));
+        //Bancomostrar();
+        //createComboIDBancoPrestamoFilter();
+        //cmbrealeased();
+        createComboIDBancoPrestamo();
     }
 
 public void btnActivarDesactivarBanco(){
@@ -140,14 +153,17 @@ public void createComboBoxPrestamo(){
         
         cmbIDClientePrestamo.setModel(modelo);
         List<Cliente> temp = ClienteDao.findClienteEntities();
+        List<Persona> temp2 = PersonaDao.findPersonaEntities();
         modelo.addElement("Seleccione...");
-        temp.forEach((tpp)-> {
-            modelo.addElement(tpp.getId_cliente());
-             
-        });          
-        
-        
+        for(Cliente tpp: temp){
+            for(Persona tp: temp2){
+                if(tpp.getId_Persona()==tp.getId_persona()){
+            modelo.addElement(tpp.getId_cliente()+". "+tp.getNombre() +" "+tp.getApellido()); 
+                }
+            }
+        }               
     }
+
 
         public void createComboIDBancoPrestamo(){
         DefaultComboBoxModel modelo = new DefaultComboBoxModel();
@@ -156,10 +172,68 @@ public void createComboBoxPrestamo(){
         List<Banco> temp = BancoDao.findBancoEntities();
         modelo.addElement("Seleccione...");
         temp.forEach((tp) -> {
-            modelo.addElement(tp.getId_banco());
+            modelo.addElement(tp.getId_banco()+". "+tp.getNombre_banco());
         });
                 }
+ /*       
+       public void createComboIDBancoPrestamoFilter(){
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+        
+        cmbIDBancoPrestamo1.setModel(modelo);
+        List<Banco> temp = BancoDao.findBancoEntities();
+        for(Banco tp: temp){
+            modelo.addElement(tp.getNombre_banco());
+        }
+                }
+       
+       public void cmbrealeased(){
+               cmbIDBancoPrestamo1.addKeyListener(new KeyAdapter() {
+                                                                public void keyReleased(final java.awt.event.KeyEvent e) {
+                                                                        repaint();
+                                                                        comboFilter(String.valueOf(cmbIDBancoPrestamo1.getSelectedIndex()));
+                                                                }
+                                                                });
+}
+    /**
+     *
+     * @param enteredText
+     */
+/*
+    public void comboFilter(String enteredText) {
+        
+    List<Banco> temp = BancoDao.findBancoEntities();
+    DefaultComboBoxModel model = new DefaultComboBoxModel();
+    //model.removeAllElements();
+    //cmbIDBancoPrestamo1.setModel(model);
+    for(int i=0;i<BancoDao.findBancoEntities().size();i++){
+    //if(txtDocumento.getText().toLowerCase().equals(Personadao.findPersona(i+1).getDocumento_id())){
+    //for (int i = 0; i > BancoDao.findBancoEntities().size(); i++) {
+       // if(txtDocumento.getText().toLowerCase().equals(Personadao.findPersona(i+1).getDocumento_id())){
+        if (BancoDao.findBanco(i+1).getNombre_banco().contains(enteredText.toLowerCase())) {
+            Banco Banco = null;
+            temp.add(Banco);
+            //model.addElement(BancoDao.findBanco(i+1).getNombre_banco());
+            
+            
+        }
 
+    }
+    if (BancoDao.findBancoEntities().size() > 0) {
+
+       /* for (String s: filterArray){
+            model.addElement(s);
+        }*/
+/*       for(Banco tp: temp){
+            model.addElement(tp.getNombre_banco());
+        }
+        
+        cmbIDBancoPrestamo1.setSelectedIndex(Integer.parseInt(enteredText));
+    
+}
+       }*/
+         
+
+         
 public void createTableBanco(){
         DefaultTableModel modelo = new DefaultTableModel();
         tblBanco.setModel(modelo);
@@ -251,17 +325,17 @@ public void createTablePrestamo(){
                                     } else {
                                         auxfechab=(dbc.getFecha_final().substring(8, 10)+"/"+dbc.getFecha_final().substring(5, 7)+"/"+dbc.getFecha_final().substring(0, 4));
                                     } 
-        
+            
             modelo.addRow(
                     new Object[]{
                         dbc.getNumero_prestamo(),
                         auxbanco,
                         auxcliente,
-                        formato1.format(dbc.getMonto_prestamo()),
+                        String.format("%,.2f",dbc.getMonto_prestamo()),
                         dbc.getCuota(),
-                        formato1.format(dbc.getValor_interes()),
-                        formato2.format(dbc.getTasa_interes()),
-                        formato1.format(dbc.getValor_capital()),
+                        String.format("%,.2f",dbc.getValor_interes()),
+                        String.format("%,.2f",dbc.getTasa_interes()),
+                        String.format("%,.2f",dbc.getValor_capital()),
                         auxfecha,
                         auxfechab,
                         dbc.isEstado()?"Activo":"Inactivo"
@@ -325,11 +399,7 @@ public void createTablePrestamo(){
         txtFechaFinalPrestamo = new javax.swing.JFormattedTextField();
         btnLimpiar1 = new javax.swing.JButton();
         btnModificar1 = new javax.swing.JButton();
-        txtIDNombreBancoP = new javax.swing.JTextField();
-        jLabel30 = new javax.swing.JLabel();
         btnBuscar1 = new javax.swing.JButton();
-        jLabel31 = new javax.swing.JLabel();
-        txtIDNombreCliente = new javax.swing.JTextField();
         btnBuscar2 = new javax.swing.JButton();
         btnDesactivar1 = new javax.swing.JButton();
 
@@ -353,7 +423,7 @@ public void createTablePrestamo(){
         btnAgregar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/agregar.png"))); // NOI18N
         btnAgregar.setText("Agregar");
-        btnAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregarActionPerformed(evt);
@@ -418,7 +488,7 @@ public void createTablePrestamo(){
         btnModificar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/modificar.png"))); // NOI18N
         btnModificar.setText("Modificar");
-        btnModificar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnModificar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificarActionPerformed(evt);
@@ -428,7 +498,7 @@ public void createTablePrestamo(){
         btnLimpiar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Limpiar.png"))); // NOI18N
         btnLimpiar.setText("Limpiar");
-        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLimpiarActionPerformed(evt);
@@ -438,7 +508,7 @@ public void createTablePrestamo(){
         btnDesactivar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnDesactivar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Desactivar.png"))); // NOI18N
         btnDesactivar.setText("Desactivar");
-        btnDesactivar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDesactivar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnDesactivar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDesactivarActionPerformed(evt);
@@ -481,7 +551,7 @@ public void createTablePrestamo(){
         btnSalir.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Salir.png"))); // NOI18N
         btnSalir.setText("Salir");
-        btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalirActionPerformed(evt);
@@ -491,7 +561,7 @@ public void createTablePrestamo(){
         btnRegresar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Regresar.png"))); // NOI18N
         btnRegresar.setText("Regresar");
-        btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresarActionPerformed(evt);
@@ -505,7 +575,7 @@ public void createTablePrestamo(){
         btnBuscar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/buscar.png"))); // NOI18N
         btnBuscar.setText("Buscar");
-        btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscarActionPerformed(evt);
@@ -620,7 +690,7 @@ public void createTablePrestamo(){
         btnAgregar1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnAgregar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/agregar.png"))); // NOI18N
         btnAgregar1.setText("Agregar");
-        btnAgregar1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAgregar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnAgregar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregar1ActionPerformed(evt);
@@ -678,7 +748,7 @@ public void createTablePrestamo(){
         btnSalir1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnSalir1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Salir.png"))); // NOI18N
         btnSalir1.setText("Salir");
-        btnSalir1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSalir1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnSalir1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalir1ActionPerformed(evt);
@@ -688,7 +758,7 @@ public void createTablePrestamo(){
         btnRegresar1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnRegresar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Regresar.png"))); // NOI18N
         btnRegresar1.setText("Regresar");
-        btnRegresar1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRegresar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnRegresar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresar1ActionPerformed(evt);
@@ -784,7 +854,7 @@ public void createTablePrestamo(){
         btnLimpiar1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnLimpiar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Limpiar.png"))); // NOI18N
         btnLimpiar1.setText("Limpiar");
-        btnLimpiar1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLimpiar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnLimpiar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLimpiar1ActionPerformed(evt);
@@ -794,47 +864,27 @@ public void createTablePrestamo(){
         btnModificar1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnModificar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/modificar.png"))); // NOI18N
         btnModificar1.setText("Modificar");
-        btnModificar1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnModificar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnModificar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificar1ActionPerformed(evt);
             }
         });
 
-        txtIDNombreBancoP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIDNombreBancoPActionPerformed(evt);
-            }
-        });
-
-        jLabel30.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel30.setText("Nombre del Banco:");
-
         btnBuscar1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnBuscar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/buscar.png"))); // NOI18N
         btnBuscar1.setText("Buscar");
-        btnBuscar1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBuscar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnBuscar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscar1ActionPerformed(evt);
             }
         });
 
-        jLabel31.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel31.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel31.setText("Nombre del Cliente:");
-
-        txtIDNombreCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIDNombreClienteActionPerformed(evt);
-            }
-        });
-
         btnBuscar2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnBuscar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/buscar.png"))); // NOI18N
         btnBuscar2.setText("Buscar");
-        btnBuscar2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBuscar2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnBuscar2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscar2ActionPerformed(evt);
@@ -844,7 +894,7 @@ public void createTablePrestamo(){
         btnDesactivar1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnDesactivar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Desactivar.png"))); // NOI18N
         btnDesactivar1.setText("Desactivar");
-        btnDesactivar1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDesactivar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnDesactivar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDesactivar1ActionPerformed(evt);
@@ -859,60 +909,47 @@ public void createTablePrestamo(){
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(41, 41, 41)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(btnAgregar1)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                                .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel30, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(btnModificar1)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnLimpiar1))
+                            .addComponent(cmbIDPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbIDBancoPrestamo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cmbIDClientePrestamo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cmbIDBancoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cmbIDPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(txtIDNombreBancoP, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnBuscar1)))
-                                .addGap(33, 33, 33)
+                                    .addComponent(btnBuscar2)
+                                    .addComponent(btnBuscar1))
+                                .addGap(30, 30, 30)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jLabel31, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtCuotasPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtTasaPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtIDNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cmbIDClientePrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(txtMontoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(41, 41, 41)
+                                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(btnBuscar2)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 163, Short.MAX_VALUE)
-                                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtFechaFinalPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(23, 23, 23))))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnModificar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtMontoPrestamo))
-                                .addGap(18, 18, 18)
-                                .addComponent(btnLimpiar1)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnDesactivar1)
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                                        .addComponent(txtFechaFinalPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(btnDesactivar1))
+                        .addGap(0, 157, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel12)
@@ -933,31 +970,25 @@ public void createTablePrestamo(){
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(cmbIDPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13)
-                    .addComponent(cmbIDClientePrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtMontoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel16)
                     .addComponent(txtFechaFinalPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(cmbIDBancoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel31)
-                    .addComponent(txtIDNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscar2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel30)
-                    .addComponent(txtIDNombreBancoP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14)
                     .addComponent(txtCuotasPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(txtMontoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13)
+                    .addComponent(cmbIDClientePrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15)
                     .addComponent(txtTasaPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar1)
                     .addComponent(btnModificar1)
@@ -1012,18 +1043,76 @@ public void createTablePrestamo(){
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
 
         if(cmbIDBanco.getSelectedIndex()!=0){
+            JOptionPane.showMessageDialog(null, "El ID Banco siempre debe estar en el ITEM de Nuevo para agregar un nuevo Banco","Error!", JOptionPane.ERROR_MESSAGE);
             cmbIDBanco.setSelectedIndex(0);
         }
         else{
 
         }
-        if("".equals(txtNombreContacto.getText()) || txtNombreContacto.getText().length()>25){
-                JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de caracteres para el nombre del Contacto","Error!", JOptionPane.ERROR_MESSAGE);
+        if("".equals(txtNombreBanco.getText()) ){
+            JOptionPane.showMessageDialog(null,"El campo del nombre del Banco esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+            
+        }
+        if (ValidacionTresletras(txtNombreBanco.getText())){
+                JOptionPane.showMessageDialog(null,"No se Admite en el nombre del Banco la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+                        txtNombreBanco.requestFocus(); 
+                        return;
+                    }else{
+                        
+                     }
+        if((txtNombreBanco.getText().length()<3)){
+            JOptionPane.showMessageDialog(null,"El nombre del Banco solo puede tener 3 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+            
+        }
+        if((txtNombreBanco.getText().length()>20)){
+            JOptionPane.showMessageDialog(null,"El nombre del Banco solo puede tener 20 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+            
+        }
+        if (!ValidacionNombreMayuscula(txtNombreBanco.getText())){
+                JOptionPane.showMessageDialog(null,"El nombre del Banco debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+                        txtNombreBanco.requestFocus(); 
+                        return;
+                    }else{
+                        
+                     }
+        
+        if("".equals(txtNombreContacto.getText())){
+                JOptionPane.showMessageDialog(null, "El campo del nombre del Contacto esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
                 return;   
             }
             else{
                          
             }
+        if(txtNombreContacto.getText().length()<10){
+                JOptionPane.showMessageDialog(null, "El nombre del Contacto solo puede tener 10 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+                return;   
+            }
+            else{
+                         
+            }
+        if(txtNombreContacto.getText().length()>45){
+                JOptionPane.showMessageDialog(null, "El nombre del Contacto solo puede tener 50 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+                return;   
+            }
+            else{
+                         
+            }
+        if (!ValidacionNombreMayuscula(txtNombreContacto.getText())){
+                JOptionPane.showMessageDialog(null,"El nombre del Contacto debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+                        txtNombreContacto.requestFocus(); 
+                        return;
+                    }else{
+                        
+                     }
         if (ValidacionTresletras(txtNombreContacto.getText())){
                 JOptionPane.showMessageDialog(null,"No se Admite en el nombre del Contacto la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
                         txtNombreContacto.requestFocus(); 
@@ -1031,34 +1120,59 @@ public void createTablePrestamo(){
                     }else{
                         
                      }
-                     if (telefono(txtTelContacto.getText())){
-           JOptionPane.showMessageDialog(null,"Formato de teléfono incorrecto debe comenzar con 2, 3, 7, 8 o 9","Error!", JOptionPane.ERROR_MESSAGE);
-           txtTelContacto.requestFocus();
-            }else{
-           
-            }
-           if("".equals(txtTelContacto.getText()) || txtTelContacto.getText().length()>8) {
+        if("".equals(txtTelContacto.getText())) {
                JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de caracteres para el teléfono del Contacto","Error!", JOptionPane.ERROR_MESSAGE);
                 return;
             }
            else{
            }
+        if(txtTelContacto.getText().length()<8) {
+               JOptionPane.showMessageDialog(null, "El teléfono del Contacto solo puede tener 8 números como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+           else{
+           }
+        if(txtTelContacto.getText().length()>10) {
+               JOptionPane.showMessageDialog(null, "El teléfono del Contacto solo puede tener 10 números como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+           else{
+           }
+           if (!telefono(txtTelContacto.getText())){
+           JOptionPane.showMessageDialog(null,"Formato de teléfono incorrecto debe comenzar con 2, 3, 7, 8 o 9","Error!", JOptionPane.ERROR_MESSAGE);
+           txtTelContacto.requestFocus();
+           return;
+            }else{
            
-           if("".equals(txtCorreoBanco.getText()) || txtCorreoBanco.getText().length()>30){
-               JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de caracteres para el correo electrónico del Banco","Error!", JOptionPane.ERROR_MESSAGE);
+            }
+           
+           if("".equals(txtCorreoBanco.getText())){
+               JOptionPane.showMessageDialog(null, "El campo de  correo electrónico del Banco esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
                return;
            }
             else{
            }
-           if (ValidacionTresletras(txtNombreBanco.getText())){
-                JOptionPane.showMessageDialog(null,"No se Admite en el nombre del Banco la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
-                        txtNombreBanco.requestFocus(); 
-                        return;
-                    }else{
-                        
-                     }
-        if("".equals(txtNombreBanco.getText()) || (txtNombreBanco.getText().length()>15)){
-            JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el nombre del Banco","Error!", JOptionPane.ERROR_MESSAGE);
+           
+           if(txtCorreoBanco.getText().length()<13){
+               JOptionPane.showMessageDialog(null, "El correo electrónico del Banco solo puede tener 13 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+               return;
+           }
+            else{
+           }
+           if(txtCorreoBanco.getText().length()>35){
+               JOptionPane.showMessageDialog(null, "El correo electrónico del Banco solo puede tener 35 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+               return;
+           }
+            else{
+           }
+           if (!correo(txtCorreoBanco.getText())){
+            JOptionPane.showMessageDialog(null,"Formato de correo electrónico incorrecto","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }else{
+        }
+        
+        if("".equals(txtNombreBanco.getText()) ){
+            //JOptionPane.showMessageDialog(null,"El campo del nombre del Banco esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
             return;
         }
         else{
@@ -1078,7 +1192,7 @@ public void createTablePrestamo(){
             else{
                 Banco cc = new Banco();
                 cc.setEstado(true);
-                cc.setNombre_banco(txtNombreBanco.getText().toLowerCase());
+                cc.setNombre_banco(txtNombreBanco.getText());
                 cc.setNombre_contacto(txtNombreContacto.getText());
                 cc.setTelefono_contacto(txtTelContacto.getText());
                 cc.setCorreo_electronico(txtCorreoBanco.getText());
@@ -1087,7 +1201,8 @@ public void createTablePrestamo(){
                 } catch (Exception ex) {
                     Logger.getLogger(FrmBanco.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE);
+                Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
+                JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
 //                cmbIDBanco.setSelectedIndex(1);
                 cmbIDBanco.setSelectedIndex(0);
                 createTableBanco();
@@ -1100,10 +1215,9 @@ public void createTablePrestamo(){
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
 private boolean correo(String correo_elec){
-        Pattern pat = null;
-        Matcher mat = null;
-        pat = Pattern.compile("^[\\w\\-\\_\\+]+(\\.[\\w\\-\\_]+)*@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$");
-        mat =pat.matcher(correo_elec);
+
+        Pattern pat = Pattern.compile("^[\\w\\-\\_\\+]+(\\.[\\w\\-\\_]+)*@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$");
+        Matcher mat =pat.matcher(correo_elec);
         if (mat.find()){
             return true;
         } else{
@@ -1111,11 +1225,7 @@ private boolean correo(String correo_elec){
         }
     }
     private void txtCorreoBancoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCorreoBancoFocusLost
-        if (correo(txtCorreoBanco.getText())){
-        }else{
-            JOptionPane.showMessageDialog(null,"Formato de correo electrónico incorrecto","Error!", JOptionPane.ERROR_MESSAGE);
-            //txtCorreoBanco.requestFocus();
-        }
+
     }//GEN-LAST:event_txtCorreoBancoFocusLost
  private boolean ValidacionTresletras(String Validar){
         
@@ -1140,7 +1250,7 @@ private boolean correo(String correo_elec){
    private boolean telefono(String tel){
         Pattern pat = null;
         Matcher mat = null;
-        pat = Pattern.compile("^[2|3|7|8|9]{1}[0-9]{2,8}$");
+        pat = Pattern.compile("^[2|3|7|8|9]{1}[0-9]{2,10}$");
         mat =pat.matcher(tel);
         if (mat.find()){
             return true;
@@ -1150,10 +1260,10 @@ private boolean correo(String correo_elec){
         }
 
     }
-private boolean ValidacionNumerosDecimales(String num){
+private boolean ValidacionRangoTasaInteres(String num){
         Pattern pat = null;
         Matcher mat = null;
-        pat = Pattern.compile("^\\d*\\.\\d*$");
+        pat = Pattern.compile("([0][.][0][5]|[0][.][0][5-9]|[0][.][1-3][0-9]|[0][.][4][0])$");
         mat =pat.matcher(num);
         if (mat.find()){
             return true;
@@ -1162,10 +1272,22 @@ private boolean ValidacionNumerosDecimales(String num){
         
         }
     }
-private boolean ValidacionNumerosSiTienenDecimal(String num){
+private boolean ValidacionRangoMontoPrestamo(String num){
         Pattern pat = null;
         Matcher mat = null;
-        pat = Pattern.compile("^\\d*\\.?\\d*$");
+        pat = Pattern.compile("^([5][,][0][0][0][.][0][0]|[5-9][,][0-9][0-9][0-9][.][0-9][0-9]|[1-9][0-9][,][0-9][0-9][0-9][.][0-9][0-9]|[1-9][0-9][0-9][,][0-9][0-9][0-9][.][0-9][0-9]|[1][,][0][0][0][,][0][0][0][.][0][0])$");
+        mat =pat.matcher(num);
+        if (mat.find()){
+            return true;
+        } else{       
+        return false;
+        
+        }
+    }
+private boolean ValidacionRangoCuotas(String num){
+        Pattern pat = null;
+        Matcher mat = null;
+        pat = Pattern.compile("([2]|[2-9]|[1-9][0-9]|[1-3][0-9][0-9]|[4][0][0])$");
         mat =pat.matcher(num);
         if (mat.find()){
             return true;
@@ -1194,27 +1316,11 @@ private boolean ValidacionNumeros(String num){
     }//GEN-LAST:event_txtTelContactoKeyTyped
 
     private void txtNombreContactoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreContactoKeyTyped
-        char validar=evt.getKeyChar();
-       if((validar<'a'||validar>'z')&& (validar<'A' || validar>'Z') && (validar!=(char)KeyEvent.VK_BACKSPACE) && (validar!=(char)KeyEvent.VK_SPACE)){
-           evt.consume();
-           JOptionPane.showMessageDialog(null,"Solo se admiten letras para el nombre del Contacto","Error!", JOptionPane.ERROR_MESSAGE);
 
-       }
-       else{
-           
-       }
     }//GEN-LAST:event_txtNombreContactoKeyTyped
 
     private void txtNombreBancoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreBancoKeyTyped
-        char validar=evt.getKeyChar();
-       if((validar<'a'||validar>'z')&& (validar<'A' || validar>'Z') && (validar!=(char)KeyEvent.VK_BACKSPACE) && (validar!=(char)KeyEvent.VK_SPACE)){
-           evt.consume();
-           JOptionPane.showMessageDialog(null,"Solo se admiten letras para el nombre del Banco","Error!", JOptionPane.ERROR_MESSAGE);
 
-       }
-       else{
-           
-       }
     }//GEN-LAST:event_txtNombreBancoKeyTyped
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
@@ -1222,48 +1328,129 @@ if(cmbIDBanco.getSelectedIndex()==0){
             JOptionPane.showMessageDialog(null, "Banco no encontrado");
         }
         else{
-if("".equals(txtNombreBanco.getText()) || (txtNombreBanco.getText().length()>15)){
-            JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el nombre del Banco","Error!", JOptionPane.ERROR_MESSAGE);
+if("".equals(txtNombreBanco.getText()) ){
+            JOptionPane.showMessageDialog(null,"El campo del nombre del Banco esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
             return;
-     }
-else{
-    
-}
-if (ValidacionTresletras(txtNombreBanco.getText())){
+        }
+        else{
+            
+        }
+        if (ValidacionTresletras(txtNombreBanco.getText())){
                 JOptionPane.showMessageDialog(null,"No se Admite en el nombre del Banco la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
                         txtNombreBanco.requestFocus(); 
                         return;
                     }else{
                         
                      }
-if("".equals(txtNombreContacto.getText()) || txtNombreContacto.getText().length()>25){
-                JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de caracteres para el nombre del Contacto","Error!", JOptionPane.ERROR_MESSAGE);
+        if((txtNombreBanco.getText().length()<3)){
+            JOptionPane.showMessageDialog(null,"El nombre del Banco solo puede tener 3 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+            
+        }
+        if((txtNombreBanco.getText().length()>20)){
+            JOptionPane.showMessageDialog(null,"El nombre del Banco solo puede tener 20 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+            
+        }
+        if (!ValidacionNombreMayuscula(txtNombreBanco.getText())){
+                JOptionPane.showMessageDialog(null,"El nombre del Banco debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+                        txtNombreBanco.requestFocus(); 
+                        return;
+                    }else{
+                        
+                     }
+        
+        if("".equals(txtNombreContacto.getText())){
+                JOptionPane.showMessageDialog(null, "El campo del nombre del Contacto esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
                 return;   
             }
             else{
                          
             }
-if (ValidacionTresletras(txtNombreContacto.getText())){
+        if(txtNombreContacto.getText().length()<10){
+                JOptionPane.showMessageDialog(null, "El nombre del Contacto solo puede tener 10 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+                return;   
+            }
+            else{
+                         
+            }
+        if(txtNombreContacto.getText().length()>45){
+                JOptionPane.showMessageDialog(null, "El nombre del Contacto solo puede tener 50 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+                return;   
+            }
+            else{
+                         
+            }
+        if (!ValidacionNombreMayuscula(txtNombreContacto.getText())){
+                JOptionPane.showMessageDialog(null,"El nombre del Contacto debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+                        txtNombreContacto.requestFocus(); 
+                        return;
+                    }else{
+                        
+                     }
+        if (ValidacionTresletras(txtNombreContacto.getText())){
                 JOptionPane.showMessageDialog(null,"No se Admite en el nombre del Contacto la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
                         txtNombreContacto.requestFocus(); 
                         return;
                     }else{
                         
                      }
-if("".equals(txtTelContacto.getText()) || txtTelContacto.getText().length()>8) {
+        if("".equals(txtTelContacto.getText())) {
                JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de caracteres para el teléfono del Contacto","Error!", JOptionPane.ERROR_MESSAGE);
                 return;
             }
            else{
            }
-if (telefono(txtTelContacto.getText())){
+        if(txtTelContacto.getText().length()<8) {
+               JOptionPane.showMessageDialog(null, "El teléfono del Contacto solo puede tener 8 números como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+           else{
+           }
+        if(txtTelContacto.getText().length()>10) {
+               JOptionPane.showMessageDialog(null, "El teléfono del Contacto solo puede tener 10 números como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+           else{
+           }
+           if (!telefono(txtTelContacto.getText())){
            JOptionPane.showMessageDialog(null,"Formato de teléfono incorrecto debe comenzar con 2, 3, 7, 8 o 9","Error!", JOptionPane.ERROR_MESSAGE);
            txtTelContacto.requestFocus();
+           return;
             }else{
            
             }
-if("".equals(txtCorreoBanco.getText()) || txtCorreoBanco.getText().length()>30){
+           
+           if("".equals(txtCorreoBanco.getText())){
                JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de caracteres para el correo electrónico del Banco","Error!", JOptionPane.ERROR_MESSAGE);
+               return;
+           }
+            else{
+           }
+           
+           if(txtCorreoBanco.getText().length()<13){
+               JOptionPane.showMessageDialog(null, "El correo electrónico del Banco solo puede tener 13 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+               return;
+           }
+            else{
+           }
+           if(txtCorreoBanco.getText().length()>35){
+               JOptionPane.showMessageDialog(null, "El correo electrónico del Banco solo puede tener 35 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+               return;
+           }
+            else{
+           }
+           if (!correo(txtCorreoBanco.getText())){
+            JOptionPane.showMessageDialog(null,"Formato de correo electrónico incorrecto","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }else{
+        }
+if("".equals(txtCorreoBanco.getText())){
+               //JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de caracteres para el correo electrónico del Banco","Error!", JOptionPane.ERROR_MESSAGE);
                return;
            }
             else{
@@ -1280,7 +1467,8 @@ if("".equals(txtCorreoBanco.getText()) || txtCorreoBanco.getText().length()>30){
                     } catch (Exception ex) {
                         Logger.getLogger(FrmBanco.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE);
+                Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
+                JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
                 cmbIDBanco.setSelectedIndex(1);
                 cmbIDBanco.setSelectedIndex(0);
                 createTableBanco();
@@ -1308,9 +1496,13 @@ if("".equals(txtCorreoBanco.getText()) || txtCorreoBanco.getText().length()>30){
         temp = BancoDao.findBanco(cmbIDBanco.getSelectedIndex());
         if(temp.isEstado()){
             temp.setEstado(false);
+            Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
+            JOptionPane.showMessageDialog(null,"Banco Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         else{
             temp.setEstado(true);
+            Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
+            JOptionPane.showMessageDialog(null,"Banco Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         try {
             BancoDao.edit(temp);
@@ -1343,6 +1535,13 @@ if("".equals(txtCorreoBanco.getText()) || txtCorreoBanco.getText().length()>30){
     }//GEN-LAST:event_tblBancoMouseClicked
 
     public void BuscarBanco1(){
+        if("".equals(txtNombreBanco.getText())){
+            JOptionPane.showMessageDialog(null,"El campo de nombre del banco esta vacio","Error!",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+     
+        }
         List<Banco> tempp = BancoDao.findBancoEntities();
         boolean bandera = false;
             for(Banco e: tempp) {
@@ -1367,52 +1566,120 @@ if("".equals(txtCorreoBanco.getText()) || txtCorreoBanco.getText().length()>30){
 
 }
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        // TODO add your handling code here:
+        System.exit(0);
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        FrmMenu m = new FrmMenu();
-        m.setVisible(true);
+        //FrmMenu m = new FrmMenu();
+        //m.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void btnAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar1ActionPerformed
-        
+        Detalle_Banco_Cliente temp = new Detalle_Banco_Cliente();
+        List<Detalle_Banco_Cliente> temporal = DetalleBancoClienteDao.findDetalle_Banco_ClienteEntities();
         if(cmbIDPrestamo.getSelectedIndex()==0){    
             }
            else{ 
            }
-if (!ValidacionNumerosSiTienenDecimal(txtMontoPrestamo.getText())){
-           JOptionPane.showMessageDialog(null,"El Monto solo puede contener Números positivos","Error!", JOptionPane.ERROR_MESSAGE);
+        if(cmbIDBancoPrestamo.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(null,"No ha seleccionado ningún Banco","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        Banco tempoc;
+        tempoc = BancoDao.findBanco(cmbIDBancoPrestamo.getSelectedIndex());
+        if(tempoc.isEstado()!=true){
+            JOptionPane.showMessageDialog(null,"Este Banco esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        
+        for(Detalle_Banco_Cliente tp: temporal){
+        if(tp.getId_cliente()==cmbIDClientePrestamo.getSelectedIndex()||tp.isEstado()==false){
+            JOptionPane.showMessageDialog(null,"Este Cliente todavia tiene un Préstamo activo","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        }
+        if(cmbIDClientePrestamo.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(null,"No ha seleccionado ningún Cliente","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        Cliente tempop;
+        tempop = ClienteDao.findCliente(cmbIDClientePrestamo.getSelectedIndex());
+        if(tempop.isEstado()!=true){
+            JOptionPane.showMessageDialog(null,"Este cliente esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        if("".equals(txtMontoPrestamo.getText())){
+            JOptionPane.showMessageDialog(null, "El campo Monto del Préstamo esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+           if (!ValidacionRangoMontoPrestamo(txtMontoPrestamo.getText())){
+           JOptionPane.showMessageDialog(null,"El rango de Monto del Préstamo solo puede estar entre 5,000.00-1,000,000.00","Error!", JOptionPane.ERROR_MESSAGE);
            txtMontoPrestamo.requestFocus();
            return;
             }else{
            
             }
-        if (!ValidacionNumerosDecimales(txtTasaPrestamo.getText())){
-           JOptionPane.showMessageDialog(null,"La Tasa de Interés  tienen que contener 2 decimales después del punto","Error!", JOptionPane.ERROR_MESSAGE);
-           txtTasaPrestamo.requestFocus();
-           return;
-            }else{
-           
-            }
-        if (!ValidacionNumeros(txtCuotasPrestamo.getText())){
-           JOptionPane.showMessageDialog(null,"La Cuota del Préstamo debe ser de Números enteros positivos","Error!", JOptionPane.ERROR_MESSAGE);
+        if("".equals(txtCuotasPrestamo.getText())){
+            JOptionPane.showMessageDialog(null, "El campo Cuotas del Préstamo esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+           if (!ValidacionRangoCuotas(txtCuotasPrestamo.getText())){
+           JOptionPane.showMessageDialog(null,"El rango de Cuotas del Préstamo solo puede estar entre 2-400","Error!", JOptionPane.ERROR_MESSAGE);
            txtCuotasPrestamo.requestFocus();
            return;
             }else{
            
             }
-           Detalle_Banco_Cliente temp = new Detalle_Banco_Cliente();
+        
+        if("".equals(txtTasaPrestamo.getText())){
+            JOptionPane.showMessageDialog(null, "El campo Tasa de Interés esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        if (!ValidacionRangoTasaInteres(txtTasaPrestamo.getText())){
+           JOptionPane.showMessageDialog(null,"El rango de Tasa de Interés solo puede estar entre 0.05-0.40","Error!", JOptionPane.ERROR_MESSAGE);
+           txtTasaPrestamo.requestFocus();
+           return;
+            }else{
+           
+            }
+           
            temp.setNumero_prestamo(DetalleBancoClienteDao.getDetalle_Banco_ClienteCount()+1);
            temp.setEstado(true);
            temp.setId_banco(cmbIDBancoPrestamo.getSelectedIndex());
            temp.setId_cliente(cmbIDClientePrestamo.getSelectedIndex());
-           temp.setMonto_prestamo(Double.parseDouble(txtMontoPrestamo.getText()));
-           temp.setTasa_interes(Double.parseDouble(txtTasaPrestamo.getText()));
-           temp.setCuota(Integer.parseInt(txtCuotasPrestamo.getText()));
-           temp.setValor_interes(Double.parseDouble(txtMontoPrestamo.getText())*(Double.parseDouble(txtTasaPrestamo.getText()))*(Double.parseDouble(txtTasaPrestamo.getText())));
-           temp.setValor_capital((Double.parseDouble(txtMontoPrestamo.getText())*(Double.parseDouble(txtTasaPrestamo.getText()))*(Double.parseDouble(txtTasaPrestamo.getText())))+Double.parseDouble(txtMontoPrestamo.getText()));
+           double auxmonto=(Double.parseDouble(txtMontoPrestamo.getText().replace(",", "").replace(",", "").trim()));
+           temp.setMonto_prestamo(auxmonto);
+           double auxtasa=(Double.parseDouble(txtTasaPrestamo.getText().replace(",", "").replace(",", "").trim()));
+           temp.setTasa_interes(auxtasa);
+           int auxcuota=(Integer.parseInt(txtCuotasPrestamo.getText().trim()));
+           temp.setCuota(auxcuota);
+           temp.setValor_interes(auxmonto*(auxtasa)*(auxtasa));
+           temp.setValor_capital((auxmonto*(auxtasa)*(auxtasa))+auxmonto);
            Calendar fecha = new GregorianCalendar();
            String fecha1;
            String aux1,aux2,aux3;
@@ -1428,6 +1695,8 @@ if (!ValidacionNumerosSiTienenDecimal(txtMontoPrestamo.getText())){
             Logger.getLogger(FrmBanco.class.getName()).log(Level.SEVERE, null, ex);
         }
 //         cmbIDPrestamo.setSelectedIndex(1);
+        Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
+        JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
            cmbIDPrestamo.setSelectedIndex(0);
            createTablePrestamo();
            createComboIDBancoPrestamo();
@@ -1450,6 +1719,17 @@ if (!ValidacionNumerosSiTienenDecimal(txtMontoPrestamo.getText())){
         Pattern pat = null;
         Matcher mat = null;
         pat = Pattern.compile("^(?:(?:(?:0[1-9]|1\\d|2[0-8])[/](?:0[1-9]|1[0-2])|(?:29|30)[/](?:0[13-9]|1[0-2])|31[/](?:0[13578]|1[02]))[/](?:0{2,3}[1-9]|0{1,2}[1-9]\\d|0?[1-9]\\d{2}|[1-9]\\d{3})|29[/]0?2[/](?:\\d{1,2}(?:0[48]|[2468][048]|[13579][26])|(?:0?[48]|[13579][26]|[2468][048])00))$");
+        mat =pat.matcher(num);
+        if (mat.find()){
+            return true;
+        } else{
+        return false;
+        }
+    }
+        private boolean ValidacionNombreMayuscula(String num){
+        Pattern pat = null;
+        Matcher mat = null;
+        pat = Pattern.compile("^(?=.{3,40}$)[A-ZÁÉÍÓÚ][a-zñáéíóú]+(?: [A-ZÁÉÍÓÚ][a-zñáéíóú]+)?(?: [A-ZÁÉÍÓÚ][a-zñáéíóú]+)?(?: [A-ZÁÉÍÓÚ][a-zñáéíóú]+)?$");
         mat =pat.matcher(num);
         if (mat.find()){
             return true;
@@ -1487,8 +1767,6 @@ private boolean ValidacionFechaDMYYYY(String num){
         btnModificar1.setEnabled(true);
         btnBuscar1.setEnabled(false);
         btnBuscar2.setEnabled(false);
-        txtIDNombreCliente.setEnabled(false);
-        txtIDNombreBancoP.setEnabled(false);
         txtFechaFinalPrestamo.setEnabled(true);
         btnDesactivar1.setEnabled(true);
         int column=0;
@@ -1511,13 +1789,11 @@ private boolean ValidacionFechaDMYYYY(String num){
                                 if(pp.getId_persona()!=cc.getId_Persona()){
                                 } else {
                                     cmbIDPrestamo.setSelectedIndex((temp.getNumero_prestamo()));
-                                    cmbIDBancoPrestamo.setSelectedItem((b.getId_banco()));
-                                    txtIDNombreBancoP.setText(b.getNombre_banco());
-                                    cmbIDClientePrestamo.setSelectedIndex((cc.getId_cliente()));
-                                    txtIDNombreCliente.setText(pp.getNombre()+" "+pp.getApellido());
-                                    txtMontoPrestamo.setText(String.valueOf(formato1.format(temp.getMonto_prestamo())));
+                                    cmbIDBancoPrestamo.setSelectedItem((b.getId_banco()+". "+b.getNombre_banco()));
+                                    cmbIDClientePrestamo.setSelectedItem((cc.getId_cliente()+". "+pp.getNombre()+" "+pp.getApellido()));
+                                    txtMontoPrestamo.setText(String.format("%,.2f",temp.getMonto_prestamo()));
                                     txtCuotasPrestamo.setText(String.valueOf(temp.getCuota()));
-                                    txtTasaPrestamo.setText(String.valueOf(formato1.format(temp.getTasa_interes())));
+                                    txtTasaPrestamo.setText(String.format("%,.2f",temp.getTasa_interes()));
                                     if(temp.getFecha_final()==null) {
                                             auxfechab="";
                                     } else {
@@ -1543,8 +1819,8 @@ private boolean ValidacionFechaDMYYYY(String num){
 
     private void btnRegresar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresar1ActionPerformed
 
-        FrmMenu m = new FrmMenu();
-        m.setVisible(true);
+       // FrmMenu m = new FrmMenu();
+       // m.setVisible(true);
         this.setVisible(false);
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRegresar1ActionPerformed
@@ -1592,16 +1868,12 @@ public void LimpiarPre(){
         cmbIDPrestamo.setSelectedIndex(0);
         cmbIDBancoPrestamo.setSelectedIndex(0);
         cmbIDClientePrestamo.setSelectedIndex(0);
-        txtIDNombreBancoP.setText("");
         txtMontoPrestamo.setText("");
-        txtIDNombreCliente.setText("");
         txtCuotasPrestamo.setText("");
         txtTasaPrestamo.setText("");
         txtFechaFinalPrestamo.setText("");
         createTablePrestamo();
         createComboBoxPrestamo();
-        txtIDNombreBancoP.setEnabled(true);
-        txtIDNombreCliente.setEnabled(true);
         btnBuscar1.setEnabled(true);
         btnBuscar2.setEnabled(true);
         
@@ -1615,50 +1887,114 @@ public void LimpiarPre(){
     }//GEN-LAST:event_btnLimpiar1ActionPerformed
 
     private void btnModificar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar1ActionPerformed
-                
+Detalle_Banco_Cliente temp = new Detalle_Banco_Cliente();
+        List<Detalle_Banco_Cliente> temporal = DetalleBancoClienteDao.findDetalle_Banco_ClienteEntities();                
         if(cmbIDPrestamo.getSelectedIndex()==0){    
             }
            else{ 
            }
-if (!ValidacionNumerosSiTienenDecimal(txtMontoPrestamo.getText())){
-           JOptionPane.showMessageDialog(null,"El Monto solo puede contener Números positivos","Error!", JOptionPane.ERROR_MESSAGE);
+if(cmbIDBancoPrestamo.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(null,"No ha seleccionado ningún Banco","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        Banco tempoc;
+        tempoc = BancoDao.findBanco(cmbIDBancoPrestamo.getSelectedIndex());
+        if(tempoc.isEstado()!=true){
+            JOptionPane.showMessageDialog(null,"Este Banco esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        if(cmbIDClientePrestamo.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(null,"No ha seleccionado ningún Cliente","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        Cliente tempop;
+        tempop = ClienteDao.findCliente(cmbIDClientePrestamo.getSelectedIndex());
+        if(tempop.isEstado()!=true){
+            JOptionPane.showMessageDialog(null,"Este cliente esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        if("".equals(txtMontoPrestamo.getText())){
+            JOptionPane.showMessageDialog(null, "El campo Monto del Préstamo esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+           if (!ValidacionRangoMontoPrestamo(txtMontoPrestamo.getText())){
+           JOptionPane.showMessageDialog(null,"El rango de Monto del Préstamo solo puede estar entre 5,000.00-1,000,000.00","Error!", JOptionPane.ERROR_MESSAGE);
            txtMontoPrestamo.requestFocus();
            return;
             }else{
            
             }
-        if (!ValidacionNumerosDecimales(txtTasaPrestamo.getText())){
-           JOptionPane.showMessageDialog(null,"La Tasa de Interés  tienen que contener 2 decimales después del punto","Error!", JOptionPane.ERROR_MESSAGE);
-           txtTasaPrestamo.requestFocus();
-           return;
-            }else{
-           
-            }
-        if (!ValidacionNumeros(txtCuotasPrestamo.getText())){
-           JOptionPane.showMessageDialog(null,"La Cuota del Préstamo debe ser de Números enteros positivos","Error!", JOptionPane.ERROR_MESSAGE);
+        if("".equals(txtCuotasPrestamo.getText())){
+            JOptionPane.showMessageDialog(null, "El campo Cuotas del Préstamo esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+           if (!ValidacionRangoCuotas(txtCuotasPrestamo.getText())){
+           JOptionPane.showMessageDialog(null,"El rango de Cuotas del Préstamo solo puede estar entre 2-400","Error!", JOptionPane.ERROR_MESSAGE);
            txtCuotasPrestamo.requestFocus();
            return;
             }else{
            
             }
+        
+        if("".equals(txtTasaPrestamo.getText())){
+            JOptionPane.showMessageDialog(null, "El campo Tasa de Interés esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        if (!ValidacionRangoTasaInteres(txtTasaPrestamo.getText())){
+           JOptionPane.showMessageDialog(null,"El rango de Tasa de Interés solo puede estar entre 0.05-0.40","Error!", JOptionPane.ERROR_MESSAGE);
+           txtTasaPrestamo.requestFocus();
+           return;
+            }else{
+           
+            }
+        if("".equals(txtTasaPrestamo.getText())){
+            JOptionPane.showMessageDialog(null, "El campo de Fecha Final del Préstamo esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
         if (!ValidacionFechaDDMMYYYY(txtFechaFinalPrestamo.getText())){
            JOptionPane.showMessageDialog(null,"El Formato de fecha es Incorrecto! El formato debe ser DD/MM/YYYY","Error!", JOptionPane.ERROR_MESSAGE);
            txtFechaFinalPrestamo.requestFocus();
            return;
             }else{
             }
-           Detalle_Banco_Cliente temp = new Detalle_Banco_Cliente();
            //temp.setNumero_prestamo(DetalleBancoClienteDao.getDetalle_Banco_ClienteCount());
            temp.setId_banco(cmbIDBancoPrestamo.getSelectedIndex());
            temp.setId_cliente(cmbIDClientePrestamo.getSelectedIndex());
            temp=DetalleBancoClienteDao.findDetalle_Banco_Cliente(cmbIDPrestamo.getSelectedIndex());
            //temp=DetalleBancoClienteDao.findDetalle_Banco_Cliente(cmbIDBancoPrestamo.getSelectedIndex());
            //temp=DetalleBancoClienteDao.findDetalle_Banco_Cliente(cmbIDClientePrestamo.getSelectedIndex());
-           temp.setMonto_prestamo(Double.parseDouble(txtMontoPrestamo.getText()));
-           temp.setTasa_interes(Double.parseDouble(txtTasaPrestamo.getText()));
-           temp.setCuota(Integer.parseInt(txtCuotasPrestamo.getText()));
-           temp.setValor_interes(Double.parseDouble(txtMontoPrestamo.getText())*(Double.parseDouble(txtTasaPrestamo.getText()))*(Double.parseDouble(txtTasaPrestamo.getText())));
-           temp.setValor_capital((Double.parseDouble(txtMontoPrestamo.getText())*(Double.parseDouble(txtTasaPrestamo.getText()))*(Double.parseDouble(txtTasaPrestamo.getText())))+Double.parseDouble(txtMontoPrestamo.getText()));
+           double auxmonto=(Double.parseDouble(txtMontoPrestamo.getText().replace(",", "").replace(",", "").trim()));
+           temp.setMonto_prestamo(auxmonto);
+           double auxtasa=(Double.parseDouble(txtTasaPrestamo.getText().replace(",", "").replace(",", "").trim()));
+           temp.setTasa_interes(auxtasa);
+           int auxcuota=(Integer.parseInt(txtCuotasPrestamo.getText().trim()));
+           temp.setCuota(auxcuota);
+           temp.setValor_interes(auxmonto*(auxtasa)*(auxtasa));
+           temp.setValor_capital((auxmonto*(auxtasa)*(auxtasa))+auxmonto);
            String auxfecha="";
            String auxfechafinal="";
            String anio="";
@@ -1676,7 +2012,8 @@ if (!ValidacionNumerosSiTienenDecimal(txtMontoPrestamo.getText())){
         } catch (Exception ex) {
             Logger.getLogger(FrmBanco.class.getName()).log(Level.SEVERE, null, ex);
         }
-           cmbIDPrestamo.setSelectedIndex(1);
+           Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
+           JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
            cmbIDPrestamo.setSelectedIndex(0);
            createTablePrestamo();
            createComboIDBancoPrestamo();
@@ -1693,12 +2030,8 @@ if (!ValidacionNumerosSiTienenDecimal(txtMontoPrestamo.getText())){
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         BuscarBanco1();
     }//GEN-LAST:event_btnBuscarActionPerformed
-
-    private void txtIDNombreBancoPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDNombreBancoPActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtIDNombreBancoPActionPerformed
 public void BuscarBanco2(){
-        List<Banco> tempp = BancoDao.findBancoEntities();
+        /*List<Banco> tempp = BancoDao.findBancoEntities();
         boolean bandera = false;
             for(Banco e: tempp) {
                 if((e.getNombre_banco()).equalsIgnoreCase(txtIDNombreBancoP.getText())){
@@ -1710,17 +2043,18 @@ public void BuscarBanco2(){
             }
             if(!bandera){
                     JOptionPane.showMessageDialog(null,"El banco que ingreso no existe","Error!",JOptionPane.ERROR_MESSAGE);
-                }
+                }*/
+        ModalBanco temp2 = new ModalBanco(this,true);
+        temp2.setLocationRelativeTo(null);
+        temp2.setVisible(true);
+        cmbIDBancoPrestamo.setSelectedItem(temp2.getId()+". "+temp2.getNombre());
+        //txtIDNombreBancoP.setText((temp2.getNombre()));
 }
     private void btnBuscar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscar1ActionPerformed
         BuscarBanco2();
     }//GEN-LAST:event_btnBuscar1ActionPerformed
-
-    private void txtIDNombreClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDNombreClienteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtIDNombreClienteActionPerformed
 public void BuscarCiente(){
-        List<Detalle_Banco_Cliente> temp = DetalleBancoClienteDao.findDetalle_Banco_ClienteEntities();
+        /*List<Detalle_Banco_Cliente> temp = DetalleBancoClienteDao.findDetalle_Banco_ClienteEntities();
         boolean bandera = false;
         Persona temp3 = new Persona();
         Cliente temp2 = new Cliente();
@@ -1743,7 +2077,11 @@ public void BuscarCiente(){
                 }        
                 if(!bandera){
                         JOptionPane.showMessageDialog(null,"El Cliente que ingreso no existe","Error!",JOptionPane.ERROR_MESSAGE); 
-                    }   
+                    }*/
+        ModalCliente temp2 = new ModalCliente(this,true);
+        temp2.setLocationRelativeTo(null);
+        temp2.setVisible(true);
+        cmbIDClientePrestamo.setSelectedItem(temp2.getId()+". "+temp2.getNombre()+" "+temp2.getApellido());
 }
     private void btnBuscar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscar2ActionPerformed
         BuscarCiente();
@@ -1774,11 +2112,13 @@ public void btnActivarDesactivarPrestamo(){
         temp = DetalleBancoClienteDao.findDetalle_Banco_Cliente(cmbIDPrestamo.getSelectedIndex());
         if(temp.isEstado()){
             temp.setEstado(false);
-            JOptionPane.showMessageDialog(null,"Préstamo Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE);
+            Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
+            JOptionPane.showMessageDialog(null,"Préstamo Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         else{
             temp.setEstado(true);
-            JOptionPane.showMessageDialog(null,"Préstamo Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE);
+            Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
+            JOptionPane.showMessageDialog(null,"Préstamo Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         try {
             DetalleBancoClienteDao.edit(temp);
@@ -1797,44 +2137,7 @@ public void btnActivarDesactivarPrestamo(){
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmBanco.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmBanco.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmBanco.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmBanco.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmBanco().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
@@ -1865,8 +2168,6 @@ public void btnActivarDesactivarPrestamo(){
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1882,8 +2183,6 @@ public void btnActivarDesactivarPrestamo(){
     private javax.swing.JTextField txtCorreoBanco;
     private javax.swing.JTextField txtCuotasPrestamo;
     private javax.swing.JFormattedTextField txtFechaFinalPrestamo;
-    private javax.swing.JTextField txtIDNombreBancoP;
-    private javax.swing.JTextField txtIDNombreCliente;
     private javax.swing.JTextField txtMontoPrestamo;
     private javax.swing.JTextField txtNombreBanco;
     private javax.swing.JTextField txtNombreContacto;

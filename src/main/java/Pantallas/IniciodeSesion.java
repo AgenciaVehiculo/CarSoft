@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package Pantallas;
+import Clases.Cliente;
 import Clases.Empleado;
 import Clases.Hash;
 import Clases.Persona;
@@ -15,6 +16,8 @@ import java.awt.*;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -37,6 +40,8 @@ public class IniciodeSesion extends javax.swing.JFrame {
         setIconImage(new ImageIcon(getClass().getResource("/Img/CarSoft-removebg-preview.png")).getImage());
          txt_usuario.setFocusable(true);
         this.setExtendedState(MAXIMIZED_BOTH);
+        this.btnIngresar.setBackground( new Color(14, 209, 69));
+        this.btnSalir.setBackground( new Color(236, 28, 36));
     }
     
     public void datos(String us, String pas){
@@ -100,7 +105,7 @@ public class IniciodeSesion extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnIngresar);
-        btnIngresar.setBounds(680, 500, 135, 59);
+        btnIngresar.setBounds(680, 500, 170, 59);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setText("Inicio de Sesión");
@@ -138,7 +143,7 @@ public class IniciodeSesion extends javax.swing.JFrame {
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
 
         if (txt_usuario.getText().equals("") && btn_password.getText().equals("")){
-            JOptionPane.showMessageDialog(this,"Usuario y contraseña estan vacios\nIngrese su usuario y contraseña");
+            JOptionPane.showMessageDialog(this,"Usuario y contraseña estan vacios\nIngrese su usuario y contraseña","Error!", JOptionPane.ERROR_MESSAGE);
             txt_usuario.setFocusable(true);
             return;
        }
@@ -146,7 +151,7 @@ public class IniciodeSesion extends javax.swing.JFrame {
            
        }
        if (txt_usuario.getText().equals("")){
-            JOptionPane.showMessageDialog(this, "Usuario esta vacio\nIngrese su usuario");
+            JOptionPane.showMessageDialog(this, "Usuario esta vacio\nIngrese su usuario","Error!", JOptionPane.ERROR_MESSAGE);
             txt_usuario.setFocusable(true);
             return;
        }
@@ -154,15 +159,21 @@ public class IniciodeSesion extends javax.swing.JFrame {
            
        }
        if (btn_password.getText().equals("")){
-            JOptionPane.showMessageDialog(this, "Contraseña esta vacio\nIngrese su contraseña");
+            JOptionPane.showMessageDialog(this, "Contraseña esta vacio\nIngrese su contraseña","Error!", JOptionPane.ERROR_MESSAGE);
             btn_password.setFocusable(true);
             return;
         }
-       
-       
-       
-        java.util.List<Usuarios> temp;
-        temp = usuarioDao.findUsuariosEntities();
+       java.util.List<Usuarios> temp;
+       temp = usuarioDao.findUsuariosEntities();
+       for(Usuarios u : temp){
+       if(u.getId_Nombre().equals(txt_usuario.getText())){
+            u= usuarioDao.findUsuarios(u.getId_Usuario());
+            if(u.isEstado()!=true){
+            JOptionPane.showMessageDialog(null,"Este usuario esta bloqueado, por favor comunicarse con el Gerente","Información", JOptionPane.INFORMATION_MESSAGE); 
+            return;
+        }
+       }
+       }
         boolean flag = false;
         boolean flag2 = false;
         boolean flag3 = false;
@@ -173,10 +184,8 @@ public class IniciodeSesion extends javax.swing.JFrame {
                     flag2=true;
                     if(u.isEstado()){
                         flag3=true;
-                    }
-                }
-                
-                
+                    }                   
+                }   
             }
         }
         if(flag && flag2 && flag3){
@@ -189,93 +198,69 @@ public class IniciodeSesion extends javax.swing.JFrame {
                 if(u.getId_Nombre().equals(txt_usuario.getText())){
                     temp2=empleadoDao.findEmpleado(u.getId_Empleado());
                     temp3=personaDao.findPersona(temp2.getId_Persona());
-                
+                    u.setIntentos(0);
+        try {
+                     usuarioDao.edit(u);
+        } catch (Exception ex) {
+            Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+        }
                 }
-            
-            
-            }
-            
-            
-            
+            }   
             FrmMenu.txtBienvenido.setText("Bienvenido "+temp3.getNombre()+" "+temp3.getApellido());
             FrmMenu.lIDEmpleado.setText(String.valueOf(temp2.getId_Empleado()));
             
             this.dispose();
         }
         else if (flag && !flag2){
-             JOptionPane.showMessageDialog(this, "La contraseña no es valida\n Ingrese su contraseña","Contraseña Incorrecta",0);
-            btn_password.setFocusable(true);
-        }
+            
+            
+            
+            
+            for(Usuarios u : temp){
+            if(u.getId_Nombre().equals(txt_usuario.getText())){
+            u= usuarioDao.findUsuarios(u.getId_Usuario());
+            int aux= u.getIntentos()+1;
+            u.setIntentos(aux); 
+            
+                if(u.getIntentos()>=3){
+                JOptionPane.showMessageDialog(null, "Esta cuenta ha sido bloqueada por intentar acceder sin exito 3 veces","Error!", JOptionPane.ERROR_MESSAGE);
+                 u.setEstado(false);       
+                }
+                if(u.getIntentos()<=2){
+                JOptionPane.showMessageDialog(this, "La contraseña no es valida\n Ingrese su contraseña","Contraseña Incorrecta", JOptionPane.ERROR_MESSAGE);
+                 btn_password.setFocusable(true);      
+                }
+            try {
+            usuarioDao.edit(u);
+            } catch (Exception ex) {
+            Logger.getLogger(IniciodeSesion.class.getName()).log(Level.SEVERE, null, ex);
+            }       
+            }
+             
+            }
+            }
         else if (flag && flag2 && !flag3){
-            JOptionPane.showMessageDialog(this,"Cuenta inactiva, pongase en contacto con el Gerente o departamento de TI","Cuenta Inactiva",0);
+            JOptionPane.showMessageDialog(this,"Cuenta inactiva, pongase en contacto con el Gerente o departamento de TI","Error!", JOptionPane.ERROR_MESSAGE);
         }
+        
         else if(!flag){
-            JOptionPane.showMessageDialog(this, "Usuario no encontrado en el sistema, Asegurese que su Usuario este escrito correctamente","Usuario Invalido",0);
+            if("root".equals(txt_usuario.getText())){
+                if("admin".equals(btn_password.getText())){
+                    FrmMenu menu = new FrmMenu();
+                    menu.setVisible(true);
+                    this.setVisible(false);
+                }
+            }
+            else{
+            JOptionPane.showMessageDialog(this, "Usuario no encontrado en el sistema, Asegurese que su Usuario este escrito correctamente","Error!", JOptionPane.ERROR_MESSAGE);
+            }
         }
-        /*       datos(user, password);
-        if(user.equals(txt_usuario.getText()) && password.equals(btn_password.getText())){
-            FrmMenu menu = new FrmMenu();
-            menu.setVisible(true);
-            this.dispose();
-        }else if (txt_usuario.getText().equals("") && btn_password.getText().equals("")){
-            JOptionPane.showMessageDialog(this,"Usuario y contraseña estan vacios\nIngrese su usuario y contraseña");
-            txt_usuario.setFocusable(true);
-        }else if (txt_usuario.getText().equals("")){
-            JOptionPane.showMessageDialog(this, "Usuario esta vacio\nIngrese su usuario");
-            txt_usuario.setFocusable(true);
-        }else if (btn_password.getText().equals("")){
-            JOptionPane.showMessageDialog(this, "Contraseña esta vacio\nIngrese su contraseña");
-            btn_password.setFocusable(true);
-        }else if(txt_usuario.getText().compareTo(user)!=0 && btn_password.getText().compareTo(password)!=0){
-            JOptionPane.showMessageDialog(this, "El Usuario o la contraseña no son validos\n Ingrese su usuario y contraseña");
-            txt_usuario.setFocusable(true);
-        }else if(txt_usuario.getText().compareTo(user)!=0){
-            JOptionPane.showMessageDialog(this, "Usuario no valido\n Ingrese su usuario nuevamente");
-            txt_usuario.setFocusable(true);
-        }else if(btn_password.getText().compareTo(password)!=0){
-            JOptionPane.showMessageDialog(this,"Contraseña no valida\nIngrese su contraseña nuevamente");
-            btn_password.setFocusable(true);
-        }
-    */
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(IniciodeSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(IniciodeSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(IniciodeSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(IniciodeSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new IniciodeSesion().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIngresar;

@@ -31,6 +31,9 @@
     <class>Clases.PiezaFactura</class>
     <class>Clases.VehiculoFactura</class>
     <class>Clases.TipoFactura</class>
+    <class>Clases.Facturarechazada</class>
+    <class>Clases.TipoPago</class>
+    <class>Clases.RazonSocial</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/carsoft?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

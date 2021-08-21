@@ -32,6 +32,7 @@ public class ModalPiezas extends javax.swing.JDialog {
     HistoricoPrecioPiezaJpaController historicoPieza = new HistoricoPrecioPiezaJpaController();
     TipoPiezaJpaController tipoPieza = new TipoPiezaJpaController();
     int id = 0;
+    
     public ModalPiezas(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -78,7 +79,7 @@ public class ModalPiezas extends javax.swing.JDialog {
                 aux1,
                 p.getNombre(),
                 p.getCarateristica_Pieza(),
-                formato1.format(auxPrecio),
+                String.format("%,.2f",auxPrecio),
                 p.getStock(),
                 p.getStock_Maximo(),
                 p.getStock_Minimo(),
@@ -122,8 +123,6 @@ public class ModalPiezas extends javax.swing.JDialog {
         jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(720, 500));
-        setPreferredSize(new java.awt.Dimension(720, 500));
         setSize(new java.awt.Dimension(720, 500));
 
         jPanel3.setMaximumSize(new java.awt.Dimension(1250, 1250));
@@ -179,7 +178,7 @@ public class ModalPiezas extends javax.swing.JDialog {
         jPanel3.add(jButton1);
         jButton1.setBounds(290, 120, 130, 40);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/buscar.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Seleccionar.png"))); // NOI18N
         jButton2.setText("Seleccionar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -190,9 +189,10 @@ public class ModalPiezas extends javax.swing.JDialog {
         jButton2.setBounds(290, 180, 130, 40);
 
         jLabel17.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
         jLabel17.setText("Busqueda de Piezas");
         jPanel3.add(jLabel17);
-        jLabel17.setBounds(190, 10, 240, 35);
+        jLabel17.setBounds(700, 10, 240, 35);
 
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Fondo.jpg"))); // NOI18N
         jPanel3.add(jLabel15);
@@ -236,11 +236,15 @@ public class ModalPiezas extends javax.swing.JDialog {
         
     }
 
+
+    
+
     
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int selectedRow = tablaBusqueda.getSelectedRow();
         id=(int) tablaBusqueda.getValueAt(selectedRow, 0);
+        
         this.dispose();
         
         

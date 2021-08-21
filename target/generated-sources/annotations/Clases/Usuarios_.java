@@ -13,6 +13,7 @@ public abstract class Usuarios_ {
 	public static volatile SingularAttribute<Usuarios, Integer> id_Empleado;
 	public static volatile SingularAttribute<Usuarios, Integer> id_Usuario;
 	public static volatile SingularAttribute<Usuarios, String> id_Nombre;
+	public static volatile SingularAttribute<Usuarios, Integer> intentos;
 
 }
 

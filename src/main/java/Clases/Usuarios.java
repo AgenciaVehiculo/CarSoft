@@ -26,6 +26,8 @@ public class Usuarios implements Serializable{
     private String id_Nombre;
     @Column(name="contrasenia")
     private String Contrasenia;
+    @Column(name="intentos")
+    private int intentos;
     @Column
     private boolean estado;
 
@@ -67,6 +69,22 @@ public class Usuarios implements Serializable{
 
     public void setEstado(boolean estado) {
         this.estado = estado;
+    }
+
+    public String getContrasenia() {
+        return Contrasenia;
+    }
+
+    public void setContrasenia(String Contrasenia) {
+        this.Contrasenia = Contrasenia;
+    }
+
+    public int getIntentos() {
+        return intentos;
+    }
+
+    public void setIntentos(int intentos) {
+        this.intentos = intentos;
     }
     
 }

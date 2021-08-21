@@ -84,6 +84,7 @@ public class FrmCliente extends javax.swing.JFrame {
         createComboBox();
         this.getContentPane().setBackground(new Color(0, 75, 143));
         habilitarAgregarCliente();
+        cmbIDCliente.setEditable(false);
         
 
        /* setLocationRelativeTo(null);
@@ -339,7 +340,7 @@ public void btnActivarDesactivarCliente(){
         btnBuscar2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnBuscar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/buscar.png"))); // NOI18N
         btnBuscar2.setText("Buscar");
-        btnBuscar2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBuscar2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnBuscar2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscar2ActionPerformed(evt);
@@ -461,6 +462,7 @@ public void btnActivarDesactivarCliente(){
             tblClientes.getColumnModel().getColumn(9).setPreferredWidth(50);
         }
 
+        cmbIDCliente.setEnabled(false);
         cmbIDCliente.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbIDClienteItemStateChanged(evt);
@@ -497,7 +499,7 @@ public void btnActivarDesactivarCliente(){
         btnAgregar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/agregar.png"))); // NOI18N
         btnAgregar.setText("Agregar");
-        btnAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregarActionPerformed(evt);
@@ -507,7 +509,7 @@ public void btnActivarDesactivarCliente(){
         btnModificar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/modificar.png"))); // NOI18N
         btnModificar.setText("Modificar");
-        btnModificar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnModificar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificarActionPerformed(evt);
@@ -517,7 +519,7 @@ public void btnActivarDesactivarCliente(){
         btnLimpiar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Limpiar.png"))); // NOI18N
         btnLimpiar.setText("Limpiar");
-        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLimpiarActionPerformed(evt);
@@ -527,7 +529,7 @@ public void btnActivarDesactivarCliente(){
         btnDesactivar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnDesactivar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Desactivar.png"))); // NOI18N
         btnDesactivar.setText("Desactivar");
-        btnDesactivar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDesactivar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnDesactivar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDesactivarActionPerformed(evt);
@@ -537,7 +539,7 @@ public void btnActivarDesactivarCliente(){
         btnSalir.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Salir.png"))); // NOI18N
         btnSalir.setText("Salir");
-        btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalirActionPerformed(evt);
@@ -547,7 +549,7 @@ public void btnActivarDesactivarCliente(){
         btnRegresar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Regresar.png"))); // NOI18N
         btnRegresar.setText("Regresar");
-        btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresarActionPerformed(evt);
@@ -698,7 +700,7 @@ public void btnActivarDesactivarCliente(){
 
         jLabel29.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel29.setText("Ingresar Nuevo Tipo de Documento");
+        jLabel29.setText("Nuevo Tipo de Documento");
 
         tblNuevoDoc.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -744,7 +746,7 @@ public void btnActivarDesactivarCliente(){
         btnAgregar1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnAgregar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/agregar.png"))); // NOI18N
         btnAgregar1.setText("Agregar");
-        btnAgregar1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAgregar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnAgregar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregar1ActionPerformed(evt);
@@ -754,7 +756,7 @@ public void btnActivarDesactivarCliente(){
         btnModificar1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnModificar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/modificar.png"))); // NOI18N
         btnModificar1.setText("Modificar");
-        btnModificar1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnModificar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnModificar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificar1ActionPerformed(evt);
@@ -764,7 +766,7 @@ public void btnActivarDesactivarCliente(){
         btnLimpiar1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnLimpiar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Limpiar.png"))); // NOI18N
         btnLimpiar1.setText("Limpiar");
-        btnLimpiar1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLimpiar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnLimpiar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLimpiar1ActionPerformed(evt);
@@ -774,7 +776,7 @@ public void btnActivarDesactivarCliente(){
         btnDesactivar1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnDesactivar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Desactivar.png"))); // NOI18N
         btnDesactivar1.setText("Desactivar");
-        btnDesactivar1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDesactivar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnDesactivar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDesactivar1ActionPerformed(evt);
@@ -784,7 +786,7 @@ public void btnActivarDesactivarCliente(){
         btnSalir1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnSalir1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Salir.png"))); // NOI18N
         btnSalir1.setText("Salir");
-        btnSalir1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSalir1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnSalir1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalir1ActionPerformed(evt);
@@ -794,13 +796,14 @@ public void btnActivarDesactivarCliente(){
         btnRegresar1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnRegresar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Regresar.png"))); // NOI18N
         btnRegresar1.setText("Regresar");
-        btnRegresar1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRegresar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnRegresar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresar1ActionPerformed(evt);
             }
         });
 
+        cmbIDTipoDocumento.setEnabled(false);
         cmbIDTipoDocumento.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbIDTipoDocumentoItemStateChanged(evt);
@@ -812,9 +815,18 @@ public void btnActivarDesactivarCliente(){
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(586, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnRegresar1)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel29)
+                        .addGap(360, 360, 360)
+                        .addComponent(btnSalir1)))
+                .addGap(81, 81, 81))
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 728, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -828,21 +840,12 @@ public void btnActivarDesactivarCliente(){
                                     .addComponent(jLabel27)
                                     .addComponent(jLabel28))
                                 .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cmbIDTipoDocumento, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtTipoDocumento, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE))))
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cmbIDTipoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtTipoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(18, 18, 18)
                         .addComponent(btnDesactivar1)))
-                .addGap(815, 815, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnRegresar1)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel29)
-                        .addGap(475, 475, 475)
-                        .addComponent(btnSalir1)))
-                .addGap(81, 81, 81))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -877,7 +880,7 @@ public void btnActivarDesactivarCliente(){
                 .addGap(388, 388, 388))
         );
 
-        tpnNuevoDoc.addTab("Ingresar Nuevo Tipo de Documento", jPanel2);
+        tpnNuevoDoc.addTab("Nuevo Tipo de Documento", jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -904,10 +907,12 @@ public void btnActivarDesactivarCliente(){
                 
             }
             else{
+                JOptionPane.showMessageDialog(null, "El ID Cliente siempre debe estar en el ITEM de Nuevo para agregar un nuevo Cliente","Error!", JOptionPane.ERROR_MESSAGE);
                 cmbIDCliente.setSelectedIndex(0);
+                return;
             }
-            if("".equals(txtNombre.getText()) || txtNombre.getText().length()>25){
-                JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de caracteres para el nombre del cliente","Error!", JOptionPane.ERROR_MESSAGE);
+            if("".equals(txtNombre.getText())){
+                JOptionPane.showMessageDialog(null, "El campo del nombre del cliente esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
                 return;   
             }
             else{
@@ -920,8 +925,30 @@ public void btnActivarDesactivarCliente(){
                     }else{
                         
                      }
-           if("".equals(txtApellidos.getText()) || txtApellidos.getText().length()>25) {
-               JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de caracteres para el apellido del cliente","Error!", JOptionPane.ERROR_MESSAGE);
+            if((txtNombre.getText().length()<3)){
+            JOptionPane.showMessageDialog(null,"El nombre del Cliente solo puede tener 3 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+            
+        }
+        if((txtNombre.getText().length()>25)){
+            JOptionPane.showMessageDialog(null,"El nombre del Cliente solo puede tener 25 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+            
+        }
+        if (!ValidacionNombreMayuscula(txtNombre.getText())){
+                JOptionPane.showMessageDialog(null,"El nombre del Cliente debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+                        txtNombre.requestFocus(); 
+                        return;
+                    }else{
+                        
+                     }
+            
+           if("".equals(txtApellidos.getText())) {
+               JOptionPane.showMessageDialog(null, "El campo del apellido del cliente esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
                 return;
             }
            else{
@@ -933,12 +960,44 @@ public void btnActivarDesactivarCliente(){
                     }else{
                         
                      }
-           if("".equals(txtTel.getText()) || txtTel.getText().length()>10){
-               JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el teléfono del cliente","Error!", JOptionPane.ERROR_MESSAGE);
-               return;
-           }
+           if((txtApellidos.getText().length()<3)){
+            JOptionPane.showMessageDialog(null,"El apellido del Cliente solo puede tener 3 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+            
+        }
+        if((txtApellidos.getText().length()>25)){
+            JOptionPane.showMessageDialog(null,"El apellido del Cliente solo puede tener 25 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+            
+        }
+        if (!ValidacionNombreMayuscula(txtApellidos.getText())){
+                JOptionPane.showMessageDialog(null,"El apellido del Cliente debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+                        txtApellidos.requestFocus(); 
+                        return;
+                    }else{
+                        
+                     }
+        if("".equals(txtTel.getText())) {
+               JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de caracteres para el teléfono del Cliente","Error!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
            else{
-               
+           }
+        if(txtTel.getText().length()<8) {
+               JOptionPane.showMessageDialog(null, "El teléfono del Cliente solo puede tener 8 números como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+           else{
+           }
+        if(txtTel.getText().length()>10) {
+               JOptionPane.showMessageDialog(null, "El teléfono del Cliente solo puede tener 10 números como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+           else{
            }
            if (!telefono(txtTel.getText())){
            JOptionPane.showMessageDialog(null,"Formato de teléfono incorrecto debe comenzar con 2, 3, 7, 8 o 9","Error!", JOptionPane.ERROR_MESSAGE);
@@ -947,12 +1006,46 @@ public void btnActivarDesactivarCliente(){
             }else{
            
             }
-           if("".equals(txtaDirec.getText()) || txtaDirec.getText().length()>50){
-               JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para la dirección del cliente","Error!", JOptionPane.ERROR_MESSAGE);
+           if("".equals(txtCorreo.getText())){
+               JOptionPane.showMessageDialog(null, "El campo de  correo electrónico del Cliente esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
                return;
            }
-           else{
-               
+            else{
+           }if (!correo(txtCorreo.getText())){
+            JOptionPane.showMessageDialog(null,"Formato de correo electrónico incorrecto","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+            }else{
+            }
+           if(txtCorreo.getText().length()<7){
+               JOptionPane.showMessageDialog(null, "El correo electrónico del Cliente solo puede tener 7 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+               return;
+           }
+            else{
+           }
+           if(txtCorreo.getText().length()>40){
+               JOptionPane.showMessageDialog(null, "El correo electrónico del Cliente solo puede tener 40 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+               return;
+           }
+            else{
+           }
+           
+           if("".equals(txtaDirec.getText())){
+               JOptionPane.showMessageDialog(null,"El campo de dirección del cliente esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
+               return;
+           }
+           else{  
+           }
+           if(txtaDirec.getText().length()<3){
+               JOptionPane.showMessageDialog(null, "La dirección del Cliente solo puede tener 3 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+               return;
+           }
+            else{
+           }
+           if(txtaDirec.getText().length()>50){
+               JOptionPane.showMessageDialog(null, "La dirección del Cliente solo puede tener 50 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+               return;
+           }
+            else{
            }
            if (ValidacionTresletras(txtaDirec.getText())){ 
                JOptionPane.showMessageDialog(null,"No se Admite en la dirección del Cliente la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
@@ -961,36 +1054,48 @@ public void btnActivarDesactivarCliente(){
                     }else{
                         
                      }
-           if("".equals(txtCorreo.getText()) || txtCorreo.getText().length()>30){
-               JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de caracteres para el correo electrónico del cliente","Error!", JOptionPane.ERROR_MESSAGE);
-               return;
-           }
-           else{
-               
-           }
+        if (!ValidacionDireccion(txtaDirec.getText())){ 
+               JOptionPane.showMessageDialog(null,"La dirección solo puede contener números, letras y los siguiente signos(&:|#\";.,-)","Error!", JOptionPane.ERROR_MESSAGE);
+                        txtaDirec.requestFocus(); 
+                        return;
+                    }else{
+                        
+                     }
+        if(cmbTipoDocumentoCli.getSelectedIndex()==0){
+                JOptionPane.showMessageDialog(null,"No ha seleccionado ningún tipo de documento","Error!", JOptionPane.ERROR_MESSAGE); 
+            return;
+            }
+        else{
+            
+        }
+        
         Tipo_Documento tempop;
         tempop = TipoDocumentodao.findTipo_Documento(cmbTipoDocumentoCli.getSelectedIndex());
         if(tempop.isEstado()!=true){
             JOptionPane.showMessageDialog(null,"El tipo de documento seleccionado esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE); 
             return;
         }
-        else{
-            
+        else{    
         }
-        
+        if("".equals(txtDocumento.getText())){
+               JOptionPane.showMessageDialog(null,"El campo de documento del cliente esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
+               return;
+           }
+           else{  
+           }
         int aux=14;
         switch (cmbTipoDocumentoCli.getSelectedItem().toString().toLowerCase()) {
             case "1. visa":
            aux=8;
            if(txtDocumento.getText().length()>aux || txtDocumento.getText().length()==0 || txtDocumento.getText().length()<aux){
-            JOptionPane.showMessageDialog(null, "La VISA solo puede contener 8 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La Visa solo puede contener 8 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return;
             }
             else{
                 
             }
            if (!ValidacionVISA(txtDocumento.getText())){
-           JOptionPane.showMessageDialog(null,"Formato de VISA invalido! Solo debe contener solo Letras y Números","Error!", JOptionPane.ERROR_MESSAGE);
+           JOptionPane.showMessageDialog(null,"Formato de Visa invalido! Solo debe contener solo Letras Mayúsculas y Números","Error!", JOptionPane.ERROR_MESSAGE);
            txtDocumento.requestFocus();
            return;
             }else{
@@ -1022,7 +1127,7 @@ public void btnActivarDesactivarCliente(){
                 
             }
            if (!ValidacionPasaporte(txtDocumento.getText())){
-           JOptionPane.showMessageDialog(null,"Formato de Pasaporte invalido! Solo puede contener solo Letras y Números","Error!", JOptionPane.ERROR_MESSAGE);
+           JOptionPane.showMessageDialog(null,"Formato de Pasaporte invalido! Solo puede contener solo Letras Mayúsculas y Números","Error!", JOptionPane.ERROR_MESSAGE);
            txtDocumento.requestFocus();
            return;
            }else{
@@ -1038,7 +1143,7 @@ public void btnActivarDesactivarCliente(){
                 
             }
                 if (!ValidacionRTN3(txtDocumento.getText())){
-           JOptionPane.showMessageDialog(null,"Formato de RTN  invalido! El primer Digito solo puede ser uno o cero","Error!", JOptionPane.ERROR_MESSAGE);
+           JOptionPane.showMessageDialog(null,"Formato de Rtn  invalido! El primer Digito solo puede ser uno o cero","Error!", JOptionPane.ERROR_MESSAGE);
            txtDocumento.requestFocus();
            return;
            }else{
@@ -1047,7 +1152,8 @@ public void btnActivarDesactivarCliente(){
             default:
                 break;
         }
-           if(txtDocumento.getText().length()>aux || txtDocumento.getText().length()==0){
+        
+           if("".equals(txtDocumento.getText())){
                //JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de dígitos del Documento del cliente","Error!", JOptionPane.ERROR_MESSAGE);
                return;
            }
@@ -1103,10 +1209,11 @@ public void btnActivarDesactivarCliente(){
         } catch (Exception ex) {
             Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE);
+        Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
+        JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         createTableCliente();
         createComboTipoDocumento();
+        LimpiarCliente();
         btnAgregar.setEnabled(true);
         btnModificar.setEnabled(false);
             }
@@ -1115,12 +1222,12 @@ public void btnActivarDesactivarCliente(){
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
          
-            if("".equals(txtNombre.getText()) || txtNombre.getText().length()>30){
-                JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de caracteres para el nombre del cliente","Error!", JOptionPane.ERROR_MESSAGE);
+            if("".equals(txtNombre.getText())){
+                JOptionPane.showMessageDialog(null, "El campo del nombre del cliente esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
                 return;   
             }
             else{
-                
+                         
             }
             if (ValidacionTresletras(txtNombre.getText())){
                 JOptionPane.showMessageDialog(null,"No se Admite en el nombre del Cliente la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
@@ -1129,26 +1236,79 @@ public void btnActivarDesactivarCliente(){
                     }else{
                         
                      }
-           if("".equals(txtApellidos.getText()) || txtApellidos.getText().length()>25){
-               JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de caracteres para el apellido del cliente","Error!", JOptionPane.ERROR_MESSAGE);
+            if((txtNombre.getText().length()<3)){
+            JOptionPane.showMessageDialog(null,"El nombre del Cliente solo puede tener 3 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+            
+        }
+        if((txtNombre.getText().length()>25)){
+            JOptionPane.showMessageDialog(null,"El nombre del Cliente solo puede tener 25 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+            
+        }
+        if (!ValidacionNombreMayuscula(txtNombre.getText())){
+                JOptionPane.showMessageDialog(null,"El nombre del Cliente debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+                        txtNombre.requestFocus(); 
+                        return;
+                    }else{
+                        
+                     }
+            
+           if("".equals(txtApellidos.getText())) {
+               JOptionPane.showMessageDialog(null, "El campo del apellido del cliente esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
                 return;
             }
            else{
-               
            }
-           if (ValidacionTresletras(txtApellidos.getText())){  
+           if (ValidacionTresletras(txtApellidos.getText())){ 
                JOptionPane.showMessageDialog(null,"No se Admite en el apellido del Cliente la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
                         txtApellidos.requestFocus(); 
                         return;
                     }else{
                         
                      }
-           if("".equals(txtTel.getText()) || txtTel.getText().length()>10){
-               JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de carateres para el teléfono del cliente","Error!", JOptionPane.ERROR_MESSAGE);
-               return;
-           }
+           if((txtApellidos.getText().length()<3)){
+            JOptionPane.showMessageDialog(null,"El apellido del Cliente solo puede tener 3 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+            
+        }
+        if((txtApellidos.getText().length()>25)){
+            JOptionPane.showMessageDialog(null,"El apellido del Cliente solo puede tener 25 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+            
+        }
+        if (!ValidacionNombreMayuscula(txtApellidos.getText())){
+                JOptionPane.showMessageDialog(null,"El apellido del Cliente debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+                        txtApellidos.requestFocus(); 
+                        return;
+                    }else{
+                        
+                     }
+           if("".equals(txtTel.getText())) {
+               JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de caracteres para el teléfono del Cliente","Error!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
            else{
-               
+           }
+        if(txtTel.getText().length()<8) {
+               JOptionPane.showMessageDialog(null, "El teléfono del Cliente solo puede tener 8 números como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+           else{
+           }
+        if(txtTel.getText().length()>10) {
+               JOptionPane.showMessageDialog(null, "El teléfono del Cliente solo puede tener 10 números como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+           else{
            }
            if (!telefono(txtTel.getText())){
            JOptionPane.showMessageDialog(null,"Formato de teléfono incorrecto debe comenzar con 2, 3, 7, 8 o 9","Error!", JOptionPane.ERROR_MESSAGE);
@@ -1157,48 +1317,95 @@ public void btnActivarDesactivarCliente(){
             }else{
            
             }
-           if("".equals(txtaDirec.getText()) || txtaDirec.getText().length()>50){
-               JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de carateres para la dirección del cliente","Error!", JOptionPane.ERROR_MESSAGE);
+           if("".equals(txtCorreo.getText())){
+               JOptionPane.showMessageDialog(null, "El campo de  correo electrónico del Cliente esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
                return;
            }
-           else{
-               
+            else{
+           }if (!correo(txtCorreo.getText())){
+            JOptionPane.showMessageDialog(null,"Formato de correo electrónico incorrecto","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+            }else{
+            }
+           if(txtCorreo.getText().length()<7){
+               JOptionPane.showMessageDialog(null, "El correo electrónico del Cliente solo puede tener 7 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+               return;
            }
-           if (ValidacionTresletras(txtaDirec.getText())){
-               JOptionPane.showMessageDialog(null,"No se Admite en la dirección del cliente la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+            else{
+           }
+           if(txtCorreo.getText().length()>40){
+               JOptionPane.showMessageDialog(null, "El correo electrónico del Cliente solo puede tener 40 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+               return;
+           }
+            else{
+           }
+           
+           if("".equals(txtaDirec.getText())){
+               JOptionPane.showMessageDialog(null,"El campo de dirección del cliente esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
+               return;
+           }
+           else{  
+           }
+           if(txtaDirec.getText().length()<3){
+               JOptionPane.showMessageDialog(null, "La dirección del Cliente solo puede tener 3 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+               return;
+           }
+            else{
+           }
+           if(txtaDirec.getText().length()>50){
+               JOptionPane.showMessageDialog(null, "La dirección del Cliente solo puede tener 50 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+               return;
+           }
+            else{
+           }
+           if (ValidacionTresletras(txtaDirec.getText())){ 
+               JOptionPane.showMessageDialog(null,"No se Admite en la dirección del Cliente la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
                         txtaDirec.requestFocus(); 
                         return;
                     }else{
+                        
                      }
-           if("".equals(txtCorreo.getText()) || txtCorreo.getText().length()>25){
-               JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de carateres para el correo electrónico del cliente","Error!", JOptionPane.ERROR_MESSAGE);
+        if (!ValidacionDireccion(txtaDirec.getText())){ 
+               JOptionPane.showMessageDialog(null,"La dirección solo puede contener números, letras y los siguiente signos(&:|#\";.,-)","Error!", JOptionPane.ERROR_MESSAGE);
+                        txtaDirec.requestFocus(); 
+                        return;
+                    }else{
+                        
+                     }
+        if(cmbTipoDocumentoCli.getSelectedIndex()==0){
+                JOptionPane.showMessageDialog(null,"No ha seleccionado ningún tipo de documento","Error!", JOptionPane.ERROR_MESSAGE); 
+            return;
+            }
+        else{
+            
+        }
+        if("".equals(txtDocumento.getText())){
+               JOptionPane.showMessageDialog(null,"El campo de documento del cliente esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
                return;
            }
-           else{
-               
+           else{  
            }
-          Tipo_Documento tempop;
+        Tipo_Documento tempop;
         tempop = TipoDocumentodao.findTipo_Documento(cmbTipoDocumentoCli.getSelectedIndex());
         if(tempop.isEstado()!=true){
             JOptionPane.showMessageDialog(null,"El tipo de documento seleccionado esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE); 
             return;
         }
-        else{
-            
+        else{    
         }
-           int aux=14;
+        int aux=14;
         switch (cmbTipoDocumentoCli.getSelectedItem().toString().toLowerCase()) {
             case "1. visa":
            aux=8;
            if(txtDocumento.getText().length()>aux || txtDocumento.getText().length()==0 || txtDocumento.getText().length()<aux){
-            JOptionPane.showMessageDialog(null, "La VISA solo puede contener 8 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La Visa solo puede contener 8 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return;
             }
             else{
                 
             }
            if (!ValidacionVISA(txtDocumento.getText())){
-           JOptionPane.showMessageDialog(null,"Formato de VISA invalido! Solo debe contener solo Letras y Números","Error!", JOptionPane.ERROR_MESSAGE);
+           JOptionPane.showMessageDialog(null,"Formato de Visa invalido! Solo debe contener solo Letras Mayúsculas y Números","Error!", JOptionPane.ERROR_MESSAGE);
            txtDocumento.requestFocus();
            return;
             }else{
@@ -1230,7 +1437,7 @@ public void btnActivarDesactivarCliente(){
                 
             }
            if (!ValidacionPasaporte(txtDocumento.getText())){
-           JOptionPane.showMessageDialog(null,"Formato de Pasaporte invalido! Solo puede contener solo Letras y Números","Error!", JOptionPane.ERROR_MESSAGE);
+           JOptionPane.showMessageDialog(null,"Formato de Pasaporte invalido! Solo puede contener solo Letras Mayúsculas y Números","Error!", JOptionPane.ERROR_MESSAGE);
            txtDocumento.requestFocus();
            return;
            }else{
@@ -1255,7 +1462,7 @@ public void btnActivarDesactivarCliente(){
             default:
                 break;
         }
-           if(txtDocumento.getText().length()>aux || txtDocumento.getText().length()==0){
+           if(txtDocumento.getText().length()==0){
                //JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de dígitos del Documento del cliente","Error!", JOptionPane.ERROR_MESSAGE);
                return;
            }
@@ -1292,18 +1499,25 @@ public void btnActivarDesactivarCliente(){
         } catch (Exception ex) {
             Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
-        JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE);
+        Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
+                JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
         createTableCliente();
         createComboTipoDocumento();
+        LimpiarCliente();
         btnAgregar.setEnabled(true);
         btnModificar.setEnabled(false);
            }
            
     }//GEN-LAST:event_btnModificarActionPerformed
-
-    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-//        cmbIDCliente.setSelectedIndex(1);
+public void LimpiarCliente(){
         cmbIDCliente.setSelectedIndex(0);
+        txtNombre.setText("");
+        txtApellidos.setText("");
+        txtTel.setText("");
+        txtaDirec.setText("");
+        cmbTipoDocumentoCli.setSelectedIndex(0);
+        txtDocumento.setText("");
+        txtCorreo.setText("");
         btnAgregar.setEnabled(true);
         btnModificar.setEnabled(false);
         btnDesactivar.setEnabled(false);
@@ -1311,7 +1525,10 @@ public void btnActivarDesactivarCliente(){
         createTableCliente();
         createComboBox();
         createComboTipoDocumento();
-        
+        btnBuscar2.setEnabled(true);
+}
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        LimpiarCliente();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnDesactivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivarActionPerformed
@@ -1319,11 +1536,13 @@ public void btnActivarDesactivarCliente(){
         temp = Clientedao.findCliente(cmbIDCliente.getSelectedIndex());
         if(temp.isEstado()){
             temp.setEstado(false);
-            JOptionPane.showMessageDialog(null,"Cliente Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE);
+            Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
+            JOptionPane.showMessageDialog(null,"Cliente Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         else{
             temp.setEstado(true);
-            JOptionPane.showMessageDialog(null,"Cliente Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE);
+            Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
+            JOptionPane.showMessageDialog(null,"Cliente Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         try {
             Clientedao.edit(temp);
@@ -1339,38 +1558,70 @@ public void btnActivarDesactivarCliente(){
     }//GEN-LAST:event_btnDesactivarActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        // TODO add your handling code here:
+        System.exit(0);
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        FrmMenu m = new FrmMenu();
-        m.setVisible(true);
+//        FrmMenu m = new FrmMenu();
+       // m.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void btnAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar1ActionPerformed
 
         if(cmbIDTipoDocumento.getSelectedIndex()!=0){
+            JOptionPane.showMessageDialog(null, "El ID Tipo de documento siempre debe estar en el ITEM de Nuevo para agregar un nuevo Tipo de Documento","Error!", JOptionPane.ERROR_MESSAGE);
             cmbIDTipoDocumento.setSelectedIndex(0);
+            return;
         }
         else{
             
         }
+        if("".equals(txtTipoDocumento.getText())){
+            JOptionPane.showMessageDialog(null, "El campo de Tipo de Documento esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        if(txtTipoDocumento.getText().length()<3){
+            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de Documento es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        
+        if(txtTipoDocumento.getText().length()>25){
+            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Documento es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }    
+
+        if (!ValidacionNombreMayusculaYDemasMinus(txtTipoDocumento.getText())){
+                JOptionPane.showMessageDialog(null,"El Tipo de Documento debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+                        txtTipoDocumento.requestFocus(); 
+                        return;
+                    }else{
+                        
+                     }
         if (ValidacionTresletras(txtTipoDocumento.getText())){
-               JOptionPane.showMessageDialog(null,"No se Admite en el Documento del cliente la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+               JOptionPane.showMessageDialog(null,"No se Admite en el Tipo de Documento la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
                         txtTipoDocumento.requestFocus(); 
                         return;
                     }else{
                      }
-        if("".equals(txtTipoDocumento.getText()) || (txtTipoDocumento.getText().length()>25)){
-            JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el documento","Error!", JOptionPane.ERROR_MESSAGE);
+        if("".equals(txtTipoDocumento.getText())){
+            //JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el documento","Error!", JOptionPane.ERROR_MESSAGE);
             return;
         }
         else{
             int i;
             boolean flag=false;
             for(i=0;i<TipoDocumentodao.findTipo_DocumentoEntities().size();i++){
-                if(txtTipoDocumento.getText().toLowerCase().equals(TipoDocumentodao.findTipo_Documento(i+1).getDocumento())){
+                if(txtTipoDocumento.getText().toLowerCase().equals(TipoDocumentodao.findTipo_Documento(i+1).getDocumento().toLowerCase())){
                     JOptionPane.showMessageDialog(null, "Ya existe este tipo de Documento registrado en el sistema","Error!", JOptionPane.ERROR_MESSAGE);
                     flag=true;
                     return;
@@ -1383,18 +1634,21 @@ public void btnActivarDesactivarCliente(){
             else{
             Tipo_Documento tp = new Tipo_Documento();
             tp.setEstado(true);
-            tp.setDocumento(txtTipoDocumento.getText().toLowerCase());
+            tp.setDocumento(txtTipoDocumento.getText());
                 try {
                     TipoDocumentodao.create(tp);
                 } catch (Exception ex) {
                     Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
                 }
            //cmbIDTipoDocumento.setSelectedIndex(1);
-           JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE);
+           Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
+           JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
            cmbIDTipoDocumento.setSelectedIndex(0);
            createTableTipoDocumento();
            createComboBox2();
            createComboTipoDocumento();
+           LimpiarDocumento();
+           
            btnAgregar1.setEnabled(true);
            btnModificar1.setEnabled(false);
         }
@@ -1407,46 +1661,80 @@ public void btnActivarDesactivarCliente(){
             JOptionPane.showMessageDialog(null, "Tipo de Documento no encontrado");
         }
         else{
-            if (ValidacionTresletras(txtTipoDocumento.getText())){
-               JOptionPane.showMessageDialog(null,"No se Admite en el Documento del cliente la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+        if("".equals(txtTipoDocumento.getText())){
+            JOptionPane.showMessageDialog(null, "El campo de Tipo de Documento esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        if(txtTipoDocumento.getText().length()<3){
+            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de Documento es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        
+        if(txtTipoDocumento.getText().length()>25){
+            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Documento es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }    
+        if (!ValidacionNombreMayusculaYDemasMinus(txtTipoDocumento.getText())){
+                JOptionPane.showMessageDialog(null,"El Tipo de Documento debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+                        txtTipoDocumento.requestFocus(); 
+                        return;
+                    }else{
+                        
+                     }
+        if (ValidacionTresletras(txtTipoDocumento.getText())){
+               JOptionPane.showMessageDialog(null,"No se Admite en el Tipo de Documento la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
                         txtTipoDocumento.requestFocus(); 
                         return;
                     }else{
                      }
             if("".equals(txtTipoDocumento.getText())){
-                JOptionPane.showMessageDialog(null, "Tipo de Documento no puede ir vacio");
+                //JOptionPane.showMessageDialog(null, "Tipo de Documento no puede ir vacio");
                 return;
             }
             else{
                 
                     Tipo_Documento tp;
                     tp=TipoDocumentodao.findTipo_Documento(cmbIDTipoDocumento.getSelectedIndex());
-                    tp.setDocumento(txtTipoDocumento.getText().toLowerCase());
+                    tp.setDocumento(txtTipoDocumento.getText());
                     try {
                         TipoDocumentodao.edit(tp);
                     } catch (Exception ex) {
                         Logger.getLogger(Tipo_Documento.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE);
+                Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
+                JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
                 cmbIDTipoDocumento.setSelectedIndex(1);
                 cmbIDTipoDocumento.setSelectedIndex(0);
                 createTableTipoDocumento();
                 createComboBox2();
+                LimpiarDocumento();
+                createComboTipoDocumento();
                 btnAgregar1.setEnabled(true);
                 btnModificar1.setEnabled(false);
                 
             }
         }
     }//GEN-LAST:event_btnModificar1ActionPerformed
-
-    private void btnLimpiar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar1ActionPerformed
-
+public void LimpiarDocumento(){
         cmbIDTipoDocumento.setSelectedIndex(0);
+        txtTipoDocumento.setText("");
         btnAgregar1.setEnabled(true);
         btnModificar1.setEnabled(false);
         btnDesactivar1.setEnabled(false);
         createTableTipoDocumento();
         createComboBox2();
+}
+    private void btnLimpiar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar1ActionPerformed
+        LimpiarDocumento();
     }//GEN-LAST:event_btnLimpiar1ActionPerformed
 
     private void btnDesactivar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar1ActionPerformed
@@ -1454,11 +1742,13 @@ public void btnActivarDesactivarCliente(){
         temp = TipoDocumentodao.findTipo_Documento(cmbIDTipoDocumento.getSelectedIndex());
         if(temp.isEstado()){
             temp.setEstado(false);
-            JOptionPane.showMessageDialog(null,"Tipo de Documento Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE);
+            Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
+            JOptionPane.showMessageDialog(null,"Tipo de Documento Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE,icono);
         }
         else{
             temp.setEstado(true);
-            JOptionPane.showMessageDialog(null,"Tipo de Documento Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE);
+            Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
+            JOptionPane.showMessageDialog(null,"Tipo de Documento Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         try {
             TipoDocumentodao.edit(temp);
@@ -1467,6 +1757,7 @@ public void btnActivarDesactivarCliente(){
         }
         createTableTipoDocumento();
         btnActivarDesactivar();
+        createComboTipoDocumento();
         btnDesactivar1.setEnabled(false);
         btnAgregar1.setEnabled(true);
         btnModificar1.setEnabled(false);
@@ -1477,8 +1768,8 @@ public void btnActivarDesactivarCliente(){
     }//GEN-LAST:event_btnSalir1ActionPerformed
 
     private void btnRegresar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresar1ActionPerformed
-        FrmMenu m = new FrmMenu();
-        m.setVisible(true);
+//        FrmMenu m = new FrmMenu();
+//       m.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnRegresar1ActionPerformed
 
@@ -1577,6 +1868,7 @@ public void btnActivarDesactivarCliente(){
     private void tblNuevoDocMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNuevoDocMouseClicked
         btnAgregar1.setEnabled(false);
         btnModificar1.setEnabled(true);
+        btnDesactivar1.setEnabled(true);
         int column=0;
         int fila = tblNuevoDoc.getSelectedRow();
         if (fila > -1){
@@ -1655,34 +1947,15 @@ public void btnActivarDesactivarCliente(){
     }//GEN-LAST:event_cmbTipoDocumentoCliItemStateChanged
 
     private void txtTelKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelKeyTyped
-      /* char validar=evt.getKeyChar();
-       if((validar<'0'||validar>'9')){
-           evt.consume();
-           JOptionPane.showMessageDialog(null,"Solo se admiten números para el teléfono del cliente","Error!", JOptionPane.ERROR_MESSAGE);
-       }else{
-       }*/
+
     }//GEN-LAST:event_txtTelKeyTyped
 
     private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
-       char validar=evt.getKeyChar();
-       if((validar<'a'||validar>'z')&& (validar<'A' || validar>'Z') && (validar!=(char)KeyEvent.VK_BACKSPACE) && (validar!=(char)KeyEvent.VK_SPACE)){
-           evt.consume();
-           JOptionPane.showMessageDialog(null,"Solo se admiten letras para el nombre del cliente","Error!", JOptionPane.ERROR_MESSAGE);
-
-       }
-       else{
-           
-       }
-       
-       
+      
     }//GEN-LAST:event_txtNombreKeyTyped
 
     private void txtApellidosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidosKeyTyped
-        char validar=evt.getKeyChar();
-       if((validar<'a'||validar>'z')&& (validar<'A' || validar>'Z') && (validar!=(char)KeyEvent.VK_BACKSPACE) && (validar!=(char)KeyEvent.VK_SPACE)){
-           evt.consume();
-           JOptionPane.showMessageDialog(null,"Solo se admiten letras para el apellido del cliente","Error!", JOptionPane.ERROR_MESSAGE);
-       }
+ 
     }//GEN-LAST:event_txtApellidosKeyTyped
 
     private void txtCorreoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCorreoKeyTyped
@@ -1734,12 +2007,45 @@ private boolean ValidacionPasaporte(String num){
         return false;
         }
     }
-
-    private boolean correo(String correo_elec){
+private boolean ValidacionNombreMayuscula(String num){
         Pattern pat = null;
         Matcher mat = null;
-        pat = Pattern.compile("^[\\w\\-\\_\\+]+(\\.[\\w\\-\\_]+)*@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$");
-        mat =pat.matcher(correo_elec);
+        pat = Pattern.compile("^(?=.{3,40}$)[A-ZÑÁÉÍÓÚ][a-zñáéíóú]+(?: [A-ZÑÁÉÍÓÚ][a-zñáéíóú]+)?(?: [A-ZÑÁÉÍÓÚ][a-zñáéíóú]+)?(?: [A-ZÑÁÉÍÓÚ][a-zñáéíóú]+)?$");
+        mat =pat.matcher(num);
+        if (mat.find()){
+            return true;
+        } else{
+        return false;
+        }
+    }
+private boolean ValidacionNombreMayusculaYDemasMinus(String num){
+        Pattern pat = null;
+        Matcher mat = null;
+        pat = Pattern.compile("^(?=.{3,40}$)[A-ZÑÁÉÍÓÚ][a-zñáéíóú]+(?: [a-zñáéíóúA-ZÑÁÉÍÓÚ]+)?+(?: [a-zñáéíóúA-ZÑÁÉÍÓÚ]+)?$");
+        mat =pat.matcher(num);
+        if (mat.find()){
+            return true;
+        } else{
+        return false;
+        }
+    }
+
+
+private boolean ValidacionDireccion(String num){
+        Pattern pat = null;
+        Matcher mat = null;
+        pat = Pattern.compile("^(?=.{3,50}$)[A-ZÑÁÉÍÓÚ][a-zñáéíóú;.#',:-]+(?: [&:|#\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús;.#',:-]+)?(?: [&:|#\\\";.0-9a-znA-ZÑÁÉÍÓ-Úáéíóús;.#',:-]+)?(?: [&:|#\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús;.#',:-]+)?(?: [&:|#\\\";.0-9a-znA-ZÑÁÉÍÓ-Úáéíóús;.#',:-]+)?(?: [&:|#\\\";.0-9a-znA-ZÑÁÉÍÓ-Úáéíóús;.#',:-]+)?(?: [&:|#\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús;.#',:-]+)?(?: [&:|#\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús;.#',:-]+)?(?: [&:|#\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús;.#',:-]+)?(?: [&:|#\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús;.#',:-]+)?(?: [&:|#\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús;.#',:-]+)?(?: [&:|#\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús;.#',:-]+)?(?: [&:|#\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús;.#',:-]+)?(?: [&:|#\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús;.#',:-]+)?$");
+        mat =pat.matcher(num);
+        if (mat.find()){
+            return true;
+        } else{
+        return false;
+        }
+    }
+private boolean correo(String correo_elec){
+
+        Pattern pat = Pattern.compile("^[\\w\\-\\_\\+]+(\\.[\\w\\-\\_]+)*@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$");
+        Matcher mat =pat.matcher(correo_elec);
         if (mat.find()){
             return true;
         } else{
@@ -1761,11 +2067,7 @@ private boolean ValidacionPasaporte(String num){
 
     
     private void txtCorreoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCorreoFocusLost
-        if (correo(txtCorreo.getText())){
-        }else{
-           JOptionPane.showMessageDialog(null,"Formato de correo electrónico incorrecto","Error!", JOptionPane.ERROR_MESSAGE);
-           txtCorreo.requestFocus();
-        }
+
     }//GEN-LAST:event_txtCorreoFocusLost
    private boolean telefono(String tel){
         Pattern pat = null;
@@ -1785,32 +2087,15 @@ private boolean ValidacionPasaporte(String num){
     }//GEN-LAST:event_txtTelFocusLost
 
     private void txtaDirecKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtaDirecKeyTyped
-        char validar=evt.getKeyChar();
-       if((validar<'a'||validar>'z')&& (validar<'A' || validar>'Z') && (validar<'0'||validar>'9')&& 
-               validar<'.'&& validar<';'&& validar<','&& validar<':'&& validar<'"'&& validar<'}'&& validar<'{'&& validar<'['&& validar<']'
-               && validar<'-'&& validar<'+'&& validar<'='&& validar<'&'&& validar<'!'&& validar<'*'&& validar<','&& validar<'^'&& validar<'|'&& validar<'.'&& validar<'#'&& validar<'.'&& validar<','
-               &&(validar!=(char)KeyEvent.VK_BACKSPACE) && 
-               (validar!=(char)KeyEvent.VK_SPACE)){
-           evt.consume();
-           JOptionPane.showMessageDialog(null,"Solo se admiten letras, números y algunos carcateres","Error!", JOptionPane.ERROR_MESSAGE);
-       }
+
     }//GEN-LAST:event_txtaDirecKeyTyped
 
     private void txtDocumentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDocumentoKeyTyped
-        char validar=evt.getKeyChar();
-       if((validar<'a'||validar>'z')&& (validar<'A' || validar>'Z') && (validar<'0'||validar>'9')&& 
-               (validar!=(char)KeyEvent.VK_BACKSPACE) && (validar!=(char)KeyEvent.VK_SPACE)){
-           evt.consume();
-           JOptionPane.showMessageDialog(null,"Solo se admiten letras y números","Error!", JOptionPane.ERROR_MESSAGE);
-       }
+  
     }//GEN-LAST:event_txtDocumentoKeyTyped
 
     private void txtTipoDocumentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTipoDocumentoKeyTyped
-       char validar=evt.getKeyChar();
-       if((validar<'a'||validar>'z')&& (validar<'A' || validar>'Z') && (validar!=(char)KeyEvent.VK_BACKSPACE) && (validar!=(char)KeyEvent.VK_SPACE)){
-           evt.consume();
-           JOptionPane.showMessageDialog(null,"Solo se admiten letras para el Nombre del Documento","Error!", JOptionPane.ERROR_MESSAGE);
-       }
+     
     }//GEN-LAST:event_txtTipoDocumentoKeyTyped
 
     private void txtNombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNombreFocusLost
@@ -1862,68 +2147,7 @@ public void BuscarClienteDocumento(){
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmCliente().setVisible(true);
-            }
-        });
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
