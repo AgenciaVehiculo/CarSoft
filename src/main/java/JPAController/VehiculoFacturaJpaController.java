@@ -24,8 +24,8 @@ import javax.persistence.criteria.Root;
  */
 public class VehiculoFacturaJpaController implements Serializable {
 
-    public VehiculoFacturaJpaController() {
-        this.emf= Persistence.createEntityManagerFactory("CarSoft");
+    public VehiculoFacturaJpaController(EntityManagerFactory emf) {
+        this.emf= emf;
     }
     private EntityManagerFactory emf = null;
 

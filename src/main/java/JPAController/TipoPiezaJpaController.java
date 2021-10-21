@@ -7,6 +7,7 @@ package JPAController;
 
 import Clases.TipoPieza;
 import JPAController.exceptions.NonexistentEntityException;
+import JPAController.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -23,8 +24,8 @@ import javax.persistence.criteria.Root;
  */
 public class TipoPiezaJpaController implements Serializable {
 
-    public TipoPiezaJpaController() {
-        this.emf = Persistence.createEntityManagerFactory("CarSoft");
+    public TipoPiezaJpaController(EntityManagerFactory emf) {
+        this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
@@ -32,13 +33,31 @@ public class TipoPiezaJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(TipoPieza tipoPieza) {
+   /* public void create(TipoPieza tipoPieza) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             em.persist(tipoPieza);
             em.getTransaction().commit();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }*/
+    public void create(TipoPieza tipoPieza) throws PreexistingEntityException, Exception {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            em.persist(tipoPieza);
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            if (findTipoPieza(tipoPieza.getIDtipopieza()) != null) {
+                throw new PreexistingEntityException("TipoPieza " + tipoPieza + " already exists.", ex);
+            }
+            throw ex;
         } finally {
             if (em != null) {
                 em.close();

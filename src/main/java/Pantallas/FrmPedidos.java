@@ -6,6 +6,7 @@
 package Pantallas;
 
 import Clases.Cliente;
+import Clases.Detalle_Banco_Cliente;
 import Clases.Detalle_Pedido_Vehiculo;
 import Clases.Detalle_Pedido_pieza;
 import Clases.HistoricoPrecioPieza;
@@ -29,10 +30,12 @@ import JPAController.TipoPiezaJpaController;
 import JPAController.VehiculoJpaController;
 import java.awt.Color;
 import static java.awt.Frame.MAXIMIZED_BOTH;
+import java.awt.event.KeyAdapter;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -41,11 +44,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -56,26 +63,27 @@ public class FrmPedidos extends javax.swing.JFrame {
     /**
      * Creates new form Empleados
      */
-    PedidoJpaController Pedidodao = new PedidoJpaController();
-    Detalle_Pedido_VehiculoJpaController PedidoVehiculodao = new Detalle_Pedido_VehiculoJpaController();
-    Detalle_Pedido_piezaJpaController PedidoPiezadao = new Detalle_Pedido_piezaJpaController();
-    PiezaJpaController PiezaDao = new PiezaJpaController();
-    VehiculoJpaController Vehiculodao = new VehiculoJpaController();
-    MarcaJpaController MarcaDao = new MarcaJpaController();
-    TipoPiezaJpaController TipoPiezaDao = new TipoPiezaJpaController();
-    HistoricoPrecioPiezaJpaController historicoPiezaDao = new HistoricoPrecioPiezaJpaController();
-    HistoricoPrecioVehiculosJpaController historicoVehiculoDao = new HistoricoPrecioVehiculosJpaController();
-    MarcaJpaController Marcadao = new MarcaJpaController();
+    EntityManagerFactory emf =Persistence.createEntityManagerFactory("CarSoft");
+    PedidoJpaController Pedidodao = new PedidoJpaController(emf);
+    Detalle_Pedido_VehiculoJpaController PedidoVehiculodao = new Detalle_Pedido_VehiculoJpaController(emf);
+    Detalle_Pedido_piezaJpaController PedidoPiezadao = new Detalle_Pedido_piezaJpaController(emf);
+    PiezaJpaController PiezaDao = new PiezaJpaController(emf);
+    VehiculoJpaController Vehiculodao = new VehiculoJpaController(emf);
+    MarcaJpaController MarcaDao = new MarcaJpaController(emf);
+    TipoPiezaJpaController TipoPiezaDao = new TipoPiezaJpaController(emf);
+    HistoricoPrecioPiezaJpaController historicoPiezaDao = new HistoricoPrecioPiezaJpaController(emf);
+    HistoricoPrecioVehiculosJpaController historicoVehiculoDao = new HistoricoPrecioVehiculosJpaController(emf);
+    MarcaJpaController Marcadao = new MarcaJpaController(emf);
     public FrmPedidos() {
         initComponents();
          setIconImage(new ImageIcon(getClass().getResource("/Img/CarSoft-removebg-preview.png")).getImage());
         this.setExtendedState(MAXIMIZED_BOTH);
         //btnDesactivar3.setEnabled(false);
         createComboBoxPedido();
-        //createTablePedido();
+        
         createComboPieza();
         createComboVehiculo();
-        txtFechaPedido.setEnabled(false);
+
         //btnModificar3.setEnabled(false);
         this.jPanel3.setBackground( new Color(0, 75, 143));
         this.jPanel1.setBackground( new Color(0, 75, 143));
@@ -84,13 +92,18 @@ public class FrmPedidos extends javax.swing.JFrame {
         btnAgregar5.setBackground( new Color(14, 209, 69));
         btnAgregar4.setBackground( new Color(14, 209, 69));
         this.btnSalir.setBackground( new Color(236, 28, 36));
+        this.btnSalir1.setBackground( new Color(236, 28, 36));
         btnLimpiar.setBackground( new Color(14, 209, 69));
         btnBorrar.setBackground( new Color(14, 209, 69));
         btnBuscar1.setBackground( new Color(14, 209, 69));
         btnBuscar.setBackground( new Color(14, 209, 69));
+
+        btnDesactivar.setBackground( new Color(14, 209, 69));
+//        btnAgregar6.setBackground( new Color(14, 209, 69));
         //this.btnModificar3.setBackground( new Color(14, 209, 69));
         //this.btnLimpiar3.setBackground( new Color(14, 209, 69));
         //this.btnDesactivar3.setBackground( new Color(14, 209, 69));
+        this.btnRegresar1.setBackground( new Color(14, 209, 69));
         this.btnRegresar.setBackground( new Color(14, 209, 69));
         tblPedido.setForeground(Color.WHITE);
         tblPedido.setBackground(Color.BLACK);
@@ -98,13 +111,15 @@ public class FrmPedidos extends javax.swing.JFrame {
         cmbIDVehiculo.setEnabled(true);
         crearTbPedido();
         txtPedidoListaBusqueda();
-        createTablePedido2();
+        createTablePedido();
     }
 
 public void btnActivarDesactivarPedido(){
         Pedido temp = new Pedido();
-        temp = Pedidodao.findPedido(cmbIDPedido.getSelectedIndex());
-        
+        int fila = tblPedido.getSelectedRow();
+        String pedido= String.valueOf(tblPedido.getValueAt(fila, 0));
+        temp = Pedidodao.findPedido(Integer.parseInt(pedido));
+
         if(temp.isEstado()){
         btnDesactivar.setFont(new java.awt.Font("Tahoma", 1, 11));
         btnDesactivar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Desactivar.png")));
@@ -141,7 +156,7 @@ public void createComboVehiculo(){
             if(tpp.getId_marca()== tp.getIdMarca()){
             modelo.addElement(tpp.getId_vehiculo()+". "+tp.getMarca()+" ("+tpp.getVin()+"-"+tpp.getTotal_cilindraje()+")");
             }         
-            return;
+            //return;
         }
         }
                 }
@@ -161,7 +176,7 @@ public void createComboPieza(){
         }
                 }
    
-public void createTablePedido2(){
+/*public void createTablePedido2(){
         DefaultTableModel modelo = new DefaultTableModel();
         tblPedido.setModel(modelo);
         modelo.addColumn("ID Pedido");
@@ -173,7 +188,6 @@ public void createTablePedido2(){
         modelo.addColumn("Precio de Cada Pieza");
         modelo.addColumn("Monto total del pedido");
         modelo.addColumn("Fecha pedido");
-        modelo.addColumn("Fecha de Entrega");
         modelo.addColumn("Estado");
         DecimalFormatSymbols separadoresPersonalizados = new DecimalFormatSymbols();
         separadoresPersonalizados.setDecimalSeparator('.');
@@ -246,21 +260,25 @@ public void createTablePedido2(){
                          formato1.format(auxpreciopieza),
                         p.getMonto_pedido(),
                         auxfecha,
-                        auxfechab,
+                        //auxfechab,
                         p.isEstado()? "Activo" : "Inactivo",
                       
             });  
     
         }      
-        }
+        }*/
 public void createTablePedido(){
-        DefaultTableModel modelo = new DefaultTableModel();
+        DefaultTableModel modelo = (DefaultTableModel) tblPedido.getModel();
         tblPedido.setModel(modelo);
-        modelo.addColumn("ID Pedido");
-        modelo.addColumn("Monto total del pedido");
-        modelo.addColumn("Fecha pedido");
-        modelo.addColumn("Fecha de Entrega");
-        modelo.addColumn("Estado");
+        int i;
+        for(i=modelo.getRowCount()-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
+        //modelo.addColumn("ID Pedido");
+        //modelo.addColumn("Monto total del pedido");
+        //modelo.addColumn("Fecha pedido");
+        //modelo.addColumn("Fecha de Entrega");
+        //modelo.addColumn("Estado");
         DecimalFormatSymbols separadoresPersonalizados = new DecimalFormatSymbols();
         separadoresPersonalizados.setDecimalSeparator('.');
         DecimalFormat formato1 = new DecimalFormat("#.00",separadoresPersonalizados);
@@ -324,9 +342,10 @@ public void createTablePedido(){
             modelo.addRow(
                     new Object[]{
                         p.getId_pedido(),
-                        p.getMonto_pedido(),
+                        
+                        String.format("%,.2f",p.getMonto_pedido()),
                         auxfecha,
-                        auxfechab,
+                        //auxfechab,
                         p.isEstado()? "Activo" : "Inactivo",
                       
             });  
@@ -378,16 +397,7 @@ public void createTablePedido(){
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblPedido = new javax.swing.JTable();
-        txtFechaPedido = new javax.swing.JFormattedTextField();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        btnAgregar6 = new javax.swing.JButton();
-        jLabel15 = new javax.swing.JLabel();
-        chkFecha = new javax.swing.JCheckBox();
-        jButton7 = new javax.swing.JButton();
-        txtPedidoListaBusqueda = new javax.swing.JFormattedTextField();
-        txtFechaFinal2 = new javax.swing.JFormattedTextField();
         btnDesactivar = new javax.swing.JButton();
         btnSalir1 = new javax.swing.JButton();
         btnRegresar1 = new javax.swing.JButton();
@@ -452,10 +462,20 @@ public void createTablePedido(){
                 txtCantidadVehiculosFocusLost(evt);
             }
         });
+        txtCantidadVehiculos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCantidadVehiculosKeyTyped(evt);
+            }
+        });
 
         txtCantidadPiezas.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtCantidadPiezasFocusLost(evt);
+            }
+        });
+        txtCantidadPiezas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCantidadPiezasKeyTyped(evt);
             }
         });
 
@@ -492,6 +512,11 @@ public void createTablePedido(){
         txtPrecioPieza.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtPrecioPiezaFocusLost(evt);
+            }
+        });
+        txtPrecioPieza.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrecioPiezaKeyTyped(evt);
             }
         });
 
@@ -591,23 +616,14 @@ public void createTablePedido(){
 
         tblPedidoPiezaVehiculo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
-                "ID", "Descripcion", "Precio Unit", "Cantidad", "SubTotal"
+                "ID", "Descripción", "Precio Unitario", "Cantidad", "SubTotal"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, true
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -628,57 +644,55 @@ public void createTablePedido(){
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnBorrar)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)))
-                        .addGap(47, 47, 47)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmbIDPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCantidadVehiculos, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(txtPrecioVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnAgregar4)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(cmbIDVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnBuscar)))
-                        .addGap(32, 32, 32)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(32, 32, 32)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(txtPrecioPieza, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnAgregar5)
-                            .addComponent(txtCantidadPiezas, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(cmbIDPieza, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnBuscar1)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(btnAgregar3)
                         .addGap(18, 18, 18)
                         .addComponent(btnLimpiar)
                         .addGap(336, 344, Short.MAX_VALUE)
+                        .addComponent(jLabel12)
+                        .addGap(701, 701, 701))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnRegresar)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel12)
-                                .addGap(520, 520, 520)
-                                .addComponent(btnSalir)))
-                        .addGap(88, 88, 88))))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(47, 47, 47)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cmbIDPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCantidadVehiculos, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(txtPrecioVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnAgregar4)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(cmbIDVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnBuscar)))
+                                .addGap(32, 32, 32)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(32, 32, 32)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(txtPrecioPieza, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnAgregar5)
+                                    .addComponent(txtCantidadPiezas, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(cmbIDPieza, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnBuscar1))))
+                            .addComponent(btnSalir))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(475, 475, 475)
                 .addComponent(jLabel3)
@@ -722,11 +736,14 @@ public void createTablePedido(){
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(btnSalir))
-                                        .addGap(53, 53, 53)
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addGap(6, 6, 6)
+                                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addComponent(btnSalir)))
+                                        .addGap(45, 45, 45)
                                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                             .addComponent(jLabel13)
                                             .addComponent(cmbIDPieza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -761,31 +778,15 @@ public void createTablePedido(){
 
         tblPedido.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
-                "ID Pedido", "Monto del Pedido", "Fecha del Pedido", "Fecha de Entrega", "Estado"
+                "ID Pedido", "Monto del Pedido", "Fecha del Pedido", "Estado"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-            };
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true
+                false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -798,68 +799,9 @@ public void createTablePedido(){
         });
         jScrollPane2.setViewportView(tblPedido);
 
-        txtFechaPedido.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
-        txtFechaPedido.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFechaPedidoActionPerformed(evt);
-            }
-        });
-
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel8.setText("Fecha de Entrega:");
-
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel5.setText("ID Pedido:");
-
         jLabel14.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("Lista de Pedidos");
-
-        btnAgregar6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnAgregar6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/agregar.png"))); // NOI18N
-        btnAgregar6.setText("Agregar Fecha de Entrega");
-        btnAgregar6.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnAgregar6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregar6ActionPerformed(evt);
-            }
-        });
-
-        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel15.setText("Fecha Pedidol: ");
-
-        chkFecha.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                chkFechaItemStateChanged(evt);
-            }
-        });
-
-        jButton7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/buscar.png"))); // NOI18N
-        jButton7.setText("Buscar");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
-        });
-
-        txtPedidoListaBusqueda.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        txtPedidoListaBusqueda.setEnabled(false);
-        txtPedidoListaBusqueda.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPedidoListaBusquedaActionPerformed(evt);
-            }
-        });
-
-        txtFechaFinal2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
-        txtFechaFinal2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFechaFinal2ActionPerformed(evt);
-            }
-        });
 
         btnDesactivar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnDesactivar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Desactivar.png"))); // NOI18N
@@ -895,79 +837,33 @@ public void createTablePedido(){
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnRegresar1)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnDesactivar))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnRegresar1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel14)
-                                .addGap(429, 429, 429))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(73, 73, 73)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnDesactivar)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE))
-                                        .addGap(18, 18, 18)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(txtPedidoListaBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(jButton7))
-                                                .addGap(46, 46, 46)
-                                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(txtFechaPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(chkFecha)))
-                                        .addGap(18, 18, 18)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(btnAgregar6)
-                                            .addComponent(txtFechaFinal2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)))
-                        .addGap(60, 60, 60)
+                        .addComponent(jLabel14)
+                        .addGap(299, 299, 299)
                         .addComponent(btnSalir1)))
-                .addGap(66, 66, 66))
+                .addGap(66, 318, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(48, 48, 48)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel8)
-                            .addComponent(txtPedidoListaBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFechaFinal2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnAgregar6, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtFechaPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel15))
-                            .addComponent(chkFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35)
-                        .addComponent(btnDesactivar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(556, 556, 556))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnSalir1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnRegresar1)
-                        .addGap(392, 392, 392))))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSalir1))
+                .addGap(189, 189, 189)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnDesactivar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(102, 102, 102)
+                .addComponent(btnRegresar1)
+                .addContainerGap(440, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Lista de Pedidos", jPanel1);
@@ -987,50 +883,32 @@ public void createTablePedido(){
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+public void filtroPedido() {
+      /*  TableRowSorter trsfiltro = new TableRowSorter(tblPedido.getModel());
+        tblPedido.setRowSorter(trsfiltro);
+        trsfiltro.setRowFilter(RowFilter.regexFilter(txtPedidoListaBusqueda.getText(), 1)); */
+        
+}
+    private void tblPedidoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPedidoMouseClicked
+Pedido temp = new Pedido();
+        int fila = tblPedido.getSelectedRow();
+        String pedido= String.valueOf(tblPedido.getValueAt(fila, 0));
+        temp = Pedidodao.findPedido(Integer.parseInt(pedido));
 
-    private void txtFechaFinal2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaFinal2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFechaFinal2ActionPerformed
-
-    private void txtPedidoListaBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPedidoListaBusquedaActionPerformed
-        txtPedidoListaBusqueda.setText(String.valueOf(Pedidodao.getPedidoCount()+1));
-    }//GEN-LAST:event_txtPedidoListaBusquedaActionPerformed
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-
-        createTablaBusqueda();
-
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
-
-    private void chkFechaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkFechaItemStateChanged
-
-        if(chkFecha.isSelected()){
-            txtFechaPedido.setEnabled(true);
-            //txtFechaFinal.setEnabled(true);
+        if(temp.isEstado()){
+        btnDesactivar.setFont(new java.awt.Font("Tahoma", 1, 11));
+        btnDesactivar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Desactivar.png")));
+        btnDesactivar.setText("Desactivar");  
+        btnDesactivar.setEnabled(true);
         }
         else{
-            txtFechaPedido.setEnabled(false);
-            //txtFechaFinal.setEnabled(false);
-        }
-
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkFechaItemStateChanged
-
-    private void btnAgregar6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAgregar6ActionPerformed
-
-    private void txtFechaPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaPedidoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFechaPedidoActionPerformed
-
-    private void tblPedidoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPedidoMouseClicked
-        /*
-
-        txtFechaFinal.setEnabled(true);
+            btnDesactivar.setFont(new java.awt.Font("Tahoma", 1, 11));
+            btnDesactivar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Activar.png")));
+            btnDesactivar.setText("Activar");
+            btnDesactivar.setEnabled(true);
+        }/*
         btnAgregar3.setEnabled(false);
-        btnModificar3.setEnabled(true);
+        btnDesactivar.setEnabled(true);
         DecimalFormatSymbols separadoresPersonalizados = new DecimalFormatSymbols();
         separadoresPersonalizados.setDecimalSeparator('.');
         DecimalFormat formato1 = new DecimalFormat("#.00",separadoresPersonalizados);
@@ -1044,41 +922,28 @@ public void createTablePedido(){
             List<Marca> tempm = MarcaDao.findMarcaEntities();
             List<Detalle_Pedido_Vehiculo> tempdpv = PedidoVehiculodao.findDetalle_Pedido_VehiculoEntities();
             List<Detalle_Pedido_pieza> tempdpp = PedidoPiezadao.findDetalle_Pedido_piezaEntities();
-            cmbIDPedido.setSelectedIndex((temp.getId_pedido()));
             for(Detalle_Pedido_Vehiculo b : tempdpv){
                 if(b.getId_pedido()==temp.getId_pedido()){
                     for(Vehiculo cc : tempv){
                         if(b.getId_vehiculo()==b.getId_vehiculo()){
                             for(Marca mm : tempm){
                                 if(mm.getIdMarca()==cc.getId_marca()){
-                                    cmbIDVehiculo.setSelectedItem((b.getId_vehiculo()+". "+mm.getMarca()));
-                                    txtCantidadVehiculos.setText(String.valueOf(b.getCantidad()));
-                                    txtPrecioVehiculo.setText(String.valueOf(formato1.format(b.getPrecio())));
+                                    txtPedidoListaBusqueda.setText(String.valueOf(temp.getId_pedido()));
+                                    
+                                    if(temp.getFecha_entrega()==null) {
+                                            auxfechab="";
+                                    } else {
+                                        auxfechab=(temp.getFecha_entrega().substring(8, 10)+"/"+temp.getFecha_entrega().substring(5, 7)+"/"+temp.getFecha_entrega().substring(0, 4));
+                                    }
+                                    //txtFechaFinal2.setText(auxfechab);
                                 }
                             }
                         }
                     }
                 }
             }
-            for(Detalle_Pedido_pieza v : tempdpp){
-                if(v.getId_pedido()==temp.getId_pedido()){
-                    for(Pieza pp : tempp){
-                        if(v.getId_pieza()==pp.getId_Pieza()){
-                            cmbIDPieza.setSelectedItem((v.getId_pieza()+". "+pp.getNombre()));
-                            txtCantidadPiezas.setText(String.valueOf(v.getCantidad()));
-                            txtPrecioPieza.setText(String.valueOf(formato1.format(v.getPrecio())));
 
-                        }
-                    }
-                }
 
-            }
-            if(temp.getFecha_entrega()==null) {
-                auxfechab="";
-            } else {
-                auxfechab=(temp.getFecha_entrega().substring(8, 10)+"/"+temp.getFecha_entrega().substring(5, 7)+"/"+temp.getFecha_entrega().substring(0, 4));
-            }
-            txtFechaFinal.setText(auxfechab);
             /*if(null== temp.getFecha_entrega()){
                 txtFechaEntrega.setText("");
             } else switch (temp.getFecha_entrega()) {
@@ -1091,6 +956,7 @@ public void createTablePedido(){
             }
             btnActivarDesactivarPedido();
 
+        }
         }*/
     }//GEN-LAST:event_tblPedidoMouseClicked
 
@@ -1107,6 +973,7 @@ public void createTablePedido(){
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+DefaultTableModel modelo = (DefaultTableModel) tblPedidoPiezaVehiculo.getModel();
 
         int a= modelo.getRowCount()-1;
         for(int i=a;i>=0;i--){
@@ -1116,6 +983,7 @@ public void createTablePedido(){
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
+DefaultTableModel modelo = (DefaultTableModel) tblPedidoPiezaVehiculo.getModel();
         if(modelo.getRowCount()==0){
 
         }
@@ -1145,7 +1013,18 @@ public void createTablePedido(){
     }//GEN-LAST:event_btnAgregar4ActionPerformed
 
     private void txtPrecioVehiculoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioVehiculoKeyTyped
-        // TODO add your handling code here:
+        
+                 
+                char c = evt.getKeyChar();
+        if((c < '0' || c > '9') && (c != '.' && c != ',')){
+
+            evt.consume();
+
+        }
+        if (txtPrecioVehiculo.getText().length() >= 12){
+        
+        evt.consume();
+        }
     }//GEN-LAST:event_txtPrecioVehiculoKeyTyped
 
     private void txtPrecioVehiculoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPrecioVehiculoFocusLost
@@ -1379,12 +1258,63 @@ public void createTablePedido(){
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbIDPedidoItemStateChanged
 
+    public int btnDesactivarActionPerfomedTest(int tblPedidoget,int tblPedido){
+        if(tblPedidoget==-1){
+            JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Pedido de la tabla","Error!",0);
+            return 0;
+        }
+        else{
+            
+        }
+        Pedido temp;
+        int fila = tblPedidoget;
+        if(fila > -1){   
+        
+        String pedido= String.valueOf(tblPedido);
+        temp = Pedidodao.findPedido(Integer.parseInt(pedido));
+
+        //temp = piezaDao.findPieza(txtIDPieza.getSelectedIndex()+1);
+        //JOptionPane.showMessageDialog(null, temp.isEstado());
+        
+        
+        if(temp.isEstado()){
+            temp.setEstado(false);
+//            Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
+//            JOptionPane.showMessageDialog(null,"Pedido Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+        }
+        else{
+            temp.setEstado(true);
+//            Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
+//            JOptionPane.showMessageDialog(null,"Pedido Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+        }
+//        try {
+//            Pedidodao.edit(temp);
+//        } catch (Exception ex) {
+//            Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        createTablePedido();
+////        btnActivarDesactivarPedido();
+//        btnDesactivar.setEnabled(false);
+        
+        }
+        return 100;
+    }
+    
     private void btnDesactivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivarActionPerformed
+        if(tblPedido.getSelectedRow()==-1){
+            JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Pedido de la tabla","Error!",0);
+            return;
+        }
+        else{
+            
+        }
         Pedido temp;
         int fila = tblPedido.getSelectedRow();
-        if(fila > -1){       
+        if(fila > -1){   
         
-        temp = Pedidodao.findPedido(Integer.parseInt(String.valueOf(tblPedido.getValueAt(0, fila))));
+        String pedido= String.valueOf(tblPedido.getValueAt(fila, 0));
+        temp = Pedidodao.findPedido(Integer.parseInt(pedido));
+
         //temp = piezaDao.findPieza(txtIDPieza.getSelectedIndex()+1);
         //JOptionPane.showMessageDialog(null, temp.isEstado());
         
@@ -1405,7 +1335,7 @@ public void createTablePedido(){
             Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
         }
         createTablePedido();
-        btnActivarDesactivarPedido();
+//        btnActivarDesactivarPedido();
         btnDesactivar.setEnabled(false);
         
         }
@@ -1421,7 +1351,153 @@ public void createTablePedido(){
        // m.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnRegresar1ActionPerformed
-public void AgregarPedido(){
+
+    private void txtCantidadVehiculosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadVehiculosKeyTyped
+       char c = evt.getKeyChar();
+        if((c < '0' || c > '9')){
+
+            evt.consume();
+
+        }
+        if (txtCantidadVehiculos.getText().length() >= 5){
+        
+        evt.consume();
+        }
+    }//GEN-LAST:event_txtCantidadVehiculosKeyTyped
+
+    private void txtPrecioPiezaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioPiezaKeyTyped
+        
+                 
+                char c = evt.getKeyChar();
+        if((c < '0' || c > '9') && (c != '.' && c != ',')){
+
+            evt.consume();
+
+        }
+        if (txtPrecioPieza.getText().length() >= 12){
+        
+        evt.consume();
+        }
+    }//GEN-LAST:event_txtPrecioPiezaKeyTyped
+
+    private void txtCantidadPiezasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadPiezasKeyTyped
+        char c = evt.getKeyChar();
+        if((c < '0' || c > '9')){
+
+            evt.consume();
+
+        }
+        if (txtCantidadPiezas.getText().length() >= 5){
+        
+        evt.consume();
+        }
+    }//GEN-LAST:event_txtCantidadPiezasKeyTyped
+    
+    public int AgregarPedidoTest(int cmbIDPieza,int cmbIDVehiculo){
+        Pedido temp = new Pedido();
+        temp.setEstado(true);
+        
+        
+        int auxCmbPieza=cmbIDPieza;
+        
+        int auxCmbVehiculo=cmbIDVehiculo;
+        //JOptionPane.showMessageDialog(null,auxCmbPieza+" "+auxCmbVehiculo);
+        
+        temp.setId_pedido(Pedidodao.getPedidoCount()+1);
+        Calendar fecha = new GregorianCalendar();
+           String fecha1;
+           String aux1,aux2,aux3;
+           aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+           aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+           switch(aux2){
+            case "01":
+                    aux2= "01";
+                    break;
+                    case "02":
+                    aux2= "02";
+                    break;case "03":
+                    aux2= "03";
+                    break;case "04":
+                    aux2= "04";
+                    break;case "05":
+                   aux2= "05";
+                    break;case "06":
+                    aux2= "06";
+                    break;case "07":
+                    aux2= "07";
+                    break;case "08":
+                    aux2= "08";
+                    break;case "09":
+                    aux2= "09";
+                    break;
+            case "010":
+                    aux2= "10";
+                    break;
+            case "011":
+                   aux2= "11";
+                    break;      
+            case "012":
+                    aux2= "12";
+                    break;
+                    default:
+                    break;
+        }
+           aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+           fecha1 = aux1+aux2+aux3;
+        temp.setMonto_pedido(Double.parseDouble("0.01".trim()));
+        temp.setFecha_pedido(fecha1);
+
+//        try {
+//            Pedidodao.create(temp);
+//        } catch (Exception ex) {
+//            Logger.getLogger(FrmPedidos.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+
+        Detalle_Pedido_pieza temporal = new Detalle_Pedido_pieza();
+        Detalle_Pedido_Vehiculo temporal2 = new Detalle_Pedido_Vehiculo();
+
+//        for(int i = 0;i<tblPedidoPiezaVehiculo.getRowCount();i++){
+//            if(tblPedidoPiezaVehiculo.getModel().getValueAt(i, 1).toString().charAt(0)=='1'){
+//                temporal.setId_pedido_pieza(PedidoPiezadao.getDetalle_Pedido_piezaCount()+1);
+//                temporal.setId_pedido((Pedidodao.getPedidoCount()));
+//                temporal.setId_pieza(Integer.parseInt("1"));
+//                temporal.setPrecio(Double.parseDouble("0.00"));
+//                temporal.setCantidad(Integer.parseInt("1"));
+//                
+////                try {
+////                    PedidoPiezadao.create(temporal);
+////                } catch (Exception ex) {
+////                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+////                }
+//
+//            } else {
+//               temporal2.setId_pedido_Vehiculo(PedidoVehiculodao.getDetalle_Pedido_VehiculoCount()+1);
+//                temporal2.setId_pedido((Pedidodao.getPedidoCount()));
+//                temporal2.setId_vehiculo(Integer.parseInt("1"));
+//                temporal2.setPrecio(Double.parseDouble("0.00"));
+//                temporal2.setCantidad(Integer.parseInt(tblPedidoPiezaVehiculo.getModel().getValueAt(i, 3).toString()));
+
+//                try {
+//                    PedidoVehiculodao.create(temporal2);
+//                } catch (Exception ex) {
+//                    Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+                
+//                Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
+//                JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+//                txtTotal.setText("");
+            //}
+        //}
+        
+//        int a= tblPedidoPiezaVehiculo.getRowCount()-1;
+//        DefaultTableModel modelo = (DefaultTableModel) tblPedidoPiezaVehiculo.getModel();
+//        for(int i=a;i>=0;i--){
+//            modelo.removeRow(i);
+//        }
+        return 100;
+    }
+    
+    private void AgregarPedido(){
 
          Pedido temp = new Pedido();
         temp.setEstado(true);
@@ -1438,6 +1514,39 @@ public void AgregarPedido(){
            String aux1,aux2,aux3;
            aux1 = Integer.toString(fecha.get(Calendar.YEAR));
            aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+           switch(aux2){
+            case "01":
+                    aux2= "01";
+                    break;
+                    case "02":
+                    aux2= "02";
+                    break;case "03":
+                    aux2= "03";
+                    break;case "04":
+                    aux2= "04";
+                    break;case "05":
+                   aux2= "05";
+                    break;case "06":
+                    aux2= "06";
+                    break;case "07":
+                    aux2= "07";
+                    break;case "08":
+                    aux2= "08";
+                    break;case "09":
+                    aux2= "09";
+                    break;
+            case "010":
+                    aux2= "10";
+                    break;
+            case "011":
+                   aux2= "11";
+                    break;      
+            case "012":
+                    aux2= "12";
+                    break;
+                    default:
+                    break;
+        }
            aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
            fecha1 = aux1+aux2+aux3;
         temp.setMonto_pedido(Double.parseDouble(txtTotal.getText().replace(",", "").replace(",", "").trim()));
@@ -1485,11 +1594,12 @@ public void AgregarPedido(){
             }
         }
         
-        int a= modelo.getRowCount()-1;
+        int a= tblPedidoPiezaVehiculo.getRowCount()-1;
+        DefaultTableModel modelo = (DefaultTableModel) tblPedidoPiezaVehiculo.getModel();
         for(int i=a;i>=0;i--){
             modelo.removeRow(i);
         }
-}private boolean ValidacionNumerosSiTienenDecimal(String num){
+}public boolean ValidacionNumerosSiTienenDecimal(String num){
         Pattern pat = null;
         Matcher mat = null;
         pat = Pattern.compile("^\\d*\\.?\\d*$");
@@ -1501,7 +1611,7 @@ public void AgregarPedido(){
         
         }
     }
-private boolean ValidacionNumerosDecimales(String num){
+public boolean ValidacionNumerosDecimales(String num){
         Pattern pat = null;
         Matcher mat = null;
         pat = Pattern.compile("^\\d*\\.\\d*$");
@@ -1513,7 +1623,7 @@ private boolean ValidacionNumerosDecimales(String num){
         
         }
     }
-private boolean ValidacionNumeros(String num){
+public boolean ValidacionNumeros(String num){
         Pattern pat = null;
         Matcher mat = null;
         pat = Pattern.compile("^\\d*$");
@@ -1525,7 +1635,7 @@ private boolean ValidacionNumeros(String num){
         
         }
     }
-private boolean ValidacionFechaDDMMYYYY(String num){
+public boolean ValidacionFechaDDMMYYYY(String num){
         Pattern pat = null;
         Matcher mat = null;
         pat = Pattern.compile("^(?:(?:(?:0[1-9]|1\\d|2[0-8])[/](?:0[1-9]|1[0-2])|(?:29|30)[/](?:0[13-9]|1[0-2])|31[/](?:0[13578]|1[02]))[/](?:0{2,3}[1-9]|0{1,2}[1-9]\\d|0?[1-9]\\d{2}|[1-9]\\d{3})|29[/]0?2[/](?:\\d{1,2}(?:0[48]|[2468][048]|[13579][26])|(?:0?[48]|[13579][26]|[2468][048])00))$");
@@ -1543,13 +1653,12 @@ private boolean ValidacionFechaDDMMYYYY(String num){
         txtCantidadPiezas.setText("");
         txtPrecioPieza.setText("");
         txtPrecioVehiculo.setText("");
-        txtFechaPedido.setText("");
         //btnDesactivar3.setEnabled(false);
         //btnModificar3.setEnabled(false);
         btnAgregar3.setEnabled(true);
-        txtFechaPedido.setEnabled(false);
 }private void crearTbAgregarPieza(){
         //label1.setText("11223");
+        DefaultTableModel modelo = (DefaultTableModel) tblPedidoPiezaVehiculo.getModel();
         tblPedidoPiezaVehiculo.setModel(modelo);
         
         
@@ -1641,7 +1750,7 @@ private boolean ValidacionFechaDDMMYYYY(String num){
         txtTotal.setText(String.format("%,.2f",contenedorPrecio));
         Limpiar();
     }
-private boolean ValidacionRangoPrecioPieza(String num){
+public boolean ValidacionRangoPrecioPieza(String num){
         Pattern pat = null;
         Matcher mat = null;
         pat = Pattern.compile("^([2-9][0-9][.][0-9][0-9]|[1-9][0-9][0-9][.][0-9][0-9]|[1-9][,][1-9][1-9][1-9][.][0-9][0-9]|[0-3][0-9][,][0-9][0-9][0-9][.][0-9][0-9]|[4][0][,][0][0][0][.][0][0])$");
@@ -1653,7 +1762,8 @@ private boolean ValidacionRangoPrecioPieza(String num){
         }
     }
  private void crearTbAgregarVehiculo(){
-        tblPedidoPiezaVehiculo.setModel(modelo);
+     DefaultTableModel modelo = (DefaultTableModel) tblPedidoPiezaVehiculo.getModel();   
+     tblPedidoPiezaVehiculo.setModel(modelo);
         
          if((cmbIDVehiculo.getSelectedIndex())==0){
             JOptionPane.showMessageDialog(null,"Por favor, seleccione un Vehículo","Error!", JOptionPane.ERROR_MESSAGE);
@@ -1734,7 +1844,7 @@ private boolean ValidacionRangoPrecioPieza(String num){
         
         double contenedorPrecio=0;
         for(int i=0;i<modelo.getRowCount();i++){
-            contenedorPrecio+=Double.parseDouble(modelo.getValueAt(i, 4).toString().replace(",", "").replace(",", "").trim());
+            contenedorPrecio+=Double.parseDouble(modelo.getValueAt(i, 4).toString().replace(",", "").trim());
             
             
         }
@@ -1742,7 +1852,7 @@ private boolean ValidacionRangoPrecioPieza(String num){
         Limpiar();
         
     }
-  private boolean ValidacionRangoPrecioVehiculo(String num){
+  public boolean ValidacionRangoPrecioVehiculo(String num){
         Pattern pat = null;
         Matcher mat = null;
         pat = Pattern.compile("^([5-9][0-9][,][0-9][0-9][0-9][.][0-9][0-9]|[1-7][0-9][0-9][,][0-9][0-9][0-9][.][0-9][0-9]|[8][0][0][,][0][0][0][.][0][0])$");
@@ -1753,7 +1863,7 @@ private boolean ValidacionRangoPrecioPieza(String num){
         return false;
         }
     } 
- private boolean ValidacionCantidadVehiculos(String num){
+ public boolean ValidacionCantidadVehiculos(String num){
         Pattern pat = null;
         Matcher mat = null;
         pat = Pattern.compile("^([1-9]|[1][0-9]|[2][0])$");
@@ -1764,7 +1874,7 @@ private boolean ValidacionRangoPrecioPieza(String num){
         return false;
         }
     }
-  private boolean ValidacionCantidadPiezas(String num){
+  public boolean ValidacionCantidadPiezas(String num){
         Pattern pat = null;
         Matcher mat = null;
         pat = Pattern.compile("^([1-9]|[1-9][0-9]|[1][0][0])$");
@@ -1776,13 +1886,22 @@ private boolean ValidacionRangoPrecioPieza(String num){
         }
     }
      private void crearTbPedido(){
+         
+         DefaultTableModel modelo = (DefaultTableModel) tblPedidoPiezaVehiculo.getModel();
         tblPedidoPiezaVehiculo.setModel(modelo);
-        modelo.addColumn("ID");
+        /*modelo.addColumn("ID");
         modelo.addColumn("Descripcion");
         modelo.addColumn("Precio Unit");
         modelo.addColumn("Cant");
-        modelo.addColumn("SubTotal");
-    }DefaultTableModel modelo = new DefaultTableModel();public void BuscarVehiculo(){
+        modelo.addColumn("SubTotal");*/
+        
+    }
+     
+    
+     
+     
+     
+     public void BuscarVehiculo(){
         ModalVehiculosCombo temp2 = new ModalVehiculosCombo(this,true);
         temp2.setLocationRelativeTo(null);
         temp2.setVisible(true);
@@ -1792,7 +1911,9 @@ private boolean ValidacionRangoPrecioPieza(String num){
         temp2.setLocationRelativeTo(null);
         temp2.setVisible(true);
         cmbIDPieza.setSelectedItem(temp2.getId()+". "+temp2.getTipo()+" ("+temp2.getNombre()+")");
-}private void createTablaBusqueda(){
+}
+/*
+private void createTablaBusqueda(){
         
         boolean bandera = false;
         List<Pedido> temp = Pedidodao.findPedidoEntities();
@@ -1860,9 +1981,9 @@ private boolean ValidacionRangoPrecioPieza(String num){
         }
             
         }   
-    }
+    }*/
 public void txtPedidoListaBusqueda(){
-    txtPedidoListaBusqueda.setText(String.valueOf(Pedidodao.getPedidoCount()+1));
+
 }private boolean NumerosEnterosDecimales(String num){
         Pattern pat = null;
         Matcher mat = null;
@@ -1894,7 +2015,6 @@ private boolean NumerosEnteros(String num){
     private javax.swing.JButton btnAgregar3;
     private javax.swing.JButton btnAgregar4;
     private javax.swing.JButton btnAgregar5;
-    private javax.swing.JButton btnAgregar6;
     private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnBuscar1;
@@ -1904,25 +2024,20 @@ private boolean NumerosEnteros(String num){
     private javax.swing.JButton btnRegresar1;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnSalir1;
-    private javax.swing.JCheckBox chkFecha;
     private javax.swing.JComboBox<String> cmbIDPedido;
     private javax.swing.JComboBox<String> cmbIDPieza;
     private javax.swing.JComboBox<String> cmbIDVehiculo;
-    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
@@ -1933,9 +2048,6 @@ private boolean NumerosEnteros(String num){
     private javax.swing.JTable tblPedidoPiezaVehiculo;
     private javax.swing.JTextField txtCantidadPiezas;
     private javax.swing.JTextField txtCantidadVehiculos;
-    private javax.swing.JFormattedTextField txtFechaFinal2;
-    private javax.swing.JFormattedTextField txtFechaPedido;
-    private javax.swing.JFormattedTextField txtPedidoListaBusqueda;
     private javax.swing.JTextField txtPrecioPieza;
     private javax.swing.JTextField txtPrecioVehiculo;
     private javax.swing.JTextField txtTotal;

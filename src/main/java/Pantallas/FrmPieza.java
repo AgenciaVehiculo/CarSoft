@@ -23,6 +23,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -40,10 +42,11 @@ public class FrmPieza extends javax.swing.JFrame {
      * Creates new form Empleados
      * 
      */
+    EntityManagerFactory emf =Persistence.createEntityManagerFactory("CarSoft");
     
-    PiezaJpaController piezaDao = new PiezaJpaController();
-    HistoricoPrecioPiezaJpaController historicoPieza = new HistoricoPrecioPiezaJpaController();
-    TipoPiezaJpaController tipoPieza = new TipoPiezaJpaController();
+    PiezaJpaController piezaDao = new PiezaJpaController(emf);
+    HistoricoPrecioPiezaJpaController historicoPieza = new HistoricoPrecioPiezaJpaController(emf);
+    TipoPiezaJpaController tipoPieza = new TipoPiezaJpaController(emf);
     
     
     public FrmPieza() {
@@ -108,22 +111,26 @@ public class FrmPieza extends javax.swing.JFrame {
     }
     
     public void crearTbHistorialPrecio(){
-        DefaultTableModel modelo = new DefaultTableModel();
+        DefaultTableModel modelo = (DefaultTableModel) jTbHistorialPrecio.getModel();
         
         
         
         
         jTbHistorialPrecio.setModel(modelo);
+        int i;
+        for(i=modelo.getRowCount()-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
         
         
-        
-        modelo.addColumn("ID Precio Historico");
+        /*modelo.addColumn("ID Precio Historico");
         modelo.addColumn("ID pieza");
         modelo.addColumn("Pieza");
         modelo.addColumn("Caracteristica");
         modelo.addColumn("Precio");
         modelo.addColumn("Desde");
         modelo.addColumn("Hasta");
+        modelo.addColumn("Estado");*/
         
         List<HistoricoPrecioPieza> temp = historicoPieza.findHistoricoPrecioPiezaEntities();
         List<Pieza> temp2 = piezaDao.findPiezaEntities();
@@ -135,24 +142,29 @@ public class FrmPieza extends javax.swing.JFrame {
         separadoresPersonalizados.setDecimalSeparator('.');
         DecimalFormat formato1 = new DecimalFormat("#.00",separadoresPersonalizados);
         for(HistoricoPrecioPieza e : temp){
-            if(e.getIdPieza()==(cmbIDPieza.getSelectedIndex()+1) && e.getFechaFinal()!=null)
+            if(e.getIdPieza()==(cmbIDPieza.getSelectedIndex())){
             for(Pieza tp : temp2){
                 if(tp.getId_Pieza() == e.getIdPieza()){
                     aux1=(tp.getCarateristica_Pieza());
-                    aux2=tp.getNombre();
+                    aux2=tp.getNombre();auxFecha2="";
                     auxFecha1 = e.getFechaInicial().substring(8, 10)+"/"+e.getFechaInicial().substring(5,7)+"/"+e.getFechaInicial().substring(0, 4);
-                    auxFecha2 = e.getFechaFinal().substring(8, 10)+"/"+e.getFechaFinal().substring(5,7)+"/"+e.getFechaFinal().substring(0, 4);
-            modelo.addRow(new Object[]{
+                    if(e.getFechaFinal()!=null){
+                        auxFecha2 = e.getFechaFinal().substring(8, 10)+"/"+e.getFechaFinal().substring(5,7)+"/"+e.getFechaFinal().substring(0, 4);
+                    }
+                    
+                    modelo.addRow(new Object[]{
                                   e.getIdPrecioHistorico(),
                                   e.getIdPieza(),
                                   aux2,
                                   aux1,
                                   String.format("%,.2f",e.getPrecio()),
                                   auxFecha1,
-                                  auxFecha2});
+                                  auxFecha2,
+                                  (e.getEstado())? "Activo":"Inactivo"});
         
         }
             }
+        }
         }
             
     }
@@ -164,11 +176,11 @@ public class FrmPieza extends javax.swing.JFrame {
         List<Pieza> temp = piezaDao.findPiezaEntities();
         modelo.addElement("Seleccione...");
         for (Pieza e : temp){
-            modelo.addElement(e.getId_Pieza());
+            modelo.addElement(e.getNombre());
         }
     }
     
-    public void btnActivarDesactivar(){
+    private void btnActivarDesactivar(){
         TipoPieza temp;
         temp = tipoPieza.findTipoPieza(txtIDTipoPieza.getSelectedIndex());
         
@@ -186,7 +198,7 @@ public class FrmPieza extends javax.swing.JFrame {
         }
     }
     
-    public void btnActivarDesactivarPieza(){
+    private void btnActivarDesactivarPieza(){
         Pieza temp;
         temp = piezaDao.findPieza(txtIDPieza.getSelectedIndex());
         
@@ -241,9 +253,13 @@ public class FrmPieza extends javax.swing.JFrame {
     }
     
     public void createTablaPieza(){
-        DefaultTableModel modelo = new DefaultTableModel();
+        DefaultTableModel modelo = (DefaultTableModel) jTablePieza.getModel();
         jTablePieza.setModel(modelo);
-        modelo.addColumn("ID");
+        int i;
+        for(i=modelo.getRowCount()-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
+        /*modelo.addColumn("ID");
         modelo.addColumn("Tipo de Pieza");
         modelo.addColumn("Nombre");
         modelo.addColumn("Característica");
@@ -251,7 +267,7 @@ public class FrmPieza extends javax.swing.JFrame {
         modelo.addColumn("Stock");
         modelo.addColumn("Estado Maximo");
         modelo.addColumn("Estado minimo");
-        modelo.addColumn("Estado");
+        modelo.addColumn("Estado");*/
         List<Pieza> temp = piezaDao.findPiezaEntities();
         DecimalFormatSymbols separadoresPersonalizados = new DecimalFormatSymbols();
         separadoresPersonalizados.setDecimalSeparator('.');
@@ -263,17 +279,19 @@ public class FrmPieza extends javax.swing.JFrame {
         
         for(Pieza p : temp){
             for(TipoPieza p1 : temp2){
-                if(p.getId_Tipo_Pieza()==p1.getIDtipopieza())
+                if(p.getId_Tipo_Pieza()==p1.getIDtipopieza()){
                     aux1=p1.getTipopieza();
-                    
-            }
-            for(HistoricoPrecioPieza p2 : temp3){
-                if(p2.getIdPieza() == p.getId_Pieza()){
+                    for(HistoricoPrecioPieza p2 : temp3){
+                    if(p2.getIdPieza() == p.getId_Pieza()){
                     if(p2.getFechaFinal()==null){
                         auxPrecio=p2.getPrecio();
                     }
                 }
+                }
+                }
+                    
             }
+            
             
             modelo.addRow(new Object[]{
                 p.getId_Pieza(),
@@ -292,9 +310,20 @@ public class FrmPieza extends javax.swing.JFrame {
     }
     
     private void crearTableBusquedaPieza(){
-        DefaultTableModel modelo = new DefaultTableModel();
+        if("".equals(txtNombreBusqueda.getText().trim())){
+            JOptionPane.showMessageDialog(null, "El campo para la Búsqueda de Piezas esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+        }
+        boolean bandera = false;
+        DefaultTableModel modelo = (DefaultTableModel) tablaBusqueda.getModel();
         tablaBusqueda.setModel(modelo);
-        modelo.addColumn("ID");
+        int i;
+        for(i=modelo.getRowCount()-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
+        /*modelo.addColumn("ID");
         modelo.addColumn("Tipo de Pieza");
         modelo.addColumn("Nombre");
         modelo.addColumn("Característica");
@@ -302,7 +331,7 @@ public class FrmPieza extends javax.swing.JFrame {
         modelo.addColumn("Stock");
         modelo.addColumn("Estado Maximo");
         modelo.addColumn("Estado minimo");
-        modelo.addColumn("Estado");
+        modelo.addColumn("Estado");*/
         List<Pieza> temp = piezaDao.findPiezaEntities();
         DecimalFormatSymbols separadoresPersonalizados = new DecimalFormatSymbols();
         separadoresPersonalizados.setDecimalSeparator('.');
@@ -317,7 +346,7 @@ public class FrmPieza extends javax.swing.JFrame {
             for(TipoPieza p1 : temp2){
                 if(p.getId_Tipo_Pieza()==p1.getIDtipopieza())
                     aux1=p1.getTipopieza();
-                    
+                    bandera=true;
             }
             for(HistoricoPrecioPieza p2 : temp3){
                 if(p2.getIdPieza() == p.getId_Pieza()){
@@ -339,6 +368,12 @@ public class FrmPieza extends javax.swing.JFrame {
                 (p.isEstado())? "Activo" : "Inactivo"
             });}
         }
+        if(!bandera){
+                    JOptionPane.showMessageDialog(null,"El Pieza que ingreso no existe","Error!",JOptionPane.ERROR_MESSAGE);
+                }
+        else{
+            
+        }
         
         
     }
@@ -354,11 +389,15 @@ public class FrmPieza extends javax.swing.JFrame {
     }
     
     public void createTableTipoPieza(){
-        DefaultTableModel modelo = new DefaultTableModel();
+        DefaultTableModel modelo = (DefaultTableModel) jTableTipoPieza.getModel();
         jTableTipoPieza.setModel(modelo);
-        modelo.addColumn("ID");
+        int i;
+        for(i=modelo.getRowCount()-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
+        /*modelo.addColumn("ID Pieza");
         modelo.addColumn("Pieza");
-        modelo.addColumn("Estado");
+        modelo.addColumn("Estado");*/
         
         List<TipoPieza> temp = tipoPieza.findTipoPiezaEntities();
         
@@ -451,51 +490,40 @@ public class FrmPieza extends javax.swing.JFrame {
         });
 
         pnlPieza.setBackground(new java.awt.Color(0, 255, 255));
+        pnlPieza.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("ID Pieza:");
+        pnlPieza.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 95, 70, 30));
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Tipo Pieza:");
+        pnlPieza.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 136, 70, 30));
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Características:");
+        pnlPieza.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 150, 102, 25));
 
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel11.setText("Precio:");
+        pnlPieza.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 140, 50, -1));
 
         jTablePieza.setForeground(new java.awt.Color(255, 255, 255));
         jTablePieza.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
-                "ID Pieza", "Tipo Pieza", "Características", "Precio", "Estado"
+                "ID Pieza", "Tipo de Pieza", "Nombre", "Características", "Precio", "Stock", "Stock Máximo", "Estado Mínimo", "Estado"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Boolean.class
-            };
             boolean[] canEdit = new boolean [] {
-                false, true, true, false, true
+                false, false, false, false, false, false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -507,17 +535,13 @@ public class FrmPieza extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(jTablePieza);
-        if (jTablePieza.getColumnModel().getColumnCount() > 0) {
-            jTablePieza.getColumnModel().getColumn(0).setPreferredWidth(50);
-            jTablePieza.getColumnModel().getColumn(1).setPreferredWidth(90);
-            jTablePieza.getColumnModel().getColumn(2).setPreferredWidth(150);
-            jTablePieza.getColumnModel().getColumn(3).setPreferredWidth(70);
-            jTablePieza.getColumnModel().getColumn(4).setPreferredWidth(70);
-        }
+
+        pnlPieza.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 306, 1270, 190));
 
         jLabel12.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Piezas");
+        pnlPieza.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 10, -1, 35));
 
         btnSalir.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Salir.png"))); // NOI18N
@@ -528,6 +552,7 @@ public class FrmPieza extends javax.swing.JFrame {
                 btnSalirActionPerformed(evt);
             }
         });
+        pnlPieza.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 10, -1, -1));
 
         btnRegresar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Regresar.png"))); // NOI18N
@@ -538,18 +563,22 @@ public class FrmPieza extends javax.swing.JFrame {
                 btnRegresarActionPerformed(evt);
             }
         });
+        pnlPieza.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 600, -1, -1));
 
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("Stock:");
+        pnlPieza.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 100, 50, -1));
 
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("Stock minimo:");
+        pnlPieza.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 140, 92, -1));
 
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Stock máximo:");
+        pnlPieza.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 100, 92, -1));
 
         btnAgregar3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnAgregar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/agregar.png"))); // NOI18N
@@ -560,6 +589,7 @@ public class FrmPieza extends javax.swing.JFrame {
                 btnAgregar3ActionPerformed(evt);
             }
         });
+        pnlPieza.add(btnAgregar3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 213, 130, -1));
 
         btnModificar3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnModificar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/modificar.png"))); // NOI18N
@@ -570,6 +600,7 @@ public class FrmPieza extends javax.swing.JFrame {
                 btnModificar3ActionPerformed(evt);
             }
         });
+        pnlPieza.add(btnModificar3, new org.netbeans.lib.awtextra.AbsoluteConstraints(178, 213, -1, -1));
 
         btnLimpiar3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnLimpiar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Limpiar.png"))); // NOI18N
@@ -580,6 +611,7 @@ public class FrmPieza extends javax.swing.JFrame {
                 btnLimpiar3ActionPerformed(evt);
             }
         });
+        pnlPieza.add(btnLimpiar3, new org.netbeans.lib.awtextra.AbsoluteConstraints(318, 213, -1, 41));
 
         btnDesactivar3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnDesactivar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Desactivar.png"))); // NOI18N
@@ -590,17 +622,27 @@ public class FrmPieza extends javax.swing.JFrame {
                 btnDesactivar3ActionPerformed(evt);
             }
         });
+        pnlPieza.add(btnDesactivar3, new org.netbeans.lib.awtextra.AbsoluteConstraints(448, 213, -1, -1));
 
         jTxtAreaCaracteristica.setColumns(20);
         jTxtAreaCaracteristica.setRows(5);
+        jTxtAreaCaracteristica.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTxtAreaCaracteristicaKeyTyped(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTxtAreaCaracteristica);
 
+        pnlPieza.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 130, 214, 72));
+
         txtIDPieza.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", " ", " " }));
+        txtIDPieza.setEnabled(false);
         txtIDPieza.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 txtIDPiezaItemStateChanged(evt);
             }
         });
+        pnlPieza.add(txtIDPieza, new org.netbeans.lib.awtextra.AbsoluteConstraints(104, 92, 230, 30));
 
         jCmbTipoPieza.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "1", "2" }));
         jCmbTipoPieza.addItemListener(new java.awt.event.ItemListener() {
@@ -608,141 +650,53 @@ public class FrmPieza extends javax.swing.JFrame {
                 jCmbTipoPiezaItemStateChanged(evt);
             }
         });
+        pnlPieza.add(jCmbTipoPieza, new org.netbeans.lib.awtextra.AbsoluteConstraints(104, 133, 230, 30));
 
         jFtxtStockMaximo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        jFtxtStockMaximo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jFtxtStockMaximoKeyTyped(evt);
+            }
+        });
+        pnlPieza.add(jFtxtStockMaximo, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 90, 94, 30));
 
         jFtxtStock.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        jFtxtStock.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jFtxtStockKeyTyped(evt);
+            }
+        });
+        pnlPieza.add(jFtxtStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 90, 98, 30));
 
         jFtxtStockMinimo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        jFtxtStockMinimo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jFtxtStockMinimoKeyTyped(evt);
+            }
+        });
+        pnlPieza.add(jFtxtStockMinimo, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 130, 94, 30));
 
         jFtxtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jFtxtPrecioKeyPressed(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jFtxtPrecioKeyTyped(evt);
+            }
         });
+        pnlPieza.add(jFtxtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 130, 98, 30));
 
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setText("Nombre:");
+        pnlPieza.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 90, 90, 25));
 
-        javax.swing.GroupLayout pnlPiezaLayout = new javax.swing.GroupLayout(pnlPieza);
-        pnlPieza.setLayout(pnlPiezaLayout);
-        pnlPiezaLayout.setHorizontalGroup(
-            pnlPiezaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlPiezaLayout.createSequentialGroup()
-                .addGroup(pnlPiezaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlPiezaLayout.createSequentialGroup()
-                        .addGap(650, 650, 650)
-                        .addComponent(jLabel12)
-                        .addGap(526, 526, 526)
-                        .addComponent(btnSalir))
-                    .addGroup(pnlPiezaLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(4, 4, 4)
-                        .addComponent(txtIDPieza, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(jtxtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(jFtxtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(8, 8, 8)
-                        .addComponent(jFtxtStockMaximo, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlPiezaLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(4, 4, 4)
-                        .addComponent(jCmbTipoPieza, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16)
-                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(jFtxtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(8, 8, 8)
-                        .addComponent(jFtxtStockMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlPiezaLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(btnAgregar3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnModificar3)
-                        .addGap(19, 19, 19)
-                        .addComponent(btnLimpiar3)
-                        .addGap(19, 19, 19)
-                        .addComponent(btnDesactivar3))
-                    .addGroup(pnlPiezaLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1270, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlPiezaLayout.createSequentialGroup()
-                        .addGap(1190, 1190, 1190)
-                        .addComponent(btnRegresar)))
-                .addGap(40, 40, 40))
-        );
-        pnlPiezaLayout.setVerticalGroup(
-            pnlPiezaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlPiezaLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addGroup(pnlPiezaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSalir))
-                .addGap(39, 39, 39)
-                .addGroup(pnlPiezaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlPiezaLayout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlPiezaLayout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(txtIDPieza, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtxtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlPiezaLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel4))
-                    .addComponent(jFtxtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlPiezaLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel6))
-                    .addComponent(jFtxtStockMaximo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(5, 5, 5)
-                .addGroup(pnlPiezaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlPiezaLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlPiezaLayout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(jCmbTipoPieza, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlPiezaLayout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlPiezaLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel11))
-                    .addComponent(jFtxtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlPiezaLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel5))
-                    .addComponent(jFtxtStockMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(11, 11, 11)
-                .addGroup(pnlPiezaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnModificar3)
-                    .addComponent(btnLimpiar3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDesactivar3)
-                    .addComponent(btnAgregar3))
-                .addGap(52, 52, 52)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(104, 104, 104)
-                .addComponent(btnRegresar))
-        );
+        jtxtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxtNombreKeyTyped(evt);
+            }
+        });
+        pnlPieza.add(jtxtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 90, 214, 30));
 
         jTabbedPane3.addTab("Piezas", pnlPieza);
 
@@ -765,38 +719,21 @@ public class FrmPieza extends javax.swing.JFrame {
         jTbHistorialPrecio.setForeground(new java.awt.Color(255, 255, 255));
         jTbHistorialPrecio.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
-                "ID Precio Histórico", "ID Pieza", "Fecha Inicial", "Fecha Final", "Precio", "Estado"
+                "ID Precio Histórico", "ID pieza", "Características", "Precio", "Desde", "Hasta", "Estado"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Boolean.class
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
             };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPane3.setViewportView(jTbHistorialPrecio);
-        if (jTbHistorialPrecio.getColumnModel().getColumnCount() > 0) {
-            jTbHistorialPrecio.getColumnModel().getColumn(0).setPreferredWidth(60);
-            jTbHistorialPrecio.getColumnModel().getColumn(1).setPreferredWidth(50);
-            jTbHistorialPrecio.getColumnModel().getColumn(2).setPreferredWidth(60);
-            jTbHistorialPrecio.getColumnModel().getColumn(3).setPreferredWidth(60);
-            jTbHistorialPrecio.getColumnModel().getColumn(4).setPreferredWidth(50);
-            jTbHistorialPrecio.getColumnModel().getColumn(5).setPreferredWidth(50);
-        }
 
         btnSalir2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnSalir2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Salir.png"))); // NOI18N
@@ -870,6 +807,11 @@ public class FrmPieza extends javax.swing.JFrame {
         jLabel29.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel29.setText("Tipo de Pieza:");
 
+        txtTipoPiezaNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTipoPiezaNuevoActionPerformed(evt);
+            }
+        });
         txtTipoPiezaNuevo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtTipoPiezaNuevoKeyTyped(evt);
@@ -882,32 +824,15 @@ public class FrmPieza extends javax.swing.JFrame {
 
         jTableTipoPieza.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "ID Tipo de Pieza", "Tipo de Pieza", "Estado"
+                "ID Pieza", "Tipo de Pieza", "Estado"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class
-            };
             boolean[] canEdit = new boolean [] {
-                false, false, true
+                false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -981,6 +906,7 @@ public class FrmPieza extends javax.swing.JFrame {
         });
 
         txtIDTipoPieza.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "1", "2" }));
+        txtIDTipoPieza.setEnabled(false);
         txtIDTipoPieza.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 txtIDTipoPiezaItemStateChanged(evt);
@@ -1002,44 +928,44 @@ public class FrmPieza extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(675, 675, 675)
-                .addComponent(jLabel31)
-                .addGap(384, 384, 384)
-                .addComponent(btnSalir1))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17)
-                .addComponent(txtIDTipoPieza, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(68, 68, 68)
-                .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(txtTipoPiezaNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(68, 68, 68)
-                .addComponent(btnAgregar2)
-                .addGap(6, 6, 6)
-                .addComponent(btnModificar2)
-                .addGap(6, 6, 6)
-                .addComponent(btnLimpiar2)
-                .addGap(6, 6, 6)
-                .addComponent(btnDesactivar2))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(68, 68, 68)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 930, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(1235, 1235, 1235)
-                .addComponent(btnRegresar1))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnRegresar1)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(17, 17, 17)
+                            .addComponent(txtIDTipoPieza, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(68, 68, 68)
+                            .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtTipoPiezaNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(68, 68, 68)
+                            .addComponent(btnAgregar2)
+                            .addGap(6, 6, 6)
+                            .addComponent(btnModificar2)
+                            .addGap(6, 6, 6)
+                            .addComponent(btnLimpiar2)
+                            .addGap(6, 6, 6)
+                            .addComponent(btnDesactivar2))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(656, 656, 656)
+                            .addComponent(jLabel31)
+                            .addGap(345, 345, 345)
+                            .addComponent(btnSalir1))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(68, 68, 68)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 875, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(0, 55, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnSalir1))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSalir1)
+                    .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1074,31 +1000,15 @@ public class FrmPieza extends javax.swing.JFrame {
         tablaBusqueda.setForeground(new java.awt.Color(255, 255, 255));
         tablaBusqueda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
-                "ID Pieza", "Tipo Pieza", "Características", "Precio", "Estado"
+                "ID  Pieza", "Tipo de Pieza", "Nombre", "Características", "Precio", "Stock", "Stock Máximo", "Stock Mínimo", "Estado"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Boolean.class
-            };
             boolean[] canEdit = new boolean [] {
-                false, true, true, false, true
+                false, false, false, false, false, false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -1110,13 +1020,6 @@ public class FrmPieza extends javax.swing.JFrame {
             }
         });
         jScrollPane5.setViewportView(tablaBusqueda);
-        if (tablaBusqueda.getColumnModel().getColumnCount() > 0) {
-            tablaBusqueda.getColumnModel().getColumn(0).setPreferredWidth(50);
-            tablaBusqueda.getColumnModel().getColumn(1).setPreferredWidth(90);
-            tablaBusqueda.getColumnModel().getColumn(2).setPreferredWidth(150);
-            tablaBusqueda.getColumnModel().getColumn(3).setPreferredWidth(70);
-            tablaBusqueda.getColumnModel().getColumn(4).setPreferredWidth(70);
-        }
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/buscar.png"))); // NOI18N
         btnBuscar.setText("Buscar");
@@ -1128,7 +1031,7 @@ public class FrmPieza extends javax.swing.JFrame {
 
         jLabel17.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel17.setText("Busqueda de Piezas");
+        jLabel17.setText("Búsqueda de Piezas");
 
         btnRegresar3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnRegresar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Regresar.png"))); // NOI18N
@@ -1258,23 +1161,26 @@ public class FrmPieza extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalir1ActionPerformed
 
     private void btnDesactivar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar2ActionPerformed
-        TipoPieza temp;
+
+    }//GEN-LAST:event_btnDesactivar2ActionPerformed
+public boolean DesactivarTipoPieza(){
+            TipoPieza temp;
         temp = tipoPieza.findTipoPieza(txtIDTipoPieza.getSelectedIndex());
         if(temp.getEstado()){
             temp.setEstado(false);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
-            JOptionPane.showMessageDialog(null,"Tipo de pieza Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            //JOptionPane.showMessageDialog(null,"Tipo de pieza Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         else{
             temp.setEstado(true);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
-            JOptionPane.showMessageDialog(null,"Tipo de pieza Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            //JOptionPane.showMessageDialog(null,"Tipo de pieza Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        try {
+        /*try {
             tipoPieza.edit(temp);
         } catch (Exception ex) {
             Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         createTableTipoPieza();
         btnActivarDesactivar();
         LimpiarNuevoTipoPieza();
@@ -1282,9 +1188,8 @@ public class FrmPieza extends javax.swing.JFrame {
         btnDesactivar2.setEnabled(false);
         btnAgregar2.setEnabled(true);
         btnModificar2.setEnabled(false);
-
-    }//GEN-LAST:event_btnDesactivar2ActionPerformed
-
+return true;
+}
     private void btnLimpiar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar2ActionPerformed
         LimpiarNuevoTipoPieza();
         // txtTipoPiezaNuevo.setText("");
@@ -1293,32 +1198,38 @@ public class FrmPieza extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLimpiar2ActionPerformed
 
     private void btnModificar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar2ActionPerformed
-        if(txtIDTipoPieza.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null, "Tipo de pieza no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
+        ModificarTipoPieza();
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnModificar2ActionPerformed
+public boolean ModificarTipoPieza(){
+    if(txtIDTipoPieza.getSelectedIndex()==0){
+            //JOptionPane.showMessageDialog(null, "Tipo de pieza no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
-            if("".equals(txtTipoPiezaNuevo.getText())){
-                JOptionPane.showMessageDialog(null, "El campo de de tipo de pieza esta vacio","ERROR", JOptionPane.ERROR_MESSAGE);
-                return;
+            if("".equals(txtTipoPiezaNuevo.getText().trim())){
+                //JOptionPane.showMessageDialog(null, "El campo de de tipo de pieza esta vacío","ERROR", JOptionPane.ERROR_MESSAGE);
+                return false;
             }
             if(txtTipoPiezaNuevo.getText().length()<3){
-                JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-                return;
+                //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+                return false;
             }
             else{
 
             }
             if(txtTipoPiezaNuevo.getText().length()>25){
-                JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Pieza es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-                return;
+                //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Pieza es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+                return false;
             }
             else{
 
             }
             if (!ValidacionNombreMayusculaYDemasMinus(txtTipoPiezaNuevo.getText())){
-                JOptionPane.showMessageDialog(null,"El Tipo de Pieza debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+                //JOptionPane.showMessageDialog(null,"El Tipo de Pieza debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
                 txtTipoPiezaNuevo.requestFocus();
-                return;
+                return false;
             }else{
 
             }
@@ -1329,12 +1240,12 @@ public class FrmPieza extends javax.swing.JFrame {
             Matcher mat = pat.matcher(txtTipoPiezaNuevo.getText());
 
             if(mat.matches()){
-                JOptionPane.showMessageDialog(null, "No se Admite en el Tipo de Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
-                return;
+                //JOptionPane.showMessageDialog(null, "No se Admite en el Tipo de Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
+                return false;
             }
             if("".equals(txtTipoPiezaNuevo.getText())){
                 //JOptionPane.showMessageDialog(null, "Tipo de Pieza no puede ir vacio", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
+                return false;
             }
             else{
                 int i;
@@ -1344,24 +1255,24 @@ public class FrmPieza extends javax.swing.JFrame {
                     if(txtTipoPiezaNuevo.getText().toLowerCase().equals(tipoPieza.findTipoPieza(i+1).getTipopieza().toLowerCase())){
                         JOptionPane.showMessageDialog(null, "Ya existe este tipo de pieza registrada en el sistema","Error", JOptionPane.PLAIN_MESSAGE);
                         flag=true;
-                        return;
+                        return false;
                     } else {
                     }
                 }
                 if(flag){
-                    return;
+                    return false;
                 }
                 else{
                     TipoPieza e1;
                     e1=tipoPieza.findTipoPieza(txtIDTipoPieza.getSelectedIndex());
                     e1.setTipopieza(txtTipoPiezaNuevo.getText());
-                    try {
+                    /*try {
                         tipoPieza.edit(e1);
                     } catch (Exception ex) {
                         Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    }*/
                     Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
-                    JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
+                    //JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
                     txtIDTipoPieza.setSelectedIndex(1);
                     txtIDTipoPieza.setSelectedIndex(0);
                     createTableTipoPieza();
@@ -1375,41 +1286,45 @@ public class FrmPieza extends javax.swing.JFrame {
                 }
             }
         }
-
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnModificar2ActionPerformed
-
+    return true;
+}
     private void btnAgregar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar2ActionPerformed
 
-        if(txtIDTipoPieza.getSelectedIndex()!=0){
-            JOptionPane.showMessageDialog(null, "El ID Tipo de Pieza siempre debe estar en el ITEM de Nuevo para agregar un nuevo Tipo de Pieza","Error!", JOptionPane.ERROR_MESSAGE);
+        AgregarTipoPieza();
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAgregar2ActionPerformed
+public boolean AgregarTipoPieza(){
+    if(txtIDTipoPieza.getSelectedIndex()!=0){
+            //JOptionPane.showMessageDialog(null, "El ID Tipo de Pieza siempre debe estar en el ITEM de Nuevo para agregar un nuevo Tipo de Pieza","Error!", JOptionPane.ERROR_MESSAGE);
             txtIDTipoPieza.setSelectedIndex(0);
+            return false;
         }
         else{
 
         }
-        if("".equals(txtTipoPiezaNuevo.getText())){
-            JOptionPane.showMessageDialog(null, "El campo de de tipo de pieza esta vacio","ERROR", JOptionPane.ERROR_MESSAGE);
-            return;
+        if("".equals(txtTipoPiezaNuevo.getText().trim())){
+            //JOptionPane.showMessageDialog(null, "El campo de de tipo de pieza esta vacío","ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         if(txtTipoPiezaNuevo.getText().length()<3){
-            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(txtTipoPiezaNuevo.getText().length()>25){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Pieza es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Pieza es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if (!ValidacionNombreMayusculaYDemasMinus(txtTipoPiezaNuevo.getText())){
-            JOptionPane.showMessageDialog(null,"El Tipo de Pieza debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El Tipo de Pieza debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtTipoPiezaNuevo.requestFocus();
-            return;
+            return false;
         }else{
 
         }
@@ -1420,8 +1335,8 @@ public class FrmPieza extends javax.swing.JFrame {
         Matcher mat = pat.matcher(txtTipoPiezaNuevo.getText());
 
         if(mat.matches()){
-            JOptionPane.showMessageDialog(null, "No se Admite en el Tipo de Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "No se Admite en el Tipo de Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
 
         else{
@@ -1430,22 +1345,26 @@ public class FrmPieza extends javax.swing.JFrame {
             for(i=0;i<tipoPieza.findTipoPiezaEntities().size();i++){
                 //System.out.println(i);
                 if(txtTipoPiezaNuevo.getText().toLowerCase().equals(tipoPieza.findTipoPieza(i+1).getTipopieza().toLowerCase())){
-                    JOptionPane.showMessageDialog(null, "Ya existe este tipo de pieza registrada en el sistema","ERROR", JOptionPane.ERROR_MESSAGE);
+                    //JOptionPane.showMessageDialog(null, "Ya existe este tipo de pieza registrada en el sistema","ERROR", JOptionPane.ERROR_MESSAGE);
                     flag=true;
-                    return;
+                    return false;
                 } else {
                 }
             }
             if(flag){
-                return;
+                return false;
             }
             else{
                 TipoPieza e1 = new TipoPieza();
                 e1.setEstado(true);
                 e1.setTipopieza(txtTipoPiezaNuevo.getText());
-                tipoPieza.create(e1);
+                /*try {
+                    tipoPieza.create(e1);
+                } catch (Exception ex) {
+                    Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+                }*/
                 Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
-                JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+                //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
                 //           txtIDTipoPieza.setSelectedIndex(1);
                 txtIDTipoPieza.setSelectedIndex(0);
                 
@@ -1460,9 +1379,8 @@ public class FrmPieza extends javax.swing.JFrame {
 
             }
         }
-
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAgregar2ActionPerformed
+        return true;
+}
 
     private void jTableTipoPiezaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableTipoPiezaMouseClicked
         btnAgregar2.setEnabled(false);
@@ -1478,7 +1396,18 @@ public class FrmPieza extends javax.swing.JFrame {
     }//GEN-LAST:event_jTableTipoPiezaMouseClicked
 
     private void txtTipoPiezaNuevoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTipoPiezaNuevoKeyTyped
+        char c = evt.getKeyChar();
+                if((c < 'a' || c > 'z') && (c < 'A' || c > 'Z'&& c != 'Ñ' && c != 'ñ' && c != 'Á' && c != 'É' && c != 'Í' && c != 'Ó' && c != 'Ú' && c != 'á' && c != 'é' && c != 'í' && c != 'ó' && c != 'ú')&& (c!=KeyEvent.VK_SPACE) ){
 
+            evt.consume();
+
+        }
+              
+        if (txtTipoPiezaNuevo.getText().length() >= 25){
+        
+        evt.consume();
+        
+        }
     }//GEN-LAST:event_txtTipoPiezaNuevoKeyTyped
 
     private void btnRegresar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresar2ActionPerformed
@@ -1554,90 +1483,82 @@ public class FrmPieza extends javax.swing.JFrame {
     }//GEN-LAST:event_txtIDPiezaItemStateChanged
 
     private void btnDesactivar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar3ActionPerformed
-        Pieza temp;
+
+
+    }//GEN-LAST:event_btnDesactivar3ActionPerformed
+public boolean DesactivarPieza(){
+            Pieza temp;
         temp = piezaDao.findPieza(txtIDPieza.getSelectedIndex());
         //temp = piezaDao.findPieza(txtIDPieza.getSelectedIndex()+1);
         //JOptionPane.showMessageDialog(null, temp.isEstado());
         if(temp.isEstado()){
             temp.setEstado(false);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
-            JOptionPane.showMessageDialog(null,"Pieza Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            //JOptionPane.showMessageDialog(null,"Pieza Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         else{
             temp.setEstado(true);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
-            JOptionPane.showMessageDialog(null,"Pieza Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            //JOptionPane.showMessageDialog(null,"Pieza Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        try {
+        /*try {
             piezaDao.edit(temp);
         } catch (Exception ex) {
             Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         createTablaPieza();
         btnActivarDesactivarPieza();
         createCmbTipoPieza();
         btnAgregar3.setEnabled(true);
         btnModificar3.setEnabled(false);
         btnDesactivar3.setEnabled(false);
-        /*Pieza temp;
-        temp = piezaDao.findPieza(txtIDPieza.getSelectedIndex());
-        if(temp.isEstado()){
-            temp.setEstado(false);
-        }
-        else{
-            temp.setEstado(true);
-        }
-        try {
-            piezaDao.edit(temp);
-        } catch (Exception ex) {
-            Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        createTablaPieza();
-        btnActivarDesactivarPieza();
-        */
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDesactivar3ActionPerformed
-
+        return true;
+}
     private void btnLimpiar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar3ActionPerformed
         LimpiarPieza();
     }//GEN-LAST:event_btnLimpiar3ActionPerformed
 
     private void btnModificar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar3ActionPerformed
+        ModificarPieza();
 
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnModificar3ActionPerformed
+public boolean ModificarPieza(){
+    
         if(jCmbTipoPieza.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Tipo de pieza","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Tipo de pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
                if(jCmbTipoPieza.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Tipo de pieza","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Tipo de pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
-        if(jtxtNombre.getText().equals("")){
-            JOptionPane.showMessageDialog(null, "El campo de Nombre de la Pieza esta vacio","ERROR", JOptionPane.ERROR_MESSAGE);
-            return;
+        if(jtxtNombre.getText().trim().equals("")){
+            //JOptionPane.showMessageDialog(null, "El campo de Nombre de la Pieza esta vacío","ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if(jtxtNombre.getText().length()<3){
-            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Nombre de la Pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Nombre de la Pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if(jtxtNombre.getText().length()>25){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Nombre de la Pieza es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Nombre de la Pieza es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if (!ValidacionNombreMayusculaYDemasMinus(jtxtNombre.getText())){
-            JOptionPane.showMessageDialog(null,"El Nombre de la Pieza debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El Nombre de la Pieza debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             jtxtNombre.requestFocus();
-            return;
+            return false;
         }
         else{
         }
@@ -1648,125 +1569,125 @@ public class FrmPieza extends javax.swing.JFrame {
 
         Matcher mat = pat.matcher(jtxtNombre.getText());
         if(mat.matches()){
-            JOptionPane.showMessageDialog(null, "No se Admite en el nombre de la Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "No se Admite en el nombre de la Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
-        if(jTxtAreaCaracteristica.getText().equals("")){
-            JOptionPane.showMessageDialog(null, "Por favor, ingrese las Características de la pieza","ERROR", JOptionPane.ERROR_MESSAGE);
-            return;
+        if(jTxtAreaCaracteristica.getText().trim().equals("")){
+            //JOptionPane.showMessageDialog(null, "Por favor, ingrese las Características de la pieza","ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(jTxtAreaCaracteristica.getText().length()<3){
-            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para la Característica de la Pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para la Característica de la Pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(jTxtAreaCaracteristica.getText().length()>50){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para la Característica de la Pieza es de 50 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para la Característica de la Pieza es de 50 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         Matcher matt = pat.matcher(jTxtAreaCaracteristica.getText());
         if(matt.matches()){
-            JOptionPane.showMessageDialog(null, "No se Admite en la Descripción de la Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "No se Admite en la Características de la Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
-        if (!ValidacionDireccion(jTxtAreaCaracteristica.getText())){
-            JOptionPane.showMessageDialog(null,"La Descripción solo puede contener números, letras y los siguiente signos(&:|#\";.,-)","Error!", JOptionPane.ERROR_MESSAGE);
+        if (!ValidacionCaracteristicas(jTxtAreaCaracteristica.getText())){
+            //JOptionPane.showMessageDialog(null,"La Características solo puede contener números, letras y los siguiente signos(&:|#\";.,-)","Error!", JOptionPane.ERROR_MESSAGE);
             jTxtAreaCaracteristica.requestFocus();
-            return;
+            return false;
         }
         else{
         }
-        if("".equals(jFtxtStock.getText())){
-            JOptionPane.showMessageDialog(null, "El campo de Stock de la Pieza esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+        if("".equals(jFtxtStock.getText().trim())){
+            //JOptionPane.showMessageDialog(null, "El campo de Stock de la Pieza esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if((Integer.parseInt(jFtxtStock.getText())==0)){
-               JOptionPane.showMessageDialog(null, "El Stock no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
-                return;
+               //JOptionPane.showMessageDialog(null, "El Stock no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
+               return false;
             }
            else{        
            }
         if (!ValidacionRangoStockPieza(jFtxtStock.getText())){
-            JOptionPane.showMessageDialog(null,"El rango de Stock de Piezas solo puede estar entre 1-400","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El rango de Stock de Piezas solo puede estar entre 1-400","Error!", JOptionPane.ERROR_MESSAGE);
             jFtxtStock.requestFocus();
-            return;
+            return false;
         }else{
 
         }
-        if("".equals(jFtxtPrecio.getText())){
-            JOptionPane.showMessageDialog(null, "Por favor, ingrese el precio de la pieza","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+        if("".equals(jFtxtPrecio.getText().trim())){
+            //JOptionPane.showMessageDialog(null, "Por favor, ingrese el precio de la pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if (!ValidacionRangoPrecioPieza(jFtxtPrecio.getText())){
-            JOptionPane.showMessageDialog(null,"El rango de Precio de la Pieza solo puede estar entre 20.00-40,000.00","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El rango de Precio de la Pieza solo puede estar entre 20.00-40,000.00","Error!", JOptionPane.ERROR_MESSAGE);
             jFtxtPrecio.requestFocus();
-            return;
+            return false;
         }
         else{
         }
-        if("".equals(jFtxtStockMaximo.getText())){
-            JOptionPane.showMessageDialog(null,"Por favor, ingrese la cantidad Máxima que puede haber de esta pieza","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+        if("".equals(jFtxtStockMaximo.getText().trim())){
+            //JOptionPane.showMessageDialog(null,"Por favor, ingrese la cantidad Máxima que puede haber de esta pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if((Integer.parseInt(jFtxtStockMaximo.getText())==0)){
-               JOptionPane.showMessageDialog(null, "El Stock Máximo no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
-                return;
+               //JOptionPane.showMessageDialog(null, "El Stock Máximo no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
+                return false;
             }
            else{        
            }
         if (!ValidacionRangoStockPieza(jFtxtStockMaximo.getText())){
-            JOptionPane.showMessageDialog(null,"El rango de Stock Máximo de Piezas solo puede estar entre 1-400","Error!", JOptionPane.ERROR_MESSAGE);
-            jFtxtStockMaximo.requestFocus();
-            return;
+            //JOptionPane.showMessageDialog(null,"El rango de Stock Máximo de Piezas solo puede estar entre 1-400","Error!", JOptionPane.ERROR_MESSAGE);
+            //jFtxtStockMaximo.requestFocus();
+            return false;
         }else{
 
         }
         if(Double.parseDouble(jFtxtStock.getText())>Integer.parseInt(jFtxtStockMaximo.getText())){
-            JOptionPane.showMessageDialog(null, "El Stock no puede ser mayor al Stock Máximo","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "El Stock no puede ser mayor al Stock Máximo","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
-        if("".equals(jFtxtStockMinimo.getText())){
-            JOptionPane.showMessageDialog(null,"Por favor, ingrese el Stock Mínimo de la Pieza","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+        if("".equals(jFtxtStockMinimo.getText().trim())){
+            //JOptionPane.showMessageDialog(null,"Por favor, ingrese el Stock Mínimo de la Pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if((Integer.parseInt(jFtxtStockMinimo.getText())<1)){
-               JOptionPane.showMessageDialog(null, "El Stock Mínimo actual no puedo ser menor que uno","Error!",JOptionPane.ERROR_MESSAGE);
-                return;
+               //JOptionPane.showMessageDialog(null, "El Stock Mínimo actual no puedo ser menor que uno","Error!",JOptionPane.ERROR_MESSAGE);
+                return false;
             }
            else{        
            }
         if(Integer.parseInt(jFtxtStockMinimo.getText()) >= Integer.parseInt(jFtxtStockMaximo.getText())){
-            JOptionPane.showMessageDialog(null, "El Stock Mínimo no puede ser igual o mayor al Stock Máximo","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "El Stock Mínimo no puede ser igual o mayor al Stock Máximo","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if(Double.parseDouble(jFtxtStock.getText())<Integer.parseInt(jFtxtStockMinimo.getText())){
-            JOptionPane.showMessageDialog(null, "El Stock no puede ser menor al Stock Mínimo ","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "El Stock no puede ser menor al Stock Mínimo ","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
@@ -1801,30 +1722,48 @@ public class FrmPieza extends javax.swing.JFrame {
         }
 
         if(temp2.getPrecio()!=(Double.parseDouble(jFtxtPrecio.getText().replace(",", "").replace(",", "").replace("%.2f%n", "")))){
-            Calendar fecha = new GregorianCalendar();
-            String fecha1;
-            String aux1,aux2,aux3;
-            aux1 = Integer.toString(fecha.get(Calendar.YEAR));
-            aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.MONTH)+1) : Integer.toString(fecha.get(Calendar.MONTH));
-            aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+            //temp2.setEstado(true);
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                if(fecha.get(Calendar.DAY_OF_MONTH)==1){
+                    aux2=(fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH))) : Integer.toString(fecha.get(Calendar.MONTH));
+                    aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)-1) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)-1);
+                }
+                else{
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH)+1);
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)-1) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)-1);
+                }
             fecha1 = aux1+aux2+aux3;
             temp2.setFechaFinal(fecha1);
-            double auxsueldo=(Double.parseDouble(jFtxtPrecio.getText().replace(",", "").replace(",", "").trim()));
+            temp2.setEstado(false);
+            //double auxsueldo=(Double.parseDouble(jFtxtPrecio.getText().replace(",", "").replace(",", "").trim()));
             //double aux=Double.parseDouble(jFtxtPrecio.getText().trim());
             //temp2.setPrecio(auxsueldo);
             temp2.setIdPieza(txtIDPieza.getSelectedIndex());
-            try {
+            /*try {
                 historicoPieza.edit(temp2);
             } catch (Exception ex) {
                 Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
+            aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+            aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH)+1);
+            aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+            fecha1 = aux1+aux2+aux3;
+            
             HistoricoPrecioPieza temp3 = new HistoricoPrecioPieza();
             temp3.setFechaInicial(fecha1);
             temp3.setIdPieza(txtIDPieza.getSelectedIndex());
             double auxsueldo1=(Double.parseDouble(jFtxtPrecio.getText().replace(",", "").replace(",", "").trim()));
             temp3.setPrecio(auxsueldo1);
-            historicoPieza.create(temp3);
-            //txtIDPieza.setSelectedIndex(1);
+            temp3.setEstado(true);
+            /*try {
+                historicoPieza.create(temp3);
+                //txtIDPieza.setSelectedIndex(1);
+            } catch (Exception ex) {
+                Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+            }*/
 
         }
         txtIDPieza.setSelectedIndex(0);
@@ -1832,53 +1771,57 @@ public class FrmPieza extends javax.swing.JFrame {
         createCmbIDPieza();
 
         Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
-        JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
+        //JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
         btnAgregar3.setEnabled(true);
         btnModificar3.setEnabled(false);
         btnDesactivar3.setEnabled(false);
         LimpiarPieza();
         ///new FrmPieza().show();
         //this.hide();
-
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnModificar3ActionPerformed
-
+        return true;
+}
     private void btnAgregar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar3ActionPerformed
+        AgregarPieza();
+
+    }//GEN-LAST:event_btnAgregar3ActionPerformed
+
+    public boolean AgregarPieza(){
         if(txtIDPieza.getSelectedIndex()==0){
 
         }
         else{
             txtIDPieza.setSelectedIndex(0);
-            JOptionPane.showMessageDialog(null, "El ID Pieza siempre debe estar en el ITEM de Nuevo para agregar una Pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "El ID Pieza siempre debe estar en el ITEM de Nuevo para agregar una Pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         if(jCmbTipoPieza.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Tipo de pieza","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Tipo de pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
-        if(jtxtNombre.getText().equals("")){
-            JOptionPane.showMessageDialog(null, "El campo de Nombre de la Pieza esta vacio","ERROR", JOptionPane.ERROR_MESSAGE);
-            return;
+        if(jtxtNombre.getText().trim().equals("")){
+            //JOptionPane.showMessageDialog(null, "El campo de Nombre de la Pieza esta vacío","ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if(jtxtNombre.getText().length()<3){
-            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Nombre de la Pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Nombre de la Pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if(jtxtNombre.getText().length()>25){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Nombre de la Pieza es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Nombre de la Pieza es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if (!ValidacionNombreMayusculaYDemasMinus(jtxtNombre.getText())){
-            JOptionPane.showMessageDialog(null,"El Nombre de la Pieza debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
-            jtxtNombre.requestFocus();
-            return;
+            //JOptionPane.showMessageDialog(null,"El Nombre de la Pieza debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            //jtxtNombre.requestFocus();
+            return false;
         }
         else{
         }
@@ -1889,125 +1832,125 @@ public class FrmPieza extends javax.swing.JFrame {
 
         Matcher mat = pat.matcher(jtxtNombre.getText());
         if(mat.matches()){
-            JOptionPane.showMessageDialog(null, "No se Admite en el nombre de la Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "No se Admite en el nombre de la Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
-        if(jTxtAreaCaracteristica.getText().equals("")){
-            JOptionPane.showMessageDialog(null, "Por favor, ingrese las Características de la pieza","ERROR", JOptionPane.ERROR_MESSAGE);
-            return;
+        if(jTxtAreaCaracteristica.getText().trim().equals("")){
+            //JOptionPane.showMessageDialog(null, "Por favor, ingrese las Características de la pieza","ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(jTxtAreaCaracteristica.getText().length()<3){
-            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para la Característica de la Pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para la Característica de la Pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(jTxtAreaCaracteristica.getText().length()>50){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para la Característica de la Pieza es de 50 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para la Característica de la Pieza es de 50 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         Matcher matt = pat.matcher(jTxtAreaCaracteristica.getText());
         if(matt.matches()){
-            JOptionPane.showMessageDialog(null, "No se Admite en la D de la Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "No se Admite en la Características de la Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
-        if (!ValidacionDireccion(jTxtAreaCaracteristica.getText())){
-            JOptionPane.showMessageDialog(null,"La dirección solo puede contener números, letras y los siguiente signos(&:|#\";.,-)","Error!", JOptionPane.ERROR_MESSAGE);
-            jTxtAreaCaracteristica.requestFocus();
-            return;
+        if (!ValidacionCaracteristicas(jTxtAreaCaracteristica.getText())){
+            //JOptionPane.showMessageDialog(null,"La Características solo puede contener números, letras y los siguiente signos(&:|#\";.,-)","Error!", JOptionPane.ERROR_MESSAGE);
+            //jTxtAreaCaracteristica.requestFocus();
+            return false;
         }
         else{
         }
-        if("".equals(jFtxtStock.getText())){
-            JOptionPane.showMessageDialog(null, "El campo de Stock de la Pieza esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+        if("".equals(jFtxtStock.getText().trim())){
+            JOptionPane.showMessageDialog(null, "El campo de Stock de la Pieza esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if((Integer.parseInt(jFtxtStock.getText())==0)){
-               JOptionPane.showMessageDialog(null, "El Stock no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
-                return;
+               //JOptionPane.showMessageDialog(null, "El Stock no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
+                return false;
             }
            else{        
            }
         if (!ValidacionRangoStockPieza(jFtxtStock.getText())){
-            JOptionPane.showMessageDialog(null,"El rango de Stock de Piezas solo puede estar entre 1-400","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El rango de Stock de Piezas solo puede estar entre 1-400","Error!", JOptionPane.ERROR_MESSAGE);
             jFtxtStock.requestFocus();
-            return;
+            return false;
         }else{
 
         }
-        if("".equals(jFtxtPrecio.getText())){
-            JOptionPane.showMessageDialog(null, "Por favor, ingrese el precio de la pieza","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+        if("".equals(jFtxtPrecio.getText().trim())){
+           // JOptionPane.showMessageDialog(null, "Por favor, ingrese el precio de la pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if (!ValidacionRangoPrecioPieza(jFtxtPrecio.getText())){
-            JOptionPane.showMessageDialog(null,"El rango de Precio de la Pieza solo puede estar entre 20.00-40,000.00","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El rango de Precio de la Pieza solo puede estar entre 20.00-40,000.00","Error!", JOptionPane.ERROR_MESSAGE);
             jFtxtPrecio.requestFocus();
-            return;
+            return false;
         }
         else{
         }
-        if("".equals(jFtxtStockMaximo.getText())){
-            JOptionPane.showMessageDialog(null,"Por favor, ingrese la cantidad Máxima que puede haber de esta pieza","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+        if("".equals(jFtxtStockMaximo.getText().trim())){
+            //JOptionPane.showMessageDialog(null,"Por favor, ingrese la cantidad Máxima que puede haber de esta pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if((Integer.parseInt(jFtxtStockMaximo.getText())==0)){
-               JOptionPane.showMessageDialog(null, "El Stock Máximo no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
-                return;
+               //JOptionPane.showMessageDialog(null, "El Stock Máximo no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
+                return false;
             }
            else{        
            }
         if (!ValidacionRangoStockPieza(jFtxtStockMaximo.getText())){
-            JOptionPane.showMessageDialog(null,"El rango de Stock Máximo de Piezas solo puede estar entre 1-400","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El rango de Stock Máximo de Piezas solo puede estar entre 1-400","Error!", JOptionPane.ERROR_MESSAGE);
             jFtxtStockMaximo.requestFocus();
-            return;
+            return false;
         }else{
 
         }
         if(Double.parseDouble(jFtxtStock.getText())>Integer.parseInt(jFtxtStockMaximo.getText())){
-            JOptionPane.showMessageDialog(null, "El Stock no puede ser mayor al Stock Máximo","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "El Stock no puede ser mayor al Stock Máximo","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
-        if("".equals(jFtxtStockMinimo.getText())){
-            JOptionPane.showMessageDialog(null,"Por favor, ingrese el Stock Mínimo de la Pieza","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+        if("".equals(jFtxtStockMinimo.getText().trim())){
+            //JOptionPane.showMessageDialog(null,"Por favor, ingrese el Stock Mínimo de la Pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if((Integer.parseInt(jFtxtStockMinimo.getText())<1)){
-               JOptionPane.showMessageDialog(null, "El Stock Mínimo actual no puedo ser menor que uno","Error!",JOptionPane.ERROR_MESSAGE);
-                return;
+               //JOptionPane.showMessageDialog(null, "El Stock Mínimo actual no puedo ser menor que uno","Error!",JOptionPane.ERROR_MESSAGE);
+                return false;
             }
            else{        
            }
         if(Integer.parseInt(jFtxtStockMinimo.getText()) >= Integer.parseInt(jFtxtStockMaximo.getText())){
-            JOptionPane.showMessageDialog(null, "El Stock Mínimo no puede ser igual o mayor al Stock Máximo","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "El Stock Mínimo no puede ser igual o mayor al Stock Máximo","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if(Double.parseDouble(jFtxtStock.getText())<Integer.parseInt(jFtxtStockMinimo.getText())){
-            JOptionPane.showMessageDialog(null, "El Stock no puede ser menor al Stock Mínimo ","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "El Stock no puede ser menor al Stock Mínimo ","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
@@ -2021,11 +1964,11 @@ public class FrmPieza extends javax.swing.JFrame {
         temp.setStock_Maximo(Integer.parseInt(jFtxtStockMaximo.getText()));
         temp.setStock_Minimo(Integer.parseInt(jFtxtStockMinimo.getText()));
 
-        try {
+        /*try {
             piezaDao.create(temp);
         } catch (Exception ex) {
             Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
 
         HistoricoPrecioPieza temp2 = new HistoricoPrecioPieza();
         temp2.setEstado(true);
@@ -2041,11 +1984,15 @@ public class FrmPieza extends javax.swing.JFrame {
         //double aux=Float.parseFloat(jFtxtPrecio.getText().trim());
         temp2.setPrecio(auxsueldo);
         temp2.setIdPieza(piezaDao.getPiezaCount());
-        historicoPieza.create(temp2);
+        /*try {
+            historicoPieza.create(temp2);
+        } catch (Exception ex) {
+            Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
 
         //           txtIDPieza.setSelectedIndex(1);
         Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
-        JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+        //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         txtIDPieza.setSelectedIndex(0);
         createTablaPieza();
         createCmbIDPieza();
@@ -2056,9 +2003,8 @@ public class FrmPieza extends javax.swing.JFrame {
 
         //new FrmPieza().show();
         //this.hide();
-
-    }//GEN-LAST:event_btnAgregar3ActionPerformed
-
+        return true;
+    }
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         //FrmMenu m = new FrmMenu();
        // m.setVisible(true);
@@ -2109,7 +2055,99 @@ public class FrmPieza extends javax.swing.JFrame {
     private void btnSalir3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir3ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_btnSalir3ActionPerformed
-private boolean ValidacionNombreMayusculaYDemasMinus(String num){
+
+    private void jtxtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtNombreKeyTyped
+                char c = evt.getKeyChar();
+        if((c < 'A' || c > 'Z') && (c < 'a' || c > 'z' && c != 'Ñ' && c != 'ñ' && c != 'Á' && c != 'É' && c != 'Í' && c != 'Ó' && c != 'Ú' && c != 'á' && c != 'é' && c != 'í' && c != 'ó' && c != 'ú')&& (c!=KeyEvent.VK_SPACE) ){
+
+            evt.consume();
+
+        }
+              
+        if (jtxtNombre.getText().length() >= 15){
+        
+        evt.consume();
+        
+        }
+    }//GEN-LAST:event_jtxtNombreKeyTyped
+
+    private void jTxtAreaCaracteristicaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTxtAreaCaracteristicaKeyTyped
+        char c = evt.getKeyChar();
+        if((c < 'a' || c > 'z') && (c != '.' && c != '-' && c != ',' && c != ';' && c != '"' && c != '#' && c != '|' && c != ':' && c != '&')&&(c < '0' || c > '9')&& (c < 'A' || c > 'Z'&& c != 'Ñ' && c != 'ñ' && c != 'Á' && c != 'É' && c != 'Í' && c != 'Ó' && c != 'Ú' && c != 'á' && c != 'é' && c != 'í' && c != 'ó' && c != 'ú')&& (c!=KeyEvent.VK_SPACE)){
+
+            evt.consume();
+
+        }
+              
+        if (jtxtNombre.getText().length() >= 50){
+        
+        evt.consume();
+        
+        }
+    }//GEN-LAST:event_jTxtAreaCaracteristicaKeyTyped
+
+    private void jFtxtStockKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jFtxtStockKeyTyped
+        char c = evt.getKeyChar();
+        if((c < '0' || c > '9')){
+
+            evt.consume();
+
+        }
+        if (jFtxtStock.getText().length() >= 5){
+        
+        evt.consume();
+        }
+
+    }//GEN-LAST:event_jFtxtStockKeyTyped
+
+    private void jFtxtStockMaximoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jFtxtStockMaximoKeyTyped
+        char c = evt.getKeyChar();
+        if((c < '0' || c > '9')){
+
+            evt.consume();
+
+        }
+        if (jFtxtStockMaximo.getText().length() >= 5){
+        
+        evt.consume();
+        }
+    }//GEN-LAST:event_jFtxtStockMaximoKeyTyped
+
+    private void jFtxtStockMinimoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jFtxtStockMinimoKeyTyped
+                char c = evt.getKeyChar();
+        if((c < '0' || c > '9')){
+
+            evt.consume();
+
+        }
+        if (jFtxtStockMinimo.getText().length() >= 5){
+        
+        evt.consume();
+        }
+    }//GEN-LAST:event_jFtxtStockMinimoKeyTyped
+
+    private void txtTipoPiezaNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTipoPiezaNuevoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTipoPiezaNuevoActionPerformed
+
+    private void jFtxtPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jFtxtPrecioKeyTyped
+        
+        char c = evt.getKeyChar();
+
+
+        if((c < '0' || c > '9') && (c != '.' && c != ',')&& (c!=KeyEvent.VK_BACKSPACE)){
+
+            evt.consume();
+
+        }
+              
+        if (jFtxtPrecio.getText().length() >= 12){
+        
+        evt.consume();
+        
+        }
+    }//GEN-LAST:event_jFtxtPrecioKeyTyped
+public boolean ValidacionNombreMayusculaYDemasMinus(String num){
         Pattern pat = null;
         Matcher mat = null;
         pat = Pattern.compile("^(?=.{3,40}$)[A-ZÑÁÉÍÓÚ][a-zñáéíóú]+(?: [a-zñáéíóúA-ZÑÁÉÍÓÚ]+)?+(?: [a-zñáéíóúA-ZÑÁÉÍÓÚ]+)?$");
@@ -2132,7 +2170,7 @@ private boolean ValidacionNombreMayuscula(String num){
         }
     }
 public void LimpiarNuevoTipoPieza(){
-   txtIDTipoPieza.setSelectedIndex(1);
+  // txtIDTipoPieza.setSelectedIndex(1);
         txtIDTipoPieza.setSelectedIndex(0);
         txtTipoPiezaNuevo.setText("");
         btnAgregar2.setEnabled(true);
@@ -2141,10 +2179,11 @@ public void LimpiarNuevoTipoPieza(){
         createTableTipoPieza();
         createComboBox3(); 
 
-}private boolean ValidacionDireccion(String num){
+}
+public boolean ValidacionCaracteristicas(String num){
         Pattern pat = null;
         Matcher mat = null;
-        pat = Pattern.compile("^(?=.{3,50}$)[A-ZÑÁÉÍÓÚ][a-zñáéíóú]+(?: [&:|#\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús,-]+)?(?: [&:|#\\\";.0-9a-znA-ZÑÁÉÍÓ-Úáéíóús,-]+)?(?: [&:|#\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús,-]+)?(?: [&:|#\\\";.0-9a-znA-ZÑÁÉÍÓ-Úáéíóús,-]+)?(?: [&:|#\\\";.0-9a-znA-ZÑÁÉÍÓ-Úáéíóús,-]+)?(?: [&:|#\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús,-]+)?(?: [&:|#\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús,-]+)?(?: [&:|#\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús,-]+)?(?: [&:|#\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús,-]+)?(?: [&:|#\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús,-]+)?(?: [&:|#\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús,-]+)?(?: [&:|#\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús,-]+)?(?: [&:|#\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús,-]+)?$");
+        pat = Pattern.compile("^(?=.{3,50}$)[A-ZÑÁÉÍÓÚ][a-zñáéíóú&:|#\";.,-]+(?: [&:|#\\\\\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús&:|#\";.,-]+)?(?: [&:|#\\\\\\\";.0-9a-znA-ZÑÁÉÍÓ-Úáéíóús&:|#\";.,-]+)?(?: [&:|#\\\\\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús&:|#\";.,-]+)?(?: [&:|#\\\\\\\";.0-9a-znA-ZÑÁÉÍÓ-Úáéíóús&:|#\";.,-]+)?(?: [&:|#\\\\\\\";.0-9a-znA-ZÑÁÉÍÓ-Úáéíóús&:|#\";.,-]+)?(?: [&:|#\\\\\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús&:|#\";.,-]+)?(?: [&:|#\\\\\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús&:|#\";.,-]+)?(?: [&:|#\\\\\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús&:|#\";.,-]+)?(?: [&:|#\\\\\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús&:|#\";.,-]+)?(?: [&:|#\\\\\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús&:|#\";.,-]+)?(?: [&:|#\\\\\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús&:|#\";.,-]+)?(?: [&:|#\\\\\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús&:|#\";.,-]+)?(?: [&:|#\\\\\\\";.0-9a-zñA-ZÑÁÉÍÓ-Úáéíóús&:|#\";.,-])?$");
         mat =pat.matcher(num);
         if (mat.find()){
             return true;
@@ -2152,10 +2191,10 @@ public void LimpiarNuevoTipoPieza(){
         return false;
         }
     }
-private boolean ValidacionRangoPrecioPieza(String num){
+public boolean ValidacionRangoPrecioPieza(String num){
         Pattern pat = null;
         Matcher mat = null;
-        pat = Pattern.compile("^([2-9][0-9][.][0-9][0-9]|[1-9][0-9][0-9][.][0-9][0-9]|[1-9][,][1-9][1-9][1-9][.][0-9][0-9]|[1-3][0-9][,][0-9][0-9][0-9][.][0-9][0-9]|[4][0][,][0][0][0][.][0][0])$");
+        pat = Pattern.compile("^([2-9][0-9][.][0-9][0-9]|[0-9][0-9][0-9][.][0-9][0-9]|[1-9][,][0-9][0-9][0-9][.][0-9][0-9]|[1-3][0-9][,][0-9][0-9][0-9][.][0-9][0-9]|[4][0][,][0][0][0][.][0][0])$");
         mat =pat.matcher(num);
         if (mat.find()){
             return true;
@@ -2163,7 +2202,7 @@ private boolean ValidacionRangoPrecioPieza(String num){
         return false;
         }
     }
-private boolean ValidacionRangoStockPieza(String num){
+public boolean ValidacionRangoStockPieza(String num){
         Pattern pat = null;
         Matcher mat = null;
         pat = Pattern.compile("^([1]|[2-9]|[1-9][0-9]|[1-3][0-9][0-9]|[4][0][0])$");
@@ -2225,11 +2264,11 @@ private boolean ValidacionRangoStockPieza(String num){
     private javax.swing.JButton btnSalir2;
     private javax.swing.JButton btnSalir3;
     private javax.swing.JComboBox<String> cmbIDPieza;
-    private javax.swing.JComboBox<String> jCmbTipoPieza;
-    private javax.swing.JTextField jFtxtPrecio;
-    private javax.swing.JFormattedTextField jFtxtStock;
-    private javax.swing.JFormattedTextField jFtxtStockMaximo;
-    private javax.swing.JFormattedTextField jFtxtStockMinimo;
+    public javax.swing.JComboBox<String> jCmbTipoPieza;
+    public javax.swing.JTextField jFtxtPrecio;
+    public javax.swing.JFormattedTextField jFtxtStock;
+    public javax.swing.JFormattedTextField jFtxtStockMaximo;
+    public javax.swing.JFormattedTextField jFtxtStockMinimo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -2256,15 +2295,15 @@ private boolean ValidacionRangoStockPieza(String num){
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane3;
     private javax.swing.JTable jTablePieza;
-    private javax.swing.JTable jTableTipoPieza;
+    public javax.swing.JTable jTableTipoPieza;
     private javax.swing.JTable jTbHistorialPrecio;
-    private javax.swing.JTextArea jTxtAreaCaracteristica;
-    private javax.swing.JTextField jtxtNombre;
+    public javax.swing.JTextArea jTxtAreaCaracteristica;
+    public javax.swing.JTextField jtxtNombre;
     private javax.swing.JPanel pnlPieza;
     private javax.swing.JTable tablaBusqueda;
-    private javax.swing.JComboBox<String> txtIDPieza;
-    private javax.swing.JComboBox<String> txtIDTipoPieza;
+    public javax.swing.JComboBox<String> txtIDPieza;
+    public javax.swing.JComboBox<String> txtIDTipoPieza;
     private javax.swing.JTextField txtNombreBusqueda;
-    private javax.swing.JTextField txtTipoPiezaNuevo;
+    public javax.swing.JTextField txtTipoPiezaNuevo;
     // End of variables declaration//GEN-END:variables
 }

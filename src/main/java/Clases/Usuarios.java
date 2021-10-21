@@ -20,7 +20,7 @@ import javax.persistence.Table;
 public class Usuarios implements Serializable{
     @Id
     private int id_Usuario;
-    @Column
+    @Column 
     private int id_Empleado;
     @Column(name="usuario")
     private String id_Nombre;

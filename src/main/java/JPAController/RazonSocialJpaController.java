@@ -23,8 +23,8 @@ import javax.persistence.criteria.Root;
  */
 public class RazonSocialJpaController implements Serializable {
 
-    public RazonSocialJpaController() {
-        this.emf = Persistence.createEntityManagerFactory("CarSoft");
+    public RazonSocialJpaController(EntityManagerFactory emf) {
+        this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 

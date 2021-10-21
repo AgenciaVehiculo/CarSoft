@@ -18,9 +18,13 @@ import JPAController.PiezaJpaController;
 import JPAController.TipoPiezaJpaController;
 import JPAController.Tipo_DocumentoJpaController;
 import Pantallas.Ventas;
+import com.sun.glass.events.KeyEvent;
+import java.awt.Color;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.List;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -33,22 +37,35 @@ public class ModalCliente extends javax.swing.JDialog {
     /**
      * Creates new form ModalPiezas
      */
-    
-    Tipo_DocumentoJpaController TipoDocumentodao = new Tipo_DocumentoJpaController();
-    ClienteJpaController Clientedao = new ClienteJpaController();
-    PersonaJpaController Personadao = new PersonaJpaController();
+    EntityManagerFactory emf =Persistence.createEntityManagerFactory("CarSoft");
+    Tipo_DocumentoJpaController TipoDocumentodao = new Tipo_DocumentoJpaController(emf);
+    ClienteJpaController Clientedao = new ClienteJpaController(emf);
+    PersonaJpaController Personadao = new PersonaJpaController(emf);
     int id = 0;
     String nombre ="";
     String apellido="";
     public ModalCliente(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.jButton1.setBackground( new Color(14, 209, 69));
+        this.jButton2.setBackground( new Color(14, 209, 69));
+        this.btnRegresar.setBackground( new Color(14, 209, 69));
     }
 
      private void crearTableBusquedaCliente(){
-        DefaultTableModel modelo = new DefaultTableModel();
+         if("".equals(txtNombreBusqueda.getText().trim())){
+            JOptionPane.showMessageDialog(null, "El campo para la Busqueda del Cliente esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+        }
+        DefaultTableModel modelo = (DefaultTableModel) tblclientesbusqueda.getModel();
         tblclientesbusqueda.setModel(modelo);
-        modelo.addColumn("ID Cliente");
+        int i;
+        for(i=modelo.getRowCount()-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
+        /*modelo.addColumn("ID Cliente");
         modelo.addColumn("Nombre");
         modelo.addColumn("Apellidos");
         modelo.addColumn("Teléfono");
@@ -57,7 +74,7 @@ public class ModalCliente extends javax.swing.JDialog {
         modelo.addColumn("Fecha Registro");
         modelo.addColumn("Tipo Documento");
         modelo.addColumn("Documento");
-        modelo.addColumn("Estado");
+        modelo.addColumn("Estado");*/
         
         List<Persona> tempo = Personadao.findPersonaEntities();
         List<Cliente> temp = Clientedao.findClienteEntities();
@@ -116,7 +133,7 @@ public class ModalCliente extends javax.swing.JDialog {
         }
         
         if(!bandera){
-            JOptionPane.showMessageDialog(null,"No se encontro ningun cliente");
+            JOptionPane.showMessageDialog(null,"No se encontro ningún Cliente");
         }   
     }
     /**
@@ -136,6 +153,7 @@ public class ModalCliente extends javax.swing.JDialog {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblclientesbusqueda = new javax.swing.JTable();
         jLabel17 = new javax.swing.JLabel();
+        btnRegresar = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -148,6 +166,12 @@ public class ModalCliente extends javax.swing.JDialog {
         jLabel14.setText("Nombre:");
         jPanel3.add(jLabel14);
         jLabel14.setBounds(70, 130, 70, 30);
+
+        txtNombreBusqueda.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreBusquedaKeyTyped(evt);
+            }
+        });
         jPanel3.add(txtNombreBusqueda);
         txtNombreBusqueda.setBounds(120, 130, 160, 30);
 
@@ -159,7 +183,7 @@ public class ModalCliente extends javax.swing.JDialog {
             }
         });
         jPanel3.add(jButton1);
-        jButton1.setBounds(290, 120, 130, 40);
+        jButton1.setBounds(290, 120, 140, 40);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Seleccionar.png"))); // NOI18N
         jButton2.setText("Seleccionar");
@@ -169,32 +193,22 @@ public class ModalCliente extends javax.swing.JDialog {
             }
         });
         jPanel3.add(jButton2);
-        jButton2.setBounds(290, 180, 130, 40);
+        jButton2.setBounds(290, 180, 140, 40);
 
         tblclientesbusqueda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "ID Cliente", "Nombre", "Apellidos", "Teléfono", "Dirección", "Correo electrónico", "Fecha Registro", "Tipo Documento", "Documento", "Estado"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false
             };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         tblclientesbusqueda.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -212,6 +226,18 @@ public class ModalCliente extends javax.swing.JDialog {
         jLabel17.setText("Busqueda de Clientes");
         jPanel3.add(jLabel17);
         jLabel17.setBounds(610, 10, 310, 35);
+
+        btnRegresar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Regresar.png"))); // NOI18N
+        btnRegresar.setText("Regresar");
+        btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnRegresar);
+        btnRegresar.setBounds(1013, 500, 170, 45);
 
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Fondo.jpg"))); // NOI18N
         jPanel3.add(jLabel15);
@@ -257,6 +283,18 @@ public class ModalCliente extends javax.swing.JDialog {
     public String getApellido() {
         return apellido;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
     
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -272,6 +310,28 @@ public class ModalCliente extends javax.swing.JDialog {
         
     }//GEN-LAST:event_tblclientesbusquedaMouseClicked
 
+    private void txtNombreBusquedaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreBusquedaKeyTyped
+        char c = evt.getKeyChar();
+        if((c < 'A' || c > 'Z') && (c < 'a' || c > 'z' && c != 'Ñ' && c != 'ñ' && c != 'Á' && c != 'É' && c != 'Í' && c != 'Ó' && c != 'Ú' && c != 'á' && c != 'é' && c != 'í' && c != 'ó' && c != 'ú')&& (c!=KeyEvent.VK_SPACE) ){
+
+            evt.consume();
+
+        }
+              
+        if (txtNombreBusqueda.getText().length() >= 25){
+        
+        evt.consume();
+        
+        }  
+    }//GEN-LAST:event_txtNombreBusquedaKeyTyped
+
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        //FrmMenu m = new FrmMenu();
+        // m.setVisible(true);
+        this.setVisible(false);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRegresarActionPerformed
+
     
     
     /**
@@ -280,6 +340,7 @@ public class ModalCliente extends javax.swing.JDialog {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel14;

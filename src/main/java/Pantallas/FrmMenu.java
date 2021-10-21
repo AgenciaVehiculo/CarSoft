@@ -93,7 +93,7 @@ public class FrmMenu extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnClientes);
-        btnClientes.setBounds(80, 260, 213, 109);
+        btnClientes.setBounds(73, 260, 220, 109);
 
         btnVentas.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Ventas.png"))); // NOI18N
@@ -105,7 +105,7 @@ public class FrmMenu extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnVentas);
-        btnVentas.setBounds(80, 534, 213, 109);
+        btnVentas.setBounds(73, 534, 220, 109);
 
         btnEmpleados.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnEmpleados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Empleado.png"))); // NOI18N
@@ -117,7 +117,7 @@ public class FrmMenu extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnEmpleados);
-        btnEmpleados.setBounds(80, 398, 213, 109);
+        btnEmpleados.setBounds(73, 398, 220, 109);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/CarSoft-removebg-preview.png"))); // NOI18N
         getContentPane().add(jLabel1);
@@ -133,7 +133,7 @@ public class FrmMenu extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnBancos);
-        btnBancos.setBounds(323, 260, 213, 109);
+        btnBancos.setBounds(323, 260, 220, 109);
 
         btnPiezas.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnPiezas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Pieza.png"))); // NOI18N
@@ -145,7 +145,7 @@ public class FrmMenu extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnPiezas);
-        btnPiezas.setBounds(576, 398, 213, 109);
+        btnPiezas.setBounds(576, 398, 220, 109);
 
         btnVehículos.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnVehículos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Vehiculo.png"))); // NOI18N
@@ -157,7 +157,7 @@ public class FrmMenu extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnVehículos);
-        btnVehículos.setBounds(576, 260, 213, 109);
+        btnVehículos.setBounds(576, 260, 220, 109);
 
         btnPedidos.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnPedidos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Pedidos.png"))); // NOI18N
@@ -169,7 +169,7 @@ public class FrmMenu extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnPedidos);
-        btnPedidos.setBounds(323, 398, 213, 109);
+        btnPedidos.setBounds(323, 398, 220, 109);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -191,7 +191,7 @@ public class FrmMenu extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnCerrar);
-        btnCerrar.setBounds(576, 534, 213, 109);
+        btnCerrar.setBounds(576, 534, 220, 109);
 
         btnSalir.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Salir.png"))); // NOI18N
@@ -203,7 +203,7 @@ public class FrmMenu extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnSalir);
-        btnSalir.setBounds(1270, 10, 93, 41);
+        btnSalir.setBounds(1253, 10, 110, 41);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setText("en la comercialización de piezas ");

@@ -24,8 +24,8 @@ import javax.persistence.criteria.Root;
  */
 public class EmpleadoJpaController implements Serializable {
 
-    public EmpleadoJpaController() {
-        this.emf= Persistence.createEntityManagerFactory("CarSoft");
+    public EmpleadoJpaController(EntityManagerFactory emf) {
+        this.emf=emf;
     }
     private EntityManagerFactory emf = null;
 
@@ -140,6 +140,10 @@ public class EmpleadoJpaController implements Serializable {
         } finally {
             em.close();
         }
+    }
+
+    public boolean create(int idempleado) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

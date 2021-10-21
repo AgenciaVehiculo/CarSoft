@@ -20,10 +20,14 @@ import JPAController.TipoVehiculoJpaController;
 import JPAController.Tipo_colorJpaController;
 import JPAController.VehiculoJpaController;
 import JPAController.transmisionJpaController;
+import java.awt.Color;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.List;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -31,16 +35,16 @@ import javax.swing.table.DefaultTableModel;
  * @author Kur013
  */
 public class ModalVehiculosCombo extends javax.swing.JDialog {
-
-    MarcaJpaController Marcadao = new MarcaJpaController();
-    Tipo_colorJpaController Colorrdao = new Tipo_colorJpaController();
-    TipoCabinaJpaController TipoCabinadao = new TipoCabinaJpaController();
-    TipoGasolinaJpaController TipoGasolinadao = new TipoGasolinaJpaController();
-    transmisionJpaController TipoTransmisiondao = new transmisionJpaController();
-    TipoVehiculoJpaController TipoVehiculodao = new TipoVehiculoJpaController();
-    Numero_AsientosJpaController NumeroAsientosdao = new Numero_AsientosJpaController();
-    VehiculoJpaController vehiculoDao = new VehiculoJpaController();
-    HistoricoPrecioVehiculosJpaController historicoPrecioVehiculoDao = new HistoricoPrecioVehiculosJpaController();
+     EntityManagerFactory emf =Persistence.createEntityManagerFactory("CarSoft");
+    MarcaJpaController Marcadao = new MarcaJpaController(emf);
+    Tipo_colorJpaController Colorrdao = new Tipo_colorJpaController(emf);
+    TipoCabinaJpaController TipoCabinadao = new TipoCabinaJpaController(emf);
+    TipoGasolinaJpaController TipoGasolinadao = new TipoGasolinaJpaController(emf);
+    transmisionJpaController TipoTransmisiondao = new transmisionJpaController(emf);
+    TipoVehiculoJpaController TipoVehiculodao = new TipoVehiculoJpaController(emf);
+    Numero_AsientosJpaController NumeroAsientosdao = new Numero_AsientosJpaController(emf);
+    VehiculoJpaController vehiculoDao = new VehiculoJpaController(emf);
+    HistoricoPrecioVehiculosJpaController historicoPrecioVehiculoDao = new HistoricoPrecioVehiculosJpaController(emf);
 
     int id=0;
     String modelo="";
@@ -52,6 +56,9 @@ public class ModalVehiculosCombo extends javax.swing.JDialog {
     public ModalVehiculosCombo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.jButton1.setBackground( new Color(14, 209, 69));
+        this.jButton2.setBackground( new Color(14, 209, 69));
+        this.btnRegresar.setBackground( new Color(14, 209, 69));
     }
 
     public int getId() {
@@ -69,6 +76,22 @@ public class ModalVehiculosCombo extends javax.swing.JDialog {
 
     public String getMarca() {
         return marca;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public void setTotalcilin(double totalcilin) {
+        this.totalcilin = totalcilin;
     }
 
     
@@ -99,6 +122,7 @@ public class ModalVehiculosCombo extends javax.swing.JDialog {
         jLabel46 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        btnRegresar = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -112,7 +136,7 @@ public class ModalVehiculosCombo extends javax.swing.JDialog {
             }
         });
         jPanel2.add(chkMarca);
-        chkMarca.setBounds(200, 66, 21, 21);
+        chkMarca.setBounds(200, 70, 21, 21);
 
         chkColor.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -120,7 +144,7 @@ public class ModalVehiculosCombo extends javax.swing.JDialog {
             }
         });
         jPanel2.add(chkColor);
-        chkColor.setBounds(200, 94, 21, 21);
+        chkColor.setBounds(200, 100, 21, 21);
 
         chkTipoVehiculo.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -128,7 +152,7 @@ public class ModalVehiculosCombo extends javax.swing.JDialog {
             }
         });
         jPanel2.add(chkTipoVehiculo);
-        chkTipoVehiculo.setBounds(200, 125, 21, 21);
+        chkTipoVehiculo.setBounds(200, 130, 21, 21);
 
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("Marca:");
@@ -141,7 +165,7 @@ public class ModalVehiculosCombo extends javax.swing.JDialog {
         jLabel15.setBounds(58, 97, 40, 14);
 
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel16.setText("Tipo de Vehiculo:");
+        jLabel16.setText("Tipo de Vehículo:");
         jPanel2.add(jLabel16);
         jLabel16.setBounds(2, 125, 150, 28);
 
@@ -181,27 +205,18 @@ public class ModalVehiculosCombo extends javax.swing.JDialog {
             }
         });
         jPanel2.add(chkTipoGasolina);
-        chkTipoGasolina.setBounds(479, 67, 21, 21);
+        chkTipoGasolina.setBounds(480, 70, 21, 21);
 
         tbBusqueda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "ID", "VIN", "Marca", "Color", "Tipo de Gasolina", "Tipo de Vehiculo", "Numero de asientos", "Cilindraje", "Precio"
+                "ID Vehículo", "Modelo", "Marca", "Color", "Combustible", "Tipo de Vehículo", "Número de asientos", "Cilindraje", "Precio"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -214,9 +229,10 @@ public class ModalVehiculosCombo extends javax.swing.JDialog {
         jScrollPane3.setBounds(10, 171, 1270, 184);
 
         jLabel46.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
-        jLabel46.setText("Busqueda por Filtro");
+        jLabel46.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel46.setText("Búsqueda por Filtro");
         jPanel2.add(jLabel46);
-        jLabel46.setBounds(517, 11, 230, 35);
+        jLabel46.setBounds(610, 10, 230, 35);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Seleccionar.png"))); // NOI18N
         jButton2.setText("Seleccionar");
@@ -226,7 +242,7 @@ public class ModalVehiculosCombo extends javax.swing.JDialog {
             }
         });
         jPanel2.add(jButton2);
-        jButton2.setBounds(530, 106, 140, 39);
+        jButton2.setBounds(530, 106, 160, 39);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/buscar.png"))); // NOI18N
         jButton1.setText("Buscar");
@@ -237,6 +253,18 @@ public class ModalVehiculosCombo extends javax.swing.JDialog {
         });
         jPanel2.add(jButton1);
         jButton1.setBounds(375, 106, 140, 39);
+
+        btnRegresar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Regresar.png"))); // NOI18N
+        btnRegresar.setText("Regresar");
+        btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnRegresar);
+        btnRegresar.setBounds(1113, 380, 170, 45);
 
         jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Fondo.jpg"))); // NOI18N
         jLabel19.setText("jLabel19");
@@ -359,9 +387,48 @@ public class ModalVehiculosCombo extends javax.swing.JDialog {
     }//GEN-LAST:event_chkTipoGasolinaActionPerformed
 
     private void createTableBusqueda(){
-        DefaultTableModel modelo = new DefaultTableModel();
+        if(!chkMarca.isSelected()&& !chkTipoGasolina.isSelected() && !chkTipoVehiculo.isSelected() && !chkColor.isSelected()){
+            JOptionPane.showMessageDialog(null,"No ha Marcado ningún Checkbox","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        if(chkMarca.isSelected()&& cmbMarcaBusqueda.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(null,"No ha seleccionado ninguna Marca","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        if(chkTipoGasolina.isSelected()&& cmbGasolinaBusqueda.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(null,"No ha seleccionado ningún Tipo de Gasolina","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        if(chkTipoVehiculo.isSelected()&& cmbTipoVehiculoBusqueda.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(null,"No ha seleccionado ningún Tipo de Vehículo","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        if(chkColor.isSelected()&& cmbColorBusqueda.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(null,"No ha seleccionado ningún Color","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        DefaultTableModel modelo = (DefaultTableModel) tbBusqueda.getModel();
         tbBusqueda.setModel(modelo);
-        modelo.addColumn("ID");
+        int i;
+        for(i=modelo.getRowCount()-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
+        /*modelo.addColumn("ID");
         modelo.addColumn("Marca");
         modelo.addColumn("Modelo");
         modelo.addColumn("Color");
@@ -369,7 +436,7 @@ public class ModalVehiculosCombo extends javax.swing.JDialog {
         modelo.addColumn("Tipo de vehiculo");
         modelo.addColumn("Numero de asientos");
         modelo.addColumn("Cilindraje");
-        modelo.addColumn("Precio");
+        modelo.addColumn("Precio");*/
         
         DecimalFormatSymbols separadoresPersonalizados = new DecimalFormatSymbols();
         separadoresPersonalizados.setDecimalSeparator('.');
@@ -388,9 +455,9 @@ public class ModalVehiculosCombo extends javax.swing.JDialog {
                             aux=t.getPrecio();
                             modelo.addRow(new Object[]{
                                 e.getId_vehiculo(),
-                                
-                                Marcadao.findMarca(e.getId_marca()).getMarca(),
                                 e.getVin(),
+                                Marcadao.findMarca(e.getId_marca()).getMarca(),
+                                
                                 Colorrdao.findTipo_color(e.getId_tipo_color()).getTipo_color(),
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
@@ -420,7 +487,6 @@ public class ModalVehiculosCombo extends javax.swing.JDialog {
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
                                 NumeroAsientosdao.findNumero_Asientos(e.getId_numero_asientos()).getNumero_Asientos(),
                                 e.getTotal_cilindraje(),
-                                
                                 String.format("%,.2f",aux)
                                                          
                             
@@ -764,8 +830,6 @@ public class ModalVehiculosCombo extends javax.swing.JDialog {
                 }
             }
         }
-        
-        
     }
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -778,12 +842,19 @@ public class ModalVehiculosCombo extends javax.swing.JDialog {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int fila = tbBusqueda.getSelectedRow();
             id =(int)((tbBusqueda.getValueAt(fila, 0)));
-            modelo =(String)((tbBusqueda.getValueAt(fila, 2)));
-            marca =(String)((tbBusqueda.getValueAt(fila, 1)));
-            totalcilin=(double)(Double.parseDouble(tbBusqueda.getValueAt(fila, 7).toString()));
+            modelo =(String)((tbBusqueda.getValueAt(fila, 1)));
+            marca =(String)((tbBusqueda.getValueAt(fila, 2)));
+            totalcilin=(Double.parseDouble(tbBusqueda.getValueAt(fila, 7).toString()));
             this.dispose();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+         //FrmMenu m = new FrmMenu();
+        // m.setVisible(true);
+        this.setVisible(false);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRegresarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -791,6 +862,7 @@ public class ModalVehiculosCombo extends javax.swing.JDialog {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JCheckBox chkColor;
     private javax.swing.JCheckBox chkMarca;
     private javax.swing.JCheckBox chkTipoGasolina;

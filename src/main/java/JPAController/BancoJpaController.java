@@ -24,8 +24,8 @@ import javax.persistence.criteria.Root;
  */
 public class BancoJpaController implements Serializable {
 
-    public BancoJpaController() {
-        this.emf= Persistence.createEntityManagerFactory("CarSoft"); 
+    public BancoJpaController(EntityManagerFactory emf) {
+        this.emf= emf;
     }
     private EntityManagerFactory emf = null;
 

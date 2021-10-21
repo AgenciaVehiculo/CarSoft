@@ -12,12 +12,15 @@ import Clases.Usuarios;
 import JPAController.EmpleadoJpaController;
 import JPAController.PersonaJpaController;
 import JPAController.UsuariosJpaController;
+import com.sun.glass.events.KeyEvent;
 import java.awt.*;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  *
@@ -30,9 +33,10 @@ public class IniciodeSesion extends javax.swing.JFrame {
      */
     
     private Component confirm;
-      UsuariosJpaController  usuarioDao = new UsuariosJpaController();
-      PersonaJpaController personaDao= new PersonaJpaController();
-      EmpleadoJpaController empleadoDao = new EmpleadoJpaController();
+    EntityManagerFactory emf =Persistence.createEntityManagerFactory("CarSoft");
+      UsuariosJpaController  usuarioDao = new UsuariosJpaController(emf);
+      PersonaJpaController personaDao= new PersonaJpaController(emf);
+      EmpleadoJpaController empleadoDao = new EmpleadoJpaController(emf);
       private String user, password;
       
     public IniciodeSesion() {
@@ -44,10 +48,6 @@ public class IniciodeSesion extends javax.swing.JFrame {
         this.btnSalir.setBackground( new Color(236, 28, 36));
     }
     
-    public void datos(String us, String pas){
-    user  = "jose.lopez1";
-    password = "admin";
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -76,55 +76,66 @@ public class IniciodeSesion extends javax.swing.JFrame {
                 btn_passwordActionPerformed(evt);
             }
         });
+        btn_password.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                btn_passwordKeyTyped(evt);
+            }
+        });
         getContentPane().add(btn_password);
-        btn_password.setBounds(700, 420, 130, 30);
+        btn_password.setBounds(670, 420, 130, 30);
+
+        txt_usuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_usuarioKeyTyped(evt);
+            }
+        });
         getContentPane().add(txt_usuario);
-        txt_usuario.setBounds(700, 380, 130, 30);
+        txt_usuario.setBounds(670, 380, 130, 30);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("Usuario:");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(600, 390, 90, 14);
+        jLabel1.setBounds(570, 390, 90, 14);
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Contraseña:");
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(600, 430, 90, 14);
+        jLabel2.setBounds(570, 430, 90, 14);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/CarSoft-removebg-preview.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\CarSoft-Version-2.1\\src\\main\\resources\\Img\\CarSoft-removebg-preview.png")); // NOI18N
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(640, 10, 200, 190);
+        jLabel3.setBounds(600, 10, 200, 190);
 
         btnIngresar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnIngresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Ingresar.png"))); // NOI18N
+        btnIngresar.setIcon(new javax.swing.ImageIcon("C:\\CarSoft-Version-2.1\\src\\main\\resources\\Img\\Ingresar.png")); // NOI18N
         btnIngresar.setText("Ingresar");
-        btnIngresar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnIngresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnIngresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnIngresarActionPerformed(evt);
             }
         });
         getContentPane().add(btnIngresar);
-        btnIngresar.setBounds(680, 500, 170, 59);
+        btnIngresar.setBounds(640, 500, 170, 59);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setText("Inicio de Sesión");
         getContentPane().add(jLabel4);
-        jLabel4.setBounds(690, 320, 108, 17);
+        jLabel4.setBounds(650, 320, 108, 17);
 
         btnSalir.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Salir.png"))); // NOI18N
+        btnSalir.setIcon(new javax.swing.ImageIcon("C:\\CarSoft-Version-2.1\\src\\main\\resources\\Img\\Salir.png")); // NOI18N
         btnSalir.setText("Salir");
-        btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalirActionPerformed(evt);
             }
         });
         getContentPane().add(btnSalir);
-        btnSalir.setBounds(1250, 20, 93, 41);
+        btnSalir.setBounds(1233, 20, 110, 41);
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Fondo.jpg"))); // NOI18N
+        jLabel6.setIcon(new javax.swing.ImageIcon("C:\\CarSoft-Version-2.1\\src\\main\\resources\\Img\\Fondo.jpg")); // NOI18N
         jLabel6.setText("jLabel6");
         getContentPane().add(jLabel6);
         jLabel6.setBounds(-10, -30, 1750, 1130);
@@ -137,31 +148,34 @@ public class IniciodeSesion extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_passwordActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        // TODO add your handling code here:
+         System.exit(0);
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-
-        if (txt_usuario.getText().equals("") && btn_password.getText().equals("")){
-            JOptionPane.showMessageDialog(this,"Usuario y contraseña estan vacios\nIngrese su usuario y contraseña","Error!", JOptionPane.ERROR_MESSAGE);
-            txt_usuario.setFocusable(true);
-            return;
+        InicioSesion();
+       
+    }//GEN-LAST:event_btnIngresarActionPerformed
+public boolean InicioSesion(){
+     if (txt_usuario.getText().equals("") && btn_password.getText().equals("")){
+            //JOptionPane.showMessageDialog(this,"Usuario y contraseña estan vacios\nIngrese su usuario y contraseña","Error!", JOptionPane.ERROR_MESSAGE);
+            //txt_usuario.setFocusable(true);
+            return false;
        }
        else{
            
        }
        if (txt_usuario.getText().equals("")){
-            JOptionPane.showMessageDialog(this, "Usuario esta vacio\nIngrese su usuario","Error!", JOptionPane.ERROR_MESSAGE);
-            txt_usuario.setFocusable(true);
-            return;
+            //JOptionPane.showMessageDialog(this, "Usuario esta vacio\nIngrese su usuario","Error!", JOptionPane.ERROR_MESSAGE);
+            //txt_usuario.setFocusable(true);
+            return false;
        }
        else{
            
        }
        if (btn_password.getText().equals("")){
-            JOptionPane.showMessageDialog(this, "Contraseña esta vacio\nIngrese su contraseña","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(this, "Contraseña esta vacio\nIngrese su contraseña","Error!", JOptionPane.ERROR_MESSAGE);
             btn_password.setFocusable(true);
-            return;
+            return false;
         }
        java.util.List<Usuarios> temp;
        temp = usuarioDao.findUsuariosEntities();
@@ -169,8 +183,8 @@ public class IniciodeSesion extends javax.swing.JFrame {
        if(u.getId_Nombre().equals(txt_usuario.getText())){
             u= usuarioDao.findUsuarios(u.getId_Usuario());
             if(u.isEstado()!=true){
-            JOptionPane.showMessageDialog(null,"Este usuario esta bloqueado, por favor comunicarse con el Gerente","Información", JOptionPane.INFORMATION_MESSAGE); 
-            return;
+            //JOptionPane.showMessageDialog(null,"Este usuario esta bloqueado, por favor comunicarse con el Gerente","Información", JOptionPane.INFORMATION_MESSAGE); 
+            return false;
         }
        }
        }
@@ -208,8 +222,8 @@ public class IniciodeSesion extends javax.swing.JFrame {
             }   
             FrmMenu.txtBienvenido.setText("Bienvenido "+temp3.getNombre()+" "+temp3.getApellido());
             FrmMenu.lIDEmpleado.setText(String.valueOf(temp2.getId_Empleado()));
-            
             this.dispose();
+            
         }
         else if (flag && !flag2){
             
@@ -223,12 +237,14 @@ public class IniciodeSesion extends javax.swing.JFrame {
             u.setIntentos(aux); 
             
                 if(u.getIntentos()>=3){
-                JOptionPane.showMessageDialog(null, "Esta cuenta ha sido bloqueada por intentar acceder sin exito 3 veces","Error!", JOptionPane.ERROR_MESSAGE);
-                 u.setEstado(false);       
+                //JOptionPane.showMessageDialog(null, "Esta cuenta ha sido bloqueada por intentar acceder sin exito 3 veces","Error!", JOptionPane.ERROR_MESSAGE);
+                 u.setEstado(false); 
+                 return false;
                 }
                 if(u.getIntentos()<=2){
-                JOptionPane.showMessageDialog(this, "La contraseña no es valida\n Ingrese su contraseña","Contraseña Incorrecta", JOptionPane.ERROR_MESSAGE);
-                 btn_password.setFocusable(true);      
+                //JOptionPane.showMessageDialog(this, "La contraseña no es valida\n Ingrese su contraseña","Contraseña Incorrecta", JOptionPane.ERROR_MESSAGE);
+                 btn_password.setFocusable(true);  
+                 return false;
                 }
             try {
             usuarioDao.edit(u);
@@ -240,7 +256,8 @@ public class IniciodeSesion extends javax.swing.JFrame {
             }
             }
         else if (flag && flag2 && !flag3){
-            JOptionPane.showMessageDialog(this,"Cuenta inactiva, pongase en contacto con el Gerente o departamento de TI","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(this,"Cuenta inactiva, pongase en contacto con el Gerente o departamento de TI","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         
         else if(!flag){
@@ -252,10 +269,41 @@ public class IniciodeSesion extends javax.swing.JFrame {
                 }
             }
             else{
-            JOptionPane.showMessageDialog(this, "Usuario no encontrado en el sistema, Asegurese que su Usuario este escrito correctamente","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(this, "Usuario no encontrado en el sistema, Asegurese que su Usuario este escrito correctamente","Error!", JOptionPane.ERROR_MESSAGE);
+                return false;
             }
         }
-    }//GEN-LAST:event_btnIngresarActionPerformed
+        return true;
+}
+    private void txt_usuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyTyped
+                char c = evt.getKeyChar();
+        if((c < 'a' || c > 'z') && (c != '.')&&(c < '0' || c > '9')&& (c < 'A' || c > 'Z'&& c != 'Ñ' && c != 'ñ' && c != 'Á' && c != 'É' && c != 'Í' && c != 'Ó' && c != 'Ú' && c != 'á' && c != 'é' && c != 'í' && c != 'ó' && c != 'ú')){
+
+            evt.consume();
+
+        }
+              
+        if (txt_usuario.getText().length() >= 15){
+        
+        evt.consume();
+        
+        }
+        
+    }//GEN-LAST:event_txt_usuarioKeyTyped
+
+    private void btn_passwordKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_passwordKeyTyped
+       char c = evt.getKeyChar();
+        if((c < 'a' || c > 'z') && (c != '@'&& c != '#' && c != '$' && c != '%' &&c != '^' && c != '&' && c != '+' && c != '=' )&&(c < '0' || c > '9')&& (c < 'A' || c > 'Z'&& c != 'Ñ' && c != 'ñ' && c != 'Á' && c != 'É' && c != 'Í' && c != 'Ó' && c != 'Ú' && c != 'á' && c != 'é' && c != 'í' && c != 'ó' && c != 'ú') ){
+
+            evt.consume();
+
+        }
+        if (btn_password.getText().length() >= 15){
+        
+        evt.consume();
+        
+        }
+    }//GEN-LAST:event_btn_passwordKeyTyped
 
     /**
      * @param args the command line arguments
@@ -265,12 +313,12 @@ public class IniciodeSesion extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIngresar;
     private javax.swing.JButton btnSalir;
-    private javax.swing.JPasswordField btn_password;
+    public javax.swing.JPasswordField btn_password;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JTextField txt_usuario;
+    public javax.swing.JTextField txt_usuario;
     // End of variables declaration//GEN-END:variables
 }

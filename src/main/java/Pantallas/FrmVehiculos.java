@@ -41,6 +41,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -56,15 +58,17 @@ public class FrmVehiculos extends javax.swing.JFrame {
     /**
      * Creates new form FrmVehiculos
      */
-    MarcaJpaController Marcadao = new MarcaJpaController();
-    Tipo_colorJpaController Colorrdao = new Tipo_colorJpaController();
-    TipoCabinaJpaController TipoCabinadao = new TipoCabinaJpaController();
-    TipoGasolinaJpaController TipoGasolinadao = new TipoGasolinaJpaController();
-    transmisionJpaController TipoTransmisiondao = new transmisionJpaController();
-    TipoVehiculoJpaController TipoVehiculodao = new TipoVehiculoJpaController();
-    Numero_AsientosJpaController NumeroAsientosdao = new Numero_AsientosJpaController();
-    VehiculoJpaController vehiculoDao = new VehiculoJpaController();
-    HistoricoPrecioVehiculosJpaController historicoPrecioVehiculoDao = new HistoricoPrecioVehiculosJpaController();
+    
+    EntityManagerFactory emf =Persistence.createEntityManagerFactory("CarSoft");
+    MarcaJpaController Marcadao = new MarcaJpaController(emf);
+    Tipo_colorJpaController Colorrdao = new Tipo_colorJpaController(emf);
+    TipoCabinaJpaController TipoCabinadao = new TipoCabinaJpaController(emf);
+    TipoGasolinaJpaController TipoGasolinadao = new TipoGasolinaJpaController(emf);
+    transmisionJpaController TipoTransmisiondao = new transmisionJpaController(emf);
+    TipoVehiculoJpaController TipoVehiculodao = new TipoVehiculoJpaController(emf);
+    Numero_AsientosJpaController NumeroAsientosdao = new Numero_AsientosJpaController(emf);
+    VehiculoJpaController vehiculoDao = new VehiculoJpaController(emf);
+    HistoricoPrecioVehiculosJpaController historicoPrecioVehiculoDao = new HistoricoPrecioVehiculosJpaController(emf);
     
     public FrmVehiculos() {
         initComponents();
@@ -228,9 +232,13 @@ public class FrmVehiculos extends javax.swing.JFrame {
     }
     
     private void createTableVehiculosAgregar(){
-        DefaultTableModel modelo = new DefaultTableModel();
+        DefaultTableModel modelo = (DefaultTableModel) tbAgregarVehiculo.getModel();
         tbAgregarVehiculo.setModel(modelo);
-        modelo.addColumn("ID Vehiculo");
+        int i;
+        for(i=modelo.getRowCount()-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
+        /*modelo.addColumn("ID Vehiculo");
         
         modelo.addColumn("Marca");
         modelo.addColumn("Modelo");
@@ -242,7 +250,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
         modelo.addColumn("Stock");
         modelo.addColumn("Stock Maximo");
         modelo.addColumn("Stock Minimo");
-        modelo.addColumn("Precio");
+        modelo.addColumn("Precio");*/
         
         DecimalFormatSymbols separadoresPersonalizados = new DecimalFormatSymbols();
         separadoresPersonalizados.setDecimalSeparator('.');
@@ -261,6 +269,8 @@ public class FrmVehiculos extends javax.swing.JFrame {
         String aux3="";
         String aux4="";
         String aux5="";
+        String aux555="";
+        String aux55="";
        // String aux6="";
         double aux7=0.00;
         
@@ -270,6 +280,8 @@ public class FrmVehiculos extends javax.swing.JFrame {
             aux3 = TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina();
             aux4 = TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo();
             aux5= NumeroAsientosdao.findNumero_Asientos(e.getId_numero_asientos()).getNumero_Asientos();
+            aux55= TipoCabinadao.findTipoCabina(e.getId_tipo_cabina()).getTipoCabina();
+            aux555= TipoTransmisiondao.findtransmision(e.getId_transmision()).getTransmision();
             for(HistoricoPrecioVehiculos xd : tempPrecio){
                 if(e.getId_vehiculo()== xd.getId_vehiculo() && xd.getFechaFinal()==null){
                     aux7=xd.getPrecio();
@@ -283,6 +295,8 @@ public class FrmVehiculos extends javax.swing.JFrame {
                 aux3,
                 aux4,
                 aux5,
+                aux55,
+                aux555,
                 String.format("%,.2f",e.getTotal_cilindraje()),
                 e.getStock(),
                 e.getStock_maximo(),
@@ -449,11 +463,15 @@ public class FrmVehiculos extends javax.swing.JFrame {
     }
         
     public void createTableMarca(){
-        DefaultTableModel modelo = new DefaultTableModel();
+        DefaultTableModel modelo = (DefaultTableModel) tblMarca.getModel();
         tblMarca.setModel(modelo);
-        modelo.addColumn("ID Marca");
+        int i;
+        for(i=modelo.getRowCount()-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
+        /*modelo.addColumn("ID Marca");
         modelo.addColumn("Marca");
-        modelo.addColumn("Estado");
+        modelo.addColumn("Estado");*/
         
         List<Marca> temp = Marcadao.findMarcaEntities();
         
@@ -509,11 +527,15 @@ public class FrmVehiculos extends javax.swing.JFrame {
     }
         
     public void createTableColor(){
-        DefaultTableModel modelo = new DefaultTableModel();
+        DefaultTableModel modelo = (DefaultTableModel) tblColor.getModel();
         tblColor.setModel(modelo);
-        modelo.addColumn("ID Color");
+        int i;
+        for(i=modelo.getRowCount()-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
+        /*modelo.addColumn("ID Color");
         modelo.addColumn("Color");
-        modelo.addColumn("Estado");
+        modelo.addColumn("Estado");*/
         
         List<Tipo_color> temp = Colorrdao.findTipo_colorEntities();
         
@@ -572,11 +594,15 @@ public class FrmVehiculos extends javax.swing.JFrame {
     }
         
     public void createTableTipoVehiculo(){
-        DefaultTableModel modelo = new DefaultTableModel();
+        DefaultTableModel modelo = (DefaultTableModel) tblTipoVehiculo.getModel();
         tblTipoVehiculo.setModel(modelo);
-        modelo.addColumn("ID Tipo Vehiculo");
+        int i;
+        for(i=modelo.getRowCount()-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
+        /*modelo.addColumn("ID Tipo Vehiculo");
         modelo.addColumn("Tipo Vehiculo");
-        modelo.addColumn("Estado");
+        modelo.addColumn("Estado");*/
         
         List<TipoVehiculo> temp = TipoVehiculodao.findTipoVehiculoEntities();
         
@@ -618,11 +644,15 @@ public class FrmVehiculos extends javax.swing.JFrame {
     }
         
     public void createTableTipoCabina(){
-        DefaultTableModel modelo = new DefaultTableModel();
+        DefaultTableModel modelo = (DefaultTableModel) tblTipoCabina.getModel();;
         tblTipoCabina.setModel(modelo);
-        modelo.addColumn("ID Tipo Cabina");
+        int i;
+        for(i=modelo.getRowCount()-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
+       /* modelo.addColumn("ID Tipo Cabina");
         modelo.addColumn("Tipo Cabina");
-        modelo.addColumn("Estado");
+        modelo.addColumn("Estado");*/
         
         List<TipoCabina> temp = TipoCabinadao.findTipoCabinaEntities();
         
@@ -664,11 +694,15 @@ public class FrmVehiculos extends javax.swing.JFrame {
     }
         
     public void createTableTipoGasolina(){
-        DefaultTableModel modelo = new DefaultTableModel();
+        DefaultTableModel modelo = (DefaultTableModel) tblTipoGasolina.getModel();
         tblTipoGasolina.setModel(modelo);
-        modelo.addColumn("ID Tipo Gasolina");
+        int i;
+        for(i=modelo.getRowCount()-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
+        /*modelo.addColumn("ID Tipo Gasolina");
         modelo.addColumn("Tipo Gasolina");
-        modelo.addColumn("Estado");
+        modelo.addColumn("Estado");*/
         
         List<TipoGasolina> temp = TipoGasolinadao.findTipoGasolinaEntities();
         
@@ -710,11 +744,15 @@ public class FrmVehiculos extends javax.swing.JFrame {
     }
         
     public void createTableTipoTransmision(){
-        DefaultTableModel modelo = new DefaultTableModel();
+        DefaultTableModel modelo = (DefaultTableModel) tblTipoTransmision.getModel();
         tblTipoTransmision.setModel(modelo);
-        modelo.addColumn("ID Tipo Transmision");
+        int i;
+        for(i=modelo.getRowCount()-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
+        /*modelo.addColumn("ID Tipo Transmision");
         modelo.addColumn("Tipo Transmision");
-        modelo.addColumn("Estado");
+        modelo.addColumn("Estado");*/
         
         List<transmision> temp = TipoTransmisiondao.findtransmisionEntities();
         
@@ -756,11 +794,15 @@ public class FrmVehiculos extends javax.swing.JFrame {
     }
         
     public void createTableNumeroAsientos(){
-        DefaultTableModel modelo = new DefaultTableModel();
+        DefaultTableModel modelo = (DefaultTableModel) tblNumeroAsientos.getModel();
         tblNumeroAsientos.setModel(modelo);
-        modelo.addColumn("ID Número de Asientos");
+        int i;
+        for(i=modelo.getRowCount()-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
+        /*modelo.addColumn("ID Número de Asientos");
         modelo.addColumn("Número de Asientos");
-        modelo.addColumn("Estado");
+        modelo.addColumn("Estado");*/
         
         List<Numero_Asientos> temp = NumeroAsientosdao.findNumero_AsientosEntities();
         
@@ -1009,23 +1051,14 @@ public class FrmVehiculos extends javax.swing.JFrame {
         tbBusqueda.setForeground(new java.awt.Color(255, 255, 255));
         tbBusqueda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "ID", "VIN", "Marca", "Color", "Tipo de Gasolina", "Tipo de Vehiculo", "Numero de asientos", "Cilindraje", "Precio"
+                "ID Vehículo", "Marca", "Modelo", "Color", "Combustible", "Tipo de Vehículo", "Número de Asientos", "Precio"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -1056,7 +1089,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
 
         jLabel46.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel46.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel46.setText("Busqueda por Filtro");
+        jLabel46.setText("Búsqueda por Filtro");
 
         btnBuscar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/buscar.png"))); // NOI18N
@@ -1154,11 +1187,12 @@ public class FrmVehiculos extends javax.swing.JFrame {
                             .addComponent(chkColor, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(80, 80, 80)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 290, Short.MAX_VALUE)
-                .addComponent(btnRegresar8))
+                .addGap(136, 136, 136)
+                .addComponent(btnRegresar8)
+                .addContainerGap(154, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Busqueda por filtro", jPanel2);
+        jTabbedPane1.addTab("Búsqueda por filtro", jPanel2);
 
         cmbIDMarca.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -1222,28 +1256,18 @@ public class FrmVehiculos extends javax.swing.JFrame {
 
         tblMarca.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "ID Marca", "Marca", "Estado"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class
+            boolean[] canEdit = new boolean [] {
+                false, false, false
             };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         tblMarca.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1419,28 +1443,18 @@ public class FrmVehiculos extends javax.swing.JFrame {
 
         tblColor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "ID Tipo de Documento", "Tipo de Documento", "Estado"
+                "ID Color", "Color", "Estado"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class
+            boolean[] canEdit = new boolean [] {
+                false, false, false
             };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         tblColor.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1611,28 +1625,18 @@ public class FrmVehiculos extends javax.swing.JFrame {
 
         tblTipoVehiculo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "ID Tipo de Documento", "Tipo de Documento", "Estado"
+                "ID Tipo Vehículo", "Tipo Vehículo", "Estado"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class
+            boolean[] canEdit = new boolean [] {
+                false, false, false
             };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         tblTipoVehiculo.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1796,28 +1800,18 @@ public class FrmVehiculos extends javax.swing.JFrame {
 
         tblTipoCabina.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "ID Tipo de Documento", "Tipo de Documento", "Estado"
+                "ID Tipo Cabina", "Tipo Cabina", "Estado"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class
+            boolean[] canEdit = new boolean [] {
+                false, false, false
             };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         tblTipoCabina.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1935,11 +1929,11 @@ public class FrmVehiculos extends javax.swing.JFrame {
 
         jLabel39.setForeground(new java.awt.Color(255, 255, 255));
         jLabel39.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel39.setText("ID Tipo de Gasolina: ");
+        jLabel39.setText("ID Tipo de Combustible:");
 
         jLabel40.setForeground(new java.awt.Color(255, 255, 255));
         jLabel40.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel40.setText("Tipo de Gasolina:");
+        jLabel40.setText("Tipo de Combustible:");
 
         txtTipoGasolina.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -1989,28 +1983,18 @@ public class FrmVehiculos extends javax.swing.JFrame {
 
         tblTipoGasolina.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "ID Tipo de Documento", "Tipo de Documento", "Estado"
+                "ID Tipo de Combustible", "Tipo de Combustible", "Estado"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class
+            boolean[] canEdit = new boolean [] {
+                false, false, false
             };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         tblTipoGasolina.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -2045,7 +2029,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
 
         jLabel41.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel41.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel41.setText("Nuevo Tipo de Gasolina");
+        jLabel41.setText("Nuevo Tipo de Combustible");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -2065,7 +2049,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
                             .addGroup(jPanel8Layout.createSequentialGroup()
                                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel40, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel39, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE))
+                                    .addComponent(jLabel39, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cmbIDTipoGasolina, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2081,7 +2065,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
                                 .addComponent(jLabel41)
                                 .addGap(407, 407, 407)
                                 .addComponent(btnSalir5)))))
-                .addContainerGap(484, Short.MAX_VALUE))
+                .addContainerGap(440, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2116,7 +2100,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
                 .addGap(150, 150, 150))
         );
 
-        jTabbedPane1.addTab("Nuevo Tipo de Gasolina", jPanel8);
+        jTabbedPane1.addTab("Nuevo Tipo de Combustible", jPanel8);
 
         jLabel47.setForeground(new java.awt.Color(255, 255, 255));
         jLabel47.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -2180,28 +2164,18 @@ public class FrmVehiculos extends javax.swing.JFrame {
 
         tblNumeroAsientos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "ID Número de Asientos", "Nuevo Número de Asientos", "Estado"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class
+            boolean[] canEdit = new boolean [] {
+                false, false, false
             };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         tblNumeroAsientos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -2226,7 +2200,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
 
         jLabel49.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel49.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel49.setText("Nuevo número de Asientos");
+        jLabel49.setText("Nuevo Número de Asientos");
 
         btnRegresar9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnRegresar9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Regresar.png"))); // NOI18N
@@ -2272,7 +2246,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
                                 .addComponent(jLabel49)
                                 .addGap(402, 402, 402)
                                 .addComponent(btnSalir9)))))
-                .addContainerGap(483, Short.MAX_VALUE))
+                .addContainerGap(481, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2302,7 +2276,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
                 .addGap(144, 144, 144))
         );
 
-        jTabbedPane1.addTab("Nuevo Numero de Asientos", jPanel9);
+        jTabbedPane1.addTab("Nuevo Número de Asientos", jPanel9);
 
         cmbIDTipoTransmision.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -2366,28 +2340,18 @@ public class FrmVehiculos extends javax.swing.JFrame {
 
         tblTipoTransmision.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "ID Tipo de Documento", "Tipo de Documento", "Estado"
+                "ID Tipo Transmisión", " Tipo Transmisión", "Estado"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class
+            boolean[] canEdit = new boolean [] {
+                false, false, false
             };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         tblTipoTransmision.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -2502,7 +2466,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("ID Vehiculo:");
+        jLabel1.setText("ID Vehículo:");
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -2518,15 +2482,15 @@ public class FrmVehiculos extends javax.swing.JFrame {
 
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel5.setText("Tipo de Vehiculo:");
+        jLabel5.setText("Tipo de Vehículo:");
 
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel6.setText("Tipo de Gasolina:");
+        jLabel6.setText("Tipo de Combustible:");
 
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setText("Numero Asientos:");
+        jLabel7.setText("Número Asientos:");
 
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -2534,7 +2498,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
 
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel9.setText("Tipo de Transmision:");
+        jLabel9.setText("Tipo de Transmisión:");
 
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -2546,23 +2510,14 @@ public class FrmVehiculos extends javax.swing.JFrame {
 
         tbAgregarVehiculo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "ID Vehiculo", "VIN", "Marca", "Modelo", "Color", "Tipo Gasolina", "Tipo Vehiculo", "Numero de Asientos", "Total de Cilindraje", "Stock", "Stock Minimo", "Stock Máximo", "Precio"
+                "ID Vehículo", "Marca", "Modelo", "Color", "Combustible", "TipoVehículo", "N. de Asientos", "Cabina", "Transmisión", "Cilindraje", "Stock", "Stock Máximo", "Stock Mínimo", "Precio", "Estado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, true, false, true, true, true, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -2577,12 +2532,17 @@ public class FrmVehiculos extends javax.swing.JFrame {
         jScrollPane2.setViewportView(tbAgregarVehiculo);
         if (tbAgregarVehiculo.getColumnModel().getColumnCount() > 0) {
             tbAgregarVehiculo.getColumnModel().getColumn(7).setPreferredWidth(100);
-            tbAgregarVehiculo.getColumnModel().getColumn(8).setPreferredWidth(90);
+            tbAgregarVehiculo.getColumnModel().getColumn(9).setPreferredWidth(90);
         }
 
         txtVin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtVinActionPerformed(evt);
+            }
+        });
+        txtVin.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtVinKeyTyped(evt);
             }
         });
 
@@ -2634,10 +2594,18 @@ public class FrmVehiculos extends javax.swing.JFrame {
                 cmbIDVehiculoItemStateChanged(evt);
             }
         });
+        cmbIDVehiculo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbIDVehiculoActionPerformed(evt);
+            }
+        });
 
         txtCilindraje.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtCilindrajeKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCilindrajeKeyTyped(evt);
             }
         });
 
@@ -2647,7 +2615,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
 
         jLabel21.setForeground(new java.awt.Color(255, 255, 255));
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel21.setText("Stock Minimo:");
+        jLabel21.setText("Stock Mínimo:");
 
         jLabel22.setForeground(new java.awt.Color(255, 255, 255));
         jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -2678,14 +2646,37 @@ public class FrmVehiculos extends javax.swing.JFrame {
         jLabel45.setText("Vehículos");
 
         ftxtStock.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        ftxtStock.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ftxtStockKeyTyped(evt);
+            }
+        });
 
         ftxtStockMinimo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        ftxtStockMinimo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ftxtStockMinimoKeyTyped(evt);
+            }
+        });
 
         ftxtStockMaximo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        ftxtStockMaximo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ftxtStockMaximoActionPerformed(evt);
+            }
+        });
+        ftxtStockMaximo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ftxtStockMaximoKeyTyped(evt);
+            }
+        });
 
         txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtPrecioKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrecioKeyTyped(evt);
             }
         });
 
@@ -2694,94 +2685,97 @@ public class FrmVehiculos extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(810, 810, 810)
-                .addComponent(jLabel45)
-                .addGap(336, 336, 336)
-                .addComponent(btnSalir7))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(cmbTipoVehiculoVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ftxtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1176, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(1190, 1190, 1190)
-                .addComponent(btnRegresar7))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(48, 48, 48)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(4, 4, 4)
-                        .addComponent(cmbMarcaVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(810, 810, 810)
+                        .addComponent(jLabel45)
+                        .addGap(336, 336, 336)
+                        .addComponent(btnSalir7))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(4, 4, 4)
-                        .addComponent(cmbIDVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(48, 48, 48)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(4, 4, 4)
+                                .addComponent(cmbMarcaVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(4, 4, 4)
+                                .addComponent(cmbIDVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmbNumAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(ftxtStockMaximo, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmbCabinaVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtPrecio)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbNumAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(ftxtStockMaximo, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbCabinaVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(4, 4, 4)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(48, 48, 48)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(4, 4, 4)
+                                .addComponent(cmbTipoVehiculoVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ftxtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(btnAgregar7)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnModificar7))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(4, 4, 4)
+                                        .addComponent(cmbColorVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(4, 4, 4)
+                                        .addComponent(txtVin, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(4, 4, 4)
+                                        .addComponent(cmbGasolinaVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(ftxtStockMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cmbTransmisionVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(2, 2, 2)
+                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtCilindraje))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(btnLimpiar7)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnDesactivar7))))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnAgregar7)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnModificar7))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(4, 4, 4)
-                        .addComponent(cmbColorVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(4, 4, 4)
-                        .addComponent(txtVin, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(4, 4, 4)
-                        .addComponent(cmbGasolinaVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ftxtStockMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbTransmisionVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCilindraje, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnLimpiar7)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnDesactivar7))))
+                        .addGap(48, 48, 48)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1295, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRegresar7))))
+                .addGap(472, 472, 472))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2815,9 +2809,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
                         .addComponent(jLabel8))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel11))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
+                        .addComponent(jLabel11)
                         .addComponent(jLabel13)))
                 .addGap(3, 3, 3)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2897,54 +2889,58 @@ public class FrmVehiculos extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbIDMarcaItemStateChanged
 
     private void btnAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar1ActionPerformed
-
+        AgregarMarca();
+    }//GEN-LAST:event_btnAgregar1ActionPerformed
+public boolean AgregarMarca(){
+    
         
         
         if(cmbIDMarca.getSelectedIndex()!=0){
-            JOptionPane.showMessageDialog(null, "El ID Marca siempre debe estar en el ITEM de Nuevo para agregar un nueva Marca","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "El ID Marca siempre debe estar en el ITEM de Nuevo para agregar un nueva Marca","Error!", JOptionPane.ERROR_MESSAGE);
             cmbIDMarca.setSelectedIndex(0);
+            return false;
         }
         else{
 
         }
         if("".equals(txtMarca.getText())){
-            JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para la Marca","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para la Marca","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if(txtMarca.getText().length()<3){
-            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para la Marca es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para la Marca es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(txtMarca.getText().length()>25){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para la Marca es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para la Marca es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if (!ValidacionNombreMayusculaYDemasMinus(txtMarca.getText())){
-            JOptionPane.showMessageDialog(null,"La Marca debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"La Marca debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtMarca.requestFocus();
-            return;
+            return false;
         }else{
 
         }
         
-        if (TresletrasMarca(txtMarca.getText())){        
-                        JOptionPane.showMessageDialog(null,"No se Admite en la Marca la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+        if (ValidacionTresLetrasSeguidas(txtMarca.getText())){        
+                        //JOptionPane.showMessageDialog(null,"No se Admite en la Marca la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
                         txtMarca.requestFocus(); 
-                        return;            
+                        return false;            
         }
         else{      
                      }
         if("".equals(txtMarca.getText())){
             //JOptionPane.showMessageDialog(null, "Ingrese la Marca");
-            return;
+            return false;
         }
         else{
             int i;
@@ -2952,26 +2948,26 @@ public class FrmVehiculos extends javax.swing.JFrame {
             for(i=0;i<Marcadao.findMarcaEntities().size();i++){
                 //System.out.println(i);
                 if(txtMarca.getText().toLowerCase().equals(Marcadao.findMarca(i+1).getMarca().toLowerCase())){
-                    JOptionPane.showMessageDialog(null, "Ya existe este tipo de Marca esta registrada en el sistema");
+                    //JOptionPane.showMessageDialog(null, "Ya existe este tipo de Marca esta registrada en el sistema");
                     flag=true;
-                    return;
+                    return false;
                 } else {
                 }
             }
             if(flag){
-                return;
+                return false;
             }
             else{
                 Marca m = new Marca();
                 m.setEstado(true);
                 m.setMarca(txtMarca.getText());
-                try {
+                /*try {
                     Marcadao.create(m);
                 } catch (Exception ex) {
                     Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                }*/
                 Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
-                JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+                //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
                 //cmbIDMarca.setSelectedIndex(1);
                 cmbIDMarca.setSelectedIndex(0);
                 createTableMarca();
@@ -2986,8 +2982,9 @@ public class FrmVehiculos extends javax.swing.JFrame {
                 LimpiarMarca();
             }
         }
-    }//GEN-LAST:event_btnAgregar1ActionPerformed
-private boolean ValidacionNombreMayusculaYDemasMinus(String num){
+        return true;
+}
+    boolean ValidacionNombreMayusculaYDemasMinus(String num){
         Pattern pat = null;
         Matcher mat = null;
         pat = Pattern.compile("^(?=.{3,40}$)[A-ZÑÁÉÍÓÚ][a-zñáéíóú]+(?: [a-zñáéíóúA-ZÑÁÉÍÓÚ]+)?+(?: [a-zñáéíóúA-ZÑÁÉÍÓÚ]+)?$");
@@ -2998,60 +2995,55 @@ private boolean ValidacionNombreMayusculaYDemasMinus(String num){
         return false;
         }
 }
-private boolean ValidacionRangoNumeroAsientos(String num){
-        Pattern pat = null;
-        Matcher mat = null;
-        pat = Pattern.compile("((?=.)|[2]|[2-9])$");
-        mat =pat.matcher(num);
-        if (mat.find()){
-            return true;
-        } else{
-        return false;
-        }
-}
+
     private void btnModificar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar1ActionPerformed
-        if(cmbIDMarca.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null, "Tipo de Marca no encontrada");
+        ModificarMarca();
+        
+    }//GEN-LAST:event_btnModificar1ActionPerformed
+public boolean ModificarMarca(){
+    if(cmbIDMarca.getSelectedIndex()==0){
+            //JOptionPane.showMessageDialog(null, "Tipo de Marca no encontrada");
+            return false;
         }
         else{
             if("".equals(txtMarca.getText())){
-            JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para la Marca","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para la Marca","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if(txtMarca.getText().length()<3){
-            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para la Marca es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para la Marca es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(txtMarca.getText().length()>25){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para la Marca es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para la Marca es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if (!ValidacionNombreMayusculaYDemasMinus(txtMarca.getText())){
-            JOptionPane.showMessageDialog(null,"La Marca debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"La Marca debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtMarca.requestFocus();
-            return;
+            return false;
         }else{
 
         }
         
-        if (TresletrasMarca(txtMarca.getText())){        
-                        JOptionPane.showMessageDialog(null,"No se Admite en la Marca la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+        if (ValidacionTresLetrasSeguidas(txtMarca.getText())){        
+                        //JOptionPane.showMessageDialog(null,"No se Admite en la Marca la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
                         txtMarca.requestFocus(); 
-                        return;            
+                        return false;            
         }
         else{      
                      }
             if("".equals(txtMarca.getText())){
                 //JOptionPane.showMessageDialog(null, "Marca no puede ir vacio");
-                return;
+                return false;
             }
             else{
                 int i;
@@ -3059,27 +3051,27 @@ private boolean ValidacionRangoNumeroAsientos(String num){
                 for(i=0;i<Marcadao.findMarcaEntities().size();i++){
                     //System.out.println(i);
                     if(txtMarca.getText().toLowerCase().equals(Marcadao.findMarca(i+1).getMarca().toLowerCase())){
-                        JOptionPane.showMessageDialog(null, "Ya existe esta Marca registrada en el sistema");
+                        //JOptionPane.showMessageDialog(null, "Ya existe esta Marca registrada en el sistema");
                         flag=true;
-                        return;
+                        return false;
                     } else {
                     }
                 }
                 if(flag){
-                    return;
+                    return false;
                 }
                 else{
                     Marca m;
                     m=Marcadao.findMarca(cmbIDMarca.getSelectedIndex());
                     m.setMarca(txtMarca.getText());
-                    try {
+                    /*try {
                         Marcadao.edit(m);
                     } catch (Exception ex) {
                         Logger.getLogger(Marca.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    }*/
                    // cmbIDMarca.setSelectedIndex(1);
                    Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
-                JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
+                //JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
                     cmbIDMarca.setSelectedIndex(0);
                     createTableMarca();
                     createComboBoxMarca();
@@ -3093,8 +3085,9 @@ private boolean ValidacionRangoNumeroAsientos(String num){
                 }
             }
         }
-    }//GEN-LAST:event_btnModificar1ActionPerformed
-public void LimpiarMarca(){
+    return true;
+}
+    public void LimpiarMarca(){
     cmbIDMarca.setSelectedIndex(0);
     txtMarca.setText("");
         createTableMarca();
@@ -3109,31 +3102,34 @@ public void LimpiarMarca(){
     }//GEN-LAST:event_btnLimpiar1ActionPerformed
 
     private void btnDesactivar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar1ActionPerformed
-        Marca temp;
+        DesactivarMarca();
+    }//GEN-LAST:event_btnDesactivar1ActionPerformed
+public boolean DesactivarMarca(){
+            Marca temp;
         temp = Marcadao.findMarca(cmbIDMarca.getSelectedIndex());
         if(temp.isEstado()){
             temp.setEstado(false);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
-            JOptionPane.showMessageDialog(null,"Marca Desactivada exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            //JOptionPane.showMessageDialog(null,"Marca Desactivada exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         else{
             temp.setEstado(true);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
-            JOptionPane.showMessageDialog(null,"Marca Activada exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            //JOptionPane.showMessageDialog(null,"Marca Activada exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        try {
+        /*try {
             Marcadao.edit(temp);
         } catch (Exception ex) {
             Logger.getLogger(Marca.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         createTableMarca();
         btnActivarDesactivarMarca();
         LimpiarMarca();
         btnDesactivar1.setEnabled(false);
         btnAgregar1.setEnabled(true);
         btnModificar1.setEnabled(false);
-    }//GEN-LAST:event_btnDesactivar1ActionPerformed
-
+        return true;
+}
     private void tblMarcaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMarcaMouseClicked
         btnAgregar1.setEnabled(false);
         btnModificar1.setEnabled(true);
@@ -3176,53 +3172,57 @@ public void LimpiarMarca(){
     }//GEN-LAST:event_cmbIDColorItemStateChanged
 
     private void btnAgregar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar2ActionPerformed
-
+AgregarColor();
+    }//GEN-LAST:event_btnAgregar2ActionPerformed
+public boolean AgregarColor(){
+    
         if(cmbIDColor.getSelectedIndex()!=0){
-            JOptionPane.showMessageDialog(null, "El ID Color siempre debe estar en el ITEM de Nuevo para agregar un nuevo Color","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "El ID Color siempre debe estar en el ITEM de Nuevo para agregar un nuevo Color","Error!", JOptionPane.ERROR_MESSAGE);
             cmbIDColor.setSelectedIndex(0);
+            return false;
         }
         else{
 
         }
         if("".equals(txtColor.getText())){
-            JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Color","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Color","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if(txtColor.getText().length()<3){
-            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Color es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Color es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(txtColor.getText().length()>25){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Color es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Color es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
 
         if (!ValidacionNombreMayusculaYDemasMinus(txtColor.getText())){
-            JOptionPane.showMessageDialog(null,"El Color debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El Color debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtColor.requestFocus();
-            return;
+            return false;
         }else{
 
         }
-        if (TresletrasMarca(txtColor.getText())){        
-                 JOptionPane.showMessageDialog(null,"No se Admite en el color la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+        if (ValidacionTresLetrasSeguidas(txtColor.getText())){        
+                 //JOptionPane.showMessageDialog(null,"No se Admite en el color la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
                         txtColor.requestFocus(); 
-                        return;   
+                        return false;   
         }
         else{
                         
                      }
         if("".equals(txtColor.getText())){
             //JOptionPane.showMessageDialog(null, "Ingrese el Color que es");
-            return;
+            return false;
         }
         else{
             int i;
@@ -3230,26 +3230,26 @@ public void LimpiarMarca(){
             for(i=0;i<Colorrdao.findTipo_colorEntities().size();i++){
                 //System.out.println(i);
                 if(txtColor.getText().toLowerCase().equals(Colorrdao.findTipo_color(i+1).getTipo_color().toLowerCase())){
-                    JOptionPane.showMessageDialog(null, "Ya existe este Color esta registrado en el sistema");
+                    //JOptionPane.showMessageDialog(null, "Ya existe este Color esta registrado en el sistema");
                     flag=true;
-                    return;
+                    return false;
                 } else {
                 }
             }
             if(flag){
-                return;
+                return false;
             }
             else{
                 Tipo_color cc = new Tipo_color();
                 cc.setEstado(true);
                 cc.setTipo_color(txtColor.getText());
-                try {
+                /*try {
                     Colorrdao.create(cc);
                 } catch (Exception ex) {
                     Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                }*/
                 Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
-                JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+                //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
                 //cmbIDColor.setSelectedIndex(1);
                 cmbIDColor.setSelectedIndex(0);
                 createTableColor();
@@ -3263,52 +3263,56 @@ public void LimpiarMarca(){
                 btnModificar2.setEnabled(false);
             }
         }
-    }//GEN-LAST:event_btnAgregar2ActionPerformed
-
+        return true;
+}
     private void btnModificar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar2ActionPerformed
-        if(cmbIDColor.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null, "Color no encontrado");
+ 
+    }//GEN-LAST:event_btnModificar2ActionPerformed
+public boolean ModificarColor(){
+           if(cmbIDColor.getSelectedIndex()==0){
+            //JOptionPane.showMessageDialog(null, "Color no encontrado");
+            return false;
         }
         else{
             if("".equals(txtColor.getText())){
-            JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Color","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Color","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if(txtColor.getText().length()<3){
-            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Color es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Color es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(txtColor.getText().length()>25){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Color es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Color es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
 
         if (!ValidacionNombreMayusculaYDemasMinus(txtColor.getText())){
-            JOptionPane.showMessageDialog(null,"El Color debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El Color debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtColor.requestFocus();
-            return;
+            return false;
         }else{
 
         }
-        if (TresletrasMarca(txtColor.getText())){        
-                 JOptionPane.showMessageDialog(null,"No se Admite en el color la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+        if (ValidacionTresLetrasSeguidas(txtColor.getText())){        
+                 //JOptionPane.showMessageDialog(null,"No se Admite en el color la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
                         txtColor.requestFocus(); 
-                        return;   
+                        return false;   
         }
         else{
                         
                      }
             if("".equals(txtColor.getText())){
                 //JOptionPane.showMessageDialog(null, "Color no puede ir vacio");
-                return;
+                return false;
             }
             else{
                 int i;
@@ -3316,27 +3320,27 @@ public void LimpiarMarca(){
                 for(i=0;i<Colorrdao.findTipo_colorEntities().size();i++){
                     //System.out.println(i);
                     if(txtColor.getText().toLowerCase().equals(Colorrdao.findTipo_color(i+1).getTipo_color().toLowerCase())){
-                        JOptionPane.showMessageDialog(null, "Ya existe este Color registrado en el sistema");
+                        //JOptionPane.showMessageDialog(null, "Ya existe este Color registrado en el sistema");
                         flag=true;
-                        return;
+                        return false;
                     } else {
                     }
                 }
                 if(flag){
-                    return;
+                    return false;
                 }
                 else{
                     Tipo_color cc;
                     cc=Colorrdao.findTipo_color(cmbIDColor.getSelectedIndex());
                     cc.setTipo_color(txtColor.getText());
-                    try {
+                    /*try {
                         Colorrdao.edit(cc);
                     } catch (Exception ex) {
                         Logger.getLogger(Color.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    }*/
                     //cmbIDColor.setSelectedIndex(1);
                     Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
-                JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
+                //JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
                     cmbIDColor.setSelectedIndex(0);
                     createTableColor();
                     createComboBoxColor();
@@ -3350,8 +3354,9 @@ public void LimpiarMarca(){
                 }
             }
         }
-    }//GEN-LAST:event_btnModificar2ActionPerformed
-public void LimpiarNuevoColor(){
+           return true;
+}
+    public void LimpiarNuevoColor(){
         cmbIDColor.setSelectedIndex(0);
         txtColor.setText("");
         btnAgregar2.setEnabled(true);
@@ -3365,31 +3370,34 @@ public void LimpiarNuevoColor(){
     }//GEN-LAST:event_btnLimpiar2ActionPerformed
 
     private void btnDesactivar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar2ActionPerformed
-        Tipo_color temp;
+        DesactivarColor();
+    }//GEN-LAST:event_btnDesactivar2ActionPerformed
+public boolean DesactivarColor(){
+    Tipo_color temp;
         temp = Colorrdao.findTipo_color(cmbIDColor.getSelectedIndex());
         if(temp.isEstado()){
             temp.setEstado(false);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
-            JOptionPane.showMessageDialog(null,"Color Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            //JOptionPane.showMessageDialog(null,"Color Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         else{
             temp.setEstado(true);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
-            JOptionPane.showMessageDialog(null,"Color Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            //JOptionPane.showMessageDialog(null,"Color Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        try {
+        /*try {
             Colorrdao.edit(temp);
         } catch (Exception ex) {
             Logger.getLogger(Color.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         createTableColor();
         btnActivarDesactivarColor();
         LimpiarNuevoColor();
         btnDesactivar2.setEnabled(false);
         btnAgregar2.setEnabled(true);
         btnModificar2.setEnabled(false);
-    }//GEN-LAST:event_btnDesactivar2ActionPerformed
-
+        return true;
+}
     private void tblColorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblColorMouseClicked
         btnAgregar2.setEnabled(false);
         btnModificar2.setEnabled(true);
@@ -3432,46 +3440,50 @@ public void LimpiarNuevoColor(){
     }//GEN-LAST:event_cmbIDTipoVehiculoItemStateChanged
 
     private void btnAgregar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar3ActionPerformed
-
+AgregarTipoVehiculo();
+    }//GEN-LAST:event_btnAgregar3ActionPerformed
+public boolean AgregarTipoVehiculo(){
+    
         if(cmbIDTipoVehiculo.getSelectedIndex()!=0){
-            JOptionPane.showMessageDialog(null, "El ID Tipo de Vehículo siempre debe estar en el ITEM de Nuevo para agregar un nuevo Tipo de Vehículo","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "El ID Tipo de Vehículo siempre debe estar en el ITEM de Nuevo para agregar un nuevo Tipo de Vehículo","Error!", JOptionPane.ERROR_MESSAGE);
             cmbIDTipoVehiculo.setSelectedIndex(0);
+            return false;
         }
         else{
 
         }
         if("".equals(txtTipoVehiculo.getText())){
-            JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Tipo de Vehículo","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Tipo de Vehículo","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if(txtTipoVehiculo.getText().length()<3){
-            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de Vehículo es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de Vehículo es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(txtTipoVehiculo.getText().length()>25){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Vehículo es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Vehículo es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
 
         if (!ValidacionNombreMayusculaYDemasMinus(txtTipoVehiculo.getText())){
-            JOptionPane.showMessageDialog(null,"El Tipo de Vehículo debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El Tipo de Vehículo debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtTipoVehiculo.requestFocus();
-            return;
+            return false;
         }else{
 
         }
-        if (TresletrasMarca(txtTipoVehiculo.getText())){        
-            JOptionPane.showMessageDialog(null,"No se Admite en el Tipo de Vehículo la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+        if (ValidacionTresLetrasSeguidas(txtTipoVehiculo.getText())){        
+            //JOptionPane.showMessageDialog(null,"No se Admite en el Tipo de Vehículo la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
             txtTipoVehiculo.requestFocus(); 
-            return;
+            return false;
         
         }else{
                         
@@ -3479,7 +3491,7 @@ public void LimpiarNuevoColor(){
                      }
         if("".equals(txtTipoVehiculo.getText())){
             //JOptionPane.showMessageDialog(null, "Ingrese el tipo de  Vehículo que es");
-            return;
+            return false;
         }
         else{
             int i;
@@ -3487,26 +3499,26 @@ public void LimpiarNuevoColor(){
             for(i=0;i<TipoVehiculodao.findTipoVehiculoEntities().size();i++){
                 //System.out.println(i);
                 if(txtTipoVehiculo.getText().toLowerCase().equals(TipoVehiculodao.findTipoVehiculo(i+1).getTipoVehiculo().toLowerCase())){
-                    JOptionPane.showMessageDialog(null, "Ya existe este tipo de  Vehículo registrado en el sistema");
+                    //JOptionPane.showMessageDialog(null, "Ya existe este tipo de  Vehículo registrado en el sistema");
                     flag=true;
-                    return;
+                    return false;
                 } else {
                 }
             }
             if(flag){
-                return;
+                return false;
             }
             else{
                 TipoVehiculo tp = new TipoVehiculo();
                 tp.setEstado(true);
                 tp.setTipoVehiculo(txtTipoVehiculo.getText());
-                try {
+                /*try {
                     TipoVehiculodao.create(tp);
                 } catch (Exception ex) {
                     Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                }*/
                 Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
-           JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+           //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
                 //cmbIDTipoVehiculo.setSelectedIndex(1);
                 cmbIDTipoVehiculo.setSelectedIndex(0);
                 createTableTipoVehiculo();
@@ -3522,45 +3534,49 @@ public void LimpiarNuevoColor(){
                 
             }
         }
-    }//GEN-LAST:event_btnAgregar3ActionPerformed
-
+        return true;
+}
     private void btnModificar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar3ActionPerformed
-        if(cmbIDTipoVehiculo.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null, "Tipo de  Vehículo no encontrado");
+        ModificarTipoVehiculo();
+    }//GEN-LAST:event_btnModificar3ActionPerformed
+public boolean ModificarTipoVehiculo(){
+    if(cmbIDTipoVehiculo.getSelectedIndex()==0){
+            //JOptionPane.showMessageDialog(null, "Tipo de  Vehículo no encontrado");
+            return false;
         }
         else{
            if("".equals(txtTipoVehiculo.getText())){
-            JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Tipo de Vehículo","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Tipo de Vehículo","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if(txtTipoVehiculo.getText().length()<3){
-            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de Vehículo es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de Vehículo es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(txtTipoVehiculo.getText().length()>25){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Vehículo es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Vehículo es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
 
         if (!ValidacionNombreMayusculaYDemasMinus(txtTipoVehiculo.getText())){
-            JOptionPane.showMessageDialog(null,"El Tipo de Vehículo debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El Tipo de Vehículo debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtTipoVehiculo.requestFocus();
-            return;
+            return false;
         }else{
 
         }
-        if (TresletrasMarca(txtTipoVehiculo.getText())){        
-            JOptionPane.showMessageDialog(null,"No se Admite en el Tipo de Vehículo la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+        if (ValidacionTresLetrasSeguidas(txtTipoVehiculo.getText())){        
+            //JOptionPane.showMessageDialog(null,"No se Admite en el Tipo de Vehículo la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
             txtTipoVehiculo.requestFocus(); 
-            return;
+            return false;
         
         }else{
                         
@@ -3568,7 +3584,7 @@ public void LimpiarNuevoColor(){
                      }
             if("".equals(txtTipoVehiculo.getText())){
                 //JOptionPane.showMessageDialog(null, "Tipo de  Vehículo no puede ir vacio");
-                return;
+                return false;
             }
             else{
                 int i;
@@ -3576,27 +3592,27 @@ public void LimpiarNuevoColor(){
                 for(i=0;i<TipoVehiculodao.findTipoVehiculoEntities().size();i++){
                     //System.out.println(i);
                     if(txtMarca.getText().toLowerCase().equals(TipoVehiculodao.findTipoVehiculo(i+1).getTipoVehiculo().toLowerCase())){
-                        JOptionPane.showMessageDialog(null, "Ya existe este tipo de Vehículo esta registrado en el sistema");
+                        //JOptionPane.showMessageDialog(null, "Ya existe este tipo de Vehículo esta registrado en el sistema");
                         flag=true;
-                        return;
+                        return false;
                     } else {
                     }
                 }
                 if(flag){
-                    return;
+                    return false;
                 }
                 else{
                     TipoVehiculo tp;
                     tp=TipoVehiculodao.findTipoVehiculo(cmbIDTipoVehiculo.getSelectedIndex());
                     tp.setTipoVehiculo(txtTipoVehiculo.getText());
-                    try {
+                    /*try {
                         TipoVehiculodao.edit(tp);
                     } catch (Exception ex) {
                         Logger.getLogger(TipoVehiculo.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    }*/
                     //cmbIDTipoVehiculo.setSelectedIndex(1);
                     Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
-                JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
+                //JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
                     cmbIDTipoVehiculo.setSelectedIndex(0);
                     createTableTipoVehiculo();
                     createComboBoxTipoVehiculo();
@@ -3610,8 +3626,9 @@ public void LimpiarNuevoColor(){
                 }
             }
         }
-    }//GEN-LAST:event_btnModificar3ActionPerformed
-public void LimpiarNuevoTipoVehiculo(){
+    return true;
+}
+    public void LimpiarNuevoTipoVehiculo(){
     cmbIDTipoVehiculo.setSelectedIndex(0);
     txtTipoVehiculo.setText("");
         btnAgregar3.setEnabled(true);
@@ -3625,31 +3642,34 @@ public void LimpiarNuevoTipoVehiculo(){
     }//GEN-LAST:event_btnLimpiar3ActionPerformed
 
     private void btnDesactivar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar3ActionPerformed
-        TipoVehiculo temp;
+       DesactivarTipoVehiculo();
+    }//GEN-LAST:event_btnDesactivar3ActionPerformed
+public boolean DesactivarTipoVehiculo(){
+     TipoVehiculo temp;
         temp = TipoVehiculodao.findTipoVehiculo(cmbIDTipoVehiculo.getSelectedIndex());
         if(temp.isEstado()){
             temp.setEstado(false);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
-            JOptionPane.showMessageDialog(null,"Tipo de Vehículo Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            //JOptionPane.showMessageDialog(null,"Tipo de Vehículo Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         else{
             temp.setEstado(true);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
-            JOptionPane.showMessageDialog(null,"Tipo de Vehículo Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            //JOptionPane.showMessageDialog(null,"Tipo de Vehículo Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        try {
+        /*try {
             TipoVehiculodao.edit(temp);
         } catch (Exception ex) {
             Logger.getLogger(TipoVehiculo.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         createTableTipoVehiculo();
         btnActivarDesactivarTipoVehiculo();
         LimpiarNuevoTipoVehiculo();
         btnDesactivar3.setEnabled(false);
         btnAgregar3.setEnabled(true);
         btnModificar3.setEnabled(false);
-    }//GEN-LAST:event_btnDesactivar3ActionPerformed
-
+        return true;
+}
     private void tblTipoVehiculoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTipoVehiculoMouseClicked
         btnAgregar3.setEnabled(false);
         btnModificar3.setEnabled(true);
@@ -3678,53 +3698,57 @@ public void LimpiarNuevoTipoVehiculo(){
     }//GEN-LAST:event_btnSalir3ActionPerformed
 
     private void btnAgregar4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar4ActionPerformed
-
+AgregarTipoCabina();
+    }//GEN-LAST:event_btnAgregar4ActionPerformed
+public boolean AgregarTipoCabina(){
+    
         if(cmbPiezaClave.getSelectedIndex()!=0){
-            JOptionPane.showMessageDialog(null, "El ID Tipo de Cabina siempre debe estar en el ITEM de Nuevo para agregar un nuevo Tipo de Cabina","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "El ID Tipo de Cabina siempre debe estar en el ITEM de Nuevo para agregar un nuevo Tipo de Cabina","Error!", JOptionPane.ERROR_MESSAGE);
             cmbPiezaClave.setSelectedIndex(0);
+            return false;
         }
         else{
 
         }
         if("".equals(txtTipoCabina.getText())){
-            JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Tipo de Cabina","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Tipo de Cabina","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if(txtTipoCabina.getText().length()<3){
-            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de Cabina es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de Cabina es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(txtTipoCabina.getText().length()>25){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Cabina es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Cabina es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
 
         if (!ValidacionNombreMayusculaYDemasMinus(txtTipoCabina.getText())){
-            JOptionPane.showMessageDialog(null,"El Tipo de Cabina debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El Tipo de Cabina debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtTipoCabina.requestFocus();
-            return;
+            return false;
         }else{
 
         }
-        if (TresletrasMarca(txtTipoCabina.getText())){        
-            JOptionPane.showMessageDialog(null,"No se Admite en el Tipo de Cabina la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+        if (ValidacionTresLetrasSeguidas(txtTipoCabina.getText())){        
+            //JOptionPane.showMessageDialog(null,"No se Admite en el Tipo de Cabina la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
                         txtTipoCabina.requestFocus(); 
-                        return;
+                        return false;
         }
         else{
                         
                      }
         if("".equals(txtTipoCabina.getText())){
             //JOptionPane.showMessageDialog(null, "Ingrese el tipo de Cabina que es");
-            return;
+            return false;
         }
         else{
             int i;
@@ -3732,27 +3756,27 @@ public void LimpiarNuevoTipoVehiculo(){
             for(i=0;i<TipoCabinadao.findTipoCabinaEntities().size();i++){
                 //System.out.println(i);
                 if(txtTipoCabina.getText().toLowerCase().equals(TipoCabinadao.findTipoCabina(i+1).getTipoCabina().toLowerCase())){
-                    JOptionPane.showMessageDialog(null, "Ya existe este tipo de Cabina registrada en el sistema");
+                    //JOptionPane.showMessageDialog(null, "Ya existe este tipo de Cabina registrada en el sistema");
                     flag=true;
-                    return;
+                    return false;
                 } else {
                 }
             }
             if(flag){
-                return;
+                return false;
             }
             else{
                 TipoCabina tp = new TipoCabina();
                 tp.setEstado(true);
                 tp.setTipoCabina(txtTipoCabina.getText());
-                try {
+                /*try {
                     TipoCabinadao.create(tp);
                 } catch (Exception ex) {
                     Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                }*/
                 //cmbIDTipoCabina.setSelectedIndex(1);
                 Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
-           JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+           //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
                 cmbPiezaClave.setSelectedIndex(0);
                 createTableTipoCabina();
                 createComboBoxTipoCabina();
@@ -3763,52 +3787,55 @@ public void LimpiarNuevoTipoVehiculo(){
                 LimpiarNuevoTipoCabina();
             }
         }
-    }//GEN-LAST:event_btnAgregar4ActionPerformed
-
+        return true;
+}
     private void btnModificar4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar4ActionPerformed
-        if(cmbPiezaClave.getSelectedIndex()==0){
+        ModificarTipoCabina();
+    }//GEN-LAST:event_btnModificar4ActionPerformed
+public boolean ModificarTipoCabina(){
+   if(cmbPiezaClave.getSelectedIndex()==0){
             JOptionPane.showMessageDialog(null, "Tipo de Cabina no encontrada");
         }
         else{
             if("".equals(txtTipoCabina.getText())){
-            JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Tipo de Cabina","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Tipo de Cabina","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if(txtTipoCabina.getText().length()<3){
-            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de Cabina es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de Cabina es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(txtTipoCabina.getText().length()>25){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Cabina es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Cabina es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
 
         if (!ValidacionNombreMayusculaYDemasMinus(txtTipoCabina.getText())){
-            JOptionPane.showMessageDialog(null,"El Tipo de Cabina debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El Tipo de Cabina debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtTipoCabina.requestFocus();
-            return;
+            return false;
         }else{
 
         }
-        if (TresletrasMarca(txtTipoCabina.getText())){        
-            JOptionPane.showMessageDialog(null,"No se Admite en el Tipo de Cabina la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+        if (ValidacionTresLetrasSeguidas(txtTipoCabina.getText())){        
+            //JOptionPane.showMessageDialog(null,"No se Admite en el Tipo de Cabina la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
                         txtTipoCabina.requestFocus(); 
-                        return;
+                        return false;
         }
         else{
                         
                      }
             if("".equals(txtTipoCabina.getText())){
                 //JOptionPane.showMessageDialog(null, "Tipo de cabina no puede ir vacia");
-                return;
+                return false;
             }
             else{
                 int i;
@@ -3816,27 +3843,27 @@ public void LimpiarNuevoTipoVehiculo(){
                 for(i=0;i<TipoCabinadao.findTipoCabinaEntities().size();i++){
                     //System.out.println(i);
                     if(txtTipoCabina.getText().toLowerCase().equals(TipoCabinadao.findTipoCabina(i+1).getTipoCabina().toLowerCase())){
-                        JOptionPane.showMessageDialog(null, "Ya existe este tipo de Cabina ya esta registrado en el sistema");
+                        //JOptionPane.showMessageDialog(null, "Ya existe este tipo de Cabina ya esta registrado en el sistema");
                         flag=true;
-                        return;
+                        return false;
                     } else {
                     }
                 }
                 if(flag){
-                    return;
+                    return false;
                 }
                 else{
                     TipoCabina tp;
                     tp=TipoCabinadao.findTipoCabina(cmbPiezaClave.getSelectedIndex());
                     tp.setTipoCabina(txtTipoCabina.getText());
-                    try {
+                    /*try {
                         TipoCabinadao.edit(tp);
                     } catch (Exception ex) {
                         Logger.getLogger(TipoCabina.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    }*/
                    // cmbIDTipoCabina.setSelectedIndex(1);
                    Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
-                JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
+                //JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
                     cmbPiezaClave.setSelectedIndex(0);
                     createTableTipoCabina();
                     createComboBoxTipoCabina();
@@ -3847,8 +3874,9 @@ public void LimpiarNuevoTipoVehiculo(){
                 }
             }
         }
-    }//GEN-LAST:event_btnModificar4ActionPerformed
-public void LimpiarNuevoTipoCabina(){
+   return true;
+}
+    public void LimpiarNuevoTipoCabina(){
     cmbPiezaClave.setSelectedIndex(0);
     txtTipoCabina.setText("");
         btnAgregar4.setEnabled(true);
@@ -3864,28 +3892,31 @@ public void LimpiarNuevoTipoCabina(){
     }//GEN-LAST:event_btnLimpiar4ActionPerformed
 
     private void btnDesactivar4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar4ActionPerformed
-        TipoCabina temp;
+       
+    }//GEN-LAST:event_btnDesactivar4ActionPerformed
+public boolean DesactivarTipoCabina(){
+     TipoCabina temp;
         temp = TipoCabinadao.findTipoCabina(cmbPiezaClave.getSelectedIndex());
         if(temp.isEstado()){
             temp.setEstado(false);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
-            JOptionPane.showMessageDialog(null,"Tipo de Cabina Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            //JOptionPane.showMessageDialog(null,"Tipo de Cabina Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         else{
             temp.setEstado(true);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
-            JOptionPane.showMessageDialog(null,"Tipo de Cabina Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            //JOptionPane.showMessageDialog(null,"Tipo de Cabina Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        try {
+        /*try {
             TipoCabinadao.edit(temp);
         } catch (Exception ex) {
             Logger.getLogger(TipoCabina.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         createTableTipoCabina();
         btnActivarDesactivarTipoCabina();
         LimpiarNuevoTipoCabina();
-    }//GEN-LAST:event_btnDesactivar4ActionPerformed
-
+        return true;
+}
     private void tblTipoCabinaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTipoCabinaMouseClicked
         btnAgregar4.setEnabled(false);
         btnModificar4.setEnabled(true);
@@ -3928,53 +3959,58 @@ public void LimpiarNuevoTipoCabina(){
     }//GEN-LAST:event_cmbIDTipoGasolinaItemStateChanged
 
     private void btnAgregar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar5ActionPerformed
+AgregarTipoCombustible();
 
+    }//GEN-LAST:event_btnAgregar5ActionPerformed
+public boolean AgregarTipoCombustible(){
+    
         if(cmbIDTipoGasolina.getSelectedIndex()!=0){
-            JOptionPane.showMessageDialog(null, "El ID Tipo de Gasolina siempre debe estar en el ITEM de Nuevo para agregar un nuevo Tipo de Gasolina","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "El ID Tipo de Combustible siempre debe estar en el ITEM de Nuevo para agregar un nuevo Tipo de Gasolina","Error!", JOptionPane.ERROR_MESSAGE);
             cmbIDTipoGasolina.setSelectedIndex(0);
+            return false;
         }
         else{
 
         }
         if("".equals(txtTipoGasolina.getText())){
-            JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Tipo de Gasolina","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Tipo de Combustible","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if(txtTipoGasolina.getText().length()<3){
-            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de Gasolina es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de Combustible es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(txtTipoGasolina.getText().length()>25){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Gasolina es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Combustible es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
 
         if (!ValidacionNombreMayusculaYDemasMinus(txtTipoGasolina.getText())){
-            JOptionPane.showMessageDialog(null,"El Tipo de Gasolina debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El Tipo de Combustible debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtTipoGasolina.requestFocus();
-            return;
+            return false;
         }else{
 
         }
-        if (TresletrasMarca(txtTipoGasolina.getText())){        
-            JOptionPane.showMessageDialog(null,"No se Admite en el Tipo de Gasolina la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+        if (ValidacionTresLetrasSeguidas(txtTipoGasolina.getText())){        
+            //JOptionPane.showMessageDialog(null,"No se Admite en el Tipo de Combustible la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
             txtTipoGasolina.requestFocus(); 
-            return;
+            return false;
         
         }else{
                         
                      }
         if("".equals(txtTipoGasolina.getText())){
             //JOptionPane.showMessageDialog(null, "Ingrese el tipo de Gasolina que es");
-            return;
+            return false;
         }
         else{
             int i;
@@ -3982,27 +4018,27 @@ public void LimpiarNuevoTipoCabina(){
             for(i=0;i<TipoGasolinadao.findTipoGasolinaEntities().size();i++){
                 //System.out.println(i);
                 if(txtTipoGasolina.getText().toLowerCase().equals(TipoGasolinadao.findTipoGasolina(i+1).getTipoGasolina().toLowerCase())){
-                    JOptionPane.showMessageDialog(null, "Ya existe este tipo de Gasolina registrada en el sistema");
+                    //JOptionPane.showMessageDialog(null, "Ya existe este tipo de Combustible registrado en el sistema");
                     flag=true;
-                    return;
+                    return false;
                 } else {
                 }
             }
             if(flag){
-                return;
+                return false;
             }
             else{
                 TipoGasolina tp = new TipoGasolina();
                 tp.setEstado(true);
                 tp.setTipoGasolina(txtTipoGasolina.getText());
-                try {
+                /*try {
                     TipoGasolinadao.create(tp);
                 } catch (Exception ex) {
                     Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                }*/
                 //cmbIDTipoGasolina.setSelectedIndex(1);
                 Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
-                JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+                //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
                 cmbIDTipoGasolina.setSelectedIndex(0);
                 createTableTipoGasolina();
                 createComboBoxTipoGasolina();
@@ -4014,52 +4050,56 @@ public void LimpiarNuevoTipoCabina(){
                 
             }
         }
-    }//GEN-LAST:event_btnAgregar5ActionPerformed
-
+        return true;
+}
     private void btnModificar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar5ActionPerformed
-        if(cmbIDTipoGasolina.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null, "Tipo de Gasolina no encontrado");
+        ModificarTipoCombustible();
+    }//GEN-LAST:event_btnModificar5ActionPerformed
+public boolean ModificarTipoCombustible(){
+    if(cmbIDTipoGasolina.getSelectedIndex()==0){
+            //JOptionPane.showMessageDialog(null, "Tipo de Combustible no encontrado");
+            return false;
         }
         else{
             if("".equals(txtTipoGasolina.getText())){
-            JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Tipo de Gasolina","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Tipo de Combustible","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if(txtTipoGasolina.getText().length()<3){
-            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de Gasolina es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de Combustible es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(txtTipoGasolina.getText().length()>25){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Gasolina es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Combustible es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
 
         if (!ValidacionNombreMayusculaYDemasMinus(txtTipoGasolina.getText())){
-            JOptionPane.showMessageDialog(null,"El Tipo de Gasolina debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El Tipo de Combustible debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtTipoGasolina.requestFocus();
-            return;
+            return false;
         }else{
 
         }
-        if (TresletrasMarca(txtTipoGasolina.getText())){        
-            JOptionPane.showMessageDialog(null,"No se Admite en el Tipo de Gasolina la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+        if (ValidacionTresLetrasSeguidas(txtTipoGasolina.getText())){        
+            //JOptionPane.showMessageDialog(null,"No se Admite en el Tipo de Combustible la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
             txtTipoGasolina.requestFocus(); 
-            return;
+            return false;
         
         }else{
                         
                      }
             if("".equals(txtTipoGasolina.getText())){
                 //JOptionPane.showMessageDialog(null, "Tipo de Gasolina no puede ir vacio");
-                return;
+                return false;
             }
             else{
                 int i;
@@ -4067,24 +4107,24 @@ public void LimpiarNuevoTipoCabina(){
                 for(i=0;i<TipoGasolinadao.findTipoGasolinaEntities().size();i++){
                     //System.out.println(i);
                     if(txtMarca.getText().toLowerCase().equals(TipoGasolinadao.findTipoGasolina(i+1).getTipoGasolina().toLowerCase())){
-                        JOptionPane.showMessageDialog(null, "Ya existe este tipo de Gasolina registrado en el sistema");
+                        //JOptionPane.showMessageDialog(null, "Ya existe este tipo de Combustible registrado en el sistema");
                         flag=true;
-                        return;
+                        return false;
                     } else {
                     }
                 }
                 if(flag){
-                    return;
+                    return false;
                 }
                 else{
                     TipoGasolina tp;
                     tp=TipoGasolinadao.findTipoGasolina(cmbIDTipoGasolina.getSelectedIndex());
                     tp.setTipoGasolina(txtTipoGasolina.getText());
-                    try {
+                    /*try {
                         TipoGasolinadao.edit(tp);
                     } catch (Exception ex) {
                         Logger.getLogger(TipoGasolina.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    }*/
                     //cmbIDTipoGasolina.setSelectedIndex(1);
                     cmbIDTipoGasolina.setSelectedIndex(0);
                     createTableTipoGasolina();
@@ -4095,9 +4135,9 @@ public void LimpiarNuevoTipoCabina(){
                     LimpiarNuevoTipoGasolina();
                 }
             }
-        }
-    }//GEN-LAST:event_btnModificar5ActionPerformed
-public void LimpiarNuevoTipoGasolina(){
+        }return true;
+}
+    public void LimpiarNuevoTipoGasolina(){
     cmbIDTipoGasolina.setSelectedIndex(0);
     txtTipoGasolina.setText("");
         btnAgregar5.setEnabled(true);
@@ -4111,28 +4151,31 @@ public void LimpiarNuevoTipoGasolina(){
     }//GEN-LAST:event_btnLimpiar5ActionPerformed
 
     private void btnDesactivar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar5ActionPerformed
-        TipoGasolina temp;
+        DesactivarTipoCombustible();
+    }//GEN-LAST:event_btnDesactivar5ActionPerformed
+public boolean DesactivarTipoCombustible(){
+    TipoGasolina temp;
         temp = TipoGasolinadao.findTipoGasolina(cmbIDTipoGasolina.getSelectedIndex());
         if(temp.isEstado()){
             temp.setEstado(false);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
-            JOptionPane.showMessageDialog(null,"Tipo de Gasolina Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            //JOptionPane.showMessageDialog(null,"Tipo de Combustible Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         else{
             temp.setEstado(true);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
-            JOptionPane.showMessageDialog(null,"Tipo de Gasolina Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            //JOptionPane.showMessageDialog(null,"Tipo de Combustible Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        try {
+        /*try {
             TipoGasolinadao.edit(temp);
         } catch (Exception ex) {
             Logger.getLogger(TipoGasolina.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         createTableTipoGasolina();
         btnActivarDesactivarTipoGasolina();
         LimpiarNuevoTipoGasolina();
-    }//GEN-LAST:event_btnDesactivar5ActionPerformed
-
+        return true;
+}
     private void tblTipoGasolinaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTipoGasolinaMouseClicked
         btnAgregar5.setEnabled(false);
         btnModificar5.setEnabled(true);
@@ -4176,80 +4219,84 @@ public void LimpiarNuevoTipoGasolina(){
 
     private void btnAgregar6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar6ActionPerformed
 
+    }//GEN-LAST:event_btnAgregar6ActionPerformed
+public boolean AgregarTransmision(){
+    
         if(cmbIDTipoTransmision.getSelectedIndex()!=0){
-            JOptionPane.showMessageDialog(null, "El ID Tipo de Transmisión siempre debe estar en el ITEM de Nuevo para agregar un nuevo Tipo de Transmisión","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "El ID Tipo de Transmisión siempre debe estar en el ITEM de Nuevo para agregar un nuevo Tipo de Transmisión","Error!", JOptionPane.ERROR_MESSAGE);
             cmbIDTipoTransmision.setSelectedIndex(0);
+            return false;
         }
         else{
 
         }
         if("".equals(txtTipoTransmision.getText())){
-            JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Tipo de Transmisión","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Tipo de Transmisión","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if(txtTipoTransmision.getText().length()<3){
-            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el cargo es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el cargo es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(txtTipoTransmision.getText().length()>25){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Transmisión es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Transmisión es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
 
         if (!ValidacionNombreMayusculaYDemasMinus(txtTipoTransmision.getText())){
-            JOptionPane.showMessageDialog(null,"El Tipo de Transmisión debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El Tipo de Transmisión debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtTipoTransmision.requestFocus();
-            return;
+            return false;
         }else{
 
         }
-        if (TresletrasMarca(txtTipoTransmision.getText())){        
-            JOptionPane.showMessageDialog(null,"No se Admite en el Tipo de Transmisión la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+        if (ValidacionTresLetrasSeguidas(txtTipoTransmision.getText())){        
+            //JOptionPane.showMessageDialog(null,"No se Admite en el Tipo de Transmisión la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
             txtTipoTransmision.requestFocus(); 
-            return;
+            return false;
         }else{
                         
                      }
         if("".equals(txtTipoTransmision.getText())){
             //JOptionPane.showMessageDialog(null, "Ingrese el tipo de Transmisión que es");
-            return;
+            return false;
         }
         else{
             int i;
             boolean flag=false;
             for(i=0;i<TipoTransmisiondao.findtransmisionEntities().size();i++){
                 //System.out.println(i);
-                if(txtMarca.getText().toLowerCase().equals(TipoTransmisiondao.findtransmision(i+1).getTransmision().toLowerCase())){
-                    JOptionPane.showMessageDialog(null, "Ya existe este tipo de Transmisión esta registrada en el sistema");
+                if(txtTipoTransmision.getText().toLowerCase().equals(TipoTransmisiondao.findtransmision(i+1).getTransmision().toLowerCase())){
+                    //JOptionPane.showMessageDialog(null, "Ya existe este tipo de Transmisión esta registrada en el sistema");
                     flag=true;
-                    return;
+                    return false;
                 } 
                 else {
                 }
             }
             if(flag){
-                return;
+                return false;
             }
             else{
                 transmision tp = new transmision();
                 tp.setEstado(true);
                 tp.setTransmision(txtTipoTransmision.getText());
-                try {
+                /*try {
                     TipoTransmisiondao.create(tp);
                 } catch (Exception ex) {
                     Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                }*/
                // cmbIDTipoTransmision.setSelectedIndex(1);
                Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
-           JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+           //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
                 cmbIDTipoTransmision.setSelectedIndex(0);
                 createTableTipoTransmision();
                 createComboBoxTipoTransmision();
@@ -4260,51 +4307,55 @@ public void LimpiarNuevoTipoGasolina(){
                 LimpiarNuevoTipoTransmision();
             }
         }
-    }//GEN-LAST:event_btnAgregar6ActionPerformed
-
+        return true;
+}
     private void btnModificar6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar6ActionPerformed
-        if(cmbIDTipoTransmision.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null, "Tipo de Transmisión no encontrado");
+ ModificarTransmision();
+    }//GEN-LAST:event_btnModificar6ActionPerformed
+public boolean ModificarTransmision(){
+           if(cmbIDTipoTransmision.getSelectedIndex()==0){
+            //JOptionPane.showMessageDialog(null, "Tipo de Transmisión no encontrado");
+            return false;
         }
         else{
             if("".equals(txtTipoTransmision.getText())){
-            JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Tipo de Transmisión","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Tipo de Transmisión","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
         if(txtTipoTransmision.getText().length()<3){
-            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el cargo es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el cargo es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(txtTipoTransmision.getText().length()>25){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Transmisión es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Transmisión es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
 
         if (!ValidacionNombreMayusculaYDemasMinus(txtTipoTransmision.getText())){
-            JOptionPane.showMessageDialog(null,"El Tipo de Transmisión debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El Tipo de Transmisión debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtTipoTransmision.requestFocus();
-            return;
+            return false;
         }else{
 
         }
-        if (TresletrasMarca(txtTipoTransmision.getText())){        
-            JOptionPane.showMessageDialog(null,"No se Admite en el Tipo de Transmisión la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+        if (ValidacionTresLetrasSeguidas(txtTipoTransmision.getText())){        
+            //JOptionPane.showMessageDialog(null,"No se Admite en el Tipo de Transmisión la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
             txtTipoTransmision.requestFocus(); 
-            return;
+            return false;
         }else{
                         
                      }
             if("".equals(txtTipoTransmision.getText())){
                 //JOptionPane.showMessageDialog(null, "Tipo de Transmisión no puede ir vacio");
-                return;
+                return false;
             }
             else{
                 int i;
@@ -4312,27 +4363,27 @@ public void LimpiarNuevoTipoGasolina(){
                 for(i=0;i<TipoTransmisiondao.findtransmisionEntities().size();i++){
                     //System.out.println(i);
                     if(txtTipoTransmision.getText().toLowerCase().equals(TipoTransmisiondao.findtransmision(i+1).getTransmision().toLowerCase())){
-                        JOptionPane.showMessageDialog(null, "Ya existe este tipo de Transmisión esta registrado en el sistema");
+                        //JOptionPane.showMessageDialog(null, "Ya existe este tipo de Transmisión esta registrado en el sistema");
                         flag=true;
-                        return;
+                        return false;
                     } else {
                     }
                 }
                 if(flag){
-                    return;
+                    return false;
                 }
                 else{
                     transmision tp;
                     tp=TipoTransmisiondao.findtransmision(cmbIDTipoTransmision.getSelectedIndex());
                     tp.setTransmision(txtTipoTransmision.getText());
-                    try {
+                    /*try {
                         TipoTransmisiondao.edit(tp);
                     } catch (Exception ex) {
                         Logger.getLogger(transmision.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    }*/
                     //cmbIDTipoTransmision.setSelectedIndex(1);
                     Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
-                JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
+                //JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
                     cmbIDTipoTransmision.setSelectedIndex(0);
                     createTableTipoTransmision();
                     createComboBoxTipoTransmision();
@@ -4343,8 +4394,9 @@ public void LimpiarNuevoTipoGasolina(){
                 }
             }
         }
-    }//GEN-LAST:event_btnModificar6ActionPerformed
-public void LimpiarNuevoTipoTransmision(){
+           return true;
+}
+    public void LimpiarNuevoTipoTransmision(){
     cmbIDTipoTransmision.setSelectedIndex(0);
     txtTipoTransmision.setText("");
         btnAgregar6.setEnabled(true);
@@ -4358,28 +4410,31 @@ public void LimpiarNuevoTipoTransmision(){
     }//GEN-LAST:event_btnLimpiar6ActionPerformed
 
     private void btnDesactivar6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar6ActionPerformed
-        transmision temp;
+        DesactivarTransmision();
+    }//GEN-LAST:event_btnDesactivar6ActionPerformed
+public boolean DesactivarTransmision(){
+    transmision temp;
         temp = TipoTransmisiondao.findtransmision(cmbIDTipoTransmision.getSelectedIndex());
         if(temp.isEstado()){
             temp.setEstado(false);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
-            JOptionPane.showMessageDialog(null,"Tipo de Transmisión Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            //JOptionPane.showMessageDialog(null,"Tipo de Transmisión Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         else{
             temp.setEstado(true);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
-            JOptionPane.showMessageDialog(null,"Tipo de Transmisión Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            //JOptionPane.showMessageDialog(null,"Tipo de Transmisión Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        try {
+        /*try {
             TipoTransmisiondao.edit(temp);
         } catch (Exception ex) {
             Logger.getLogger(transmision.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         createTableTipoTransmision();
         btnActivarDesactivarTipoTransmision();
         LimpiarNuevoTipoTransmision();
-    }//GEN-LAST:event_btnDesactivar6ActionPerformed
-
+        return true;
+}
     private void tblTipoTransmisionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTipoTransmisionMouseClicked
         btnAgregar6.setEnabled(false);
         btnModificar6.setEnabled(true);
@@ -4418,32 +4473,46 @@ public void LimpiarNuevoTipoTransmision(){
     }//GEN-LAST:event_btnLimpiar7ActionPerformed
 
     private void btnDesactivar7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar7ActionPerformed
-        Vehiculo temp;
+
+    }//GEN-LAST:event_btnDesactivar7ActionPerformed
+public boolean DesactivarVehiculo(){
+            Vehiculo temp;
         temp = vehiculoDao.findVehiculo(cmbIDVehiculo.getSelectedIndex());
         if(temp.isEstado()){
             temp.setEstado(false);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
-            JOptionPane.showMessageDialog(null,"Tipo de pieza Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            //JOptionPane.showMessageDialog(null,"Tipo de pieza Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         else{
             temp.setEstado(true);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
-            JOptionPane.showMessageDialog(null,"Tipo de pieza Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            //JOptionPane.showMessageDialog(null,"Tipo de pieza Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        try {
+        /*try {
             vehiculoDao.edit(temp);
         } catch (Exception ex) {
             Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         createTableVehiculosAgregar();
         btnActivarDesactivarVehiculo();
         limpiar();
-    }//GEN-LAST:event_btnDesactivar7ActionPerformed
-
+        return true;
+}
     private void btnModificar7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar7ActionPerformed
- if(cmbMarcaVehiculo.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null,"Seleccione una marca","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+ 
+    }//GEN-LAST:event_btnModificar7ActionPerformed
+public boolean ModificarVehiculo(){
+if(cmbMarcaVehiculo.getSelectedIndex()==0){
+            //JOptionPane.showMessageDialog(null,"Seleccione una marca","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
+            
+        }
+        else{
+            
+        }
+        if(cmbMarcaVehiculo.getSelectedIndex()==0){
+            //JOptionPane.showMessageDialog(null,"Seleccione una marca","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
             
         }
         else{
@@ -4452,41 +4521,41 @@ public void LimpiarNuevoTipoTransmision(){
         Marca m;
         m = Marcadao.findMarca(cmbMarcaVehiculo.getSelectedIndex());
         if(m.isEstado()!=true){
-            JOptionPane.showMessageDialog(null,"Esta Marca esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Esta Marca esta Desactivada","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(txtVin.getText().equals("")){
-            JOptionPane.showMessageDialog(null,"El campo de Modelo del Vehículo esta vacio","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"El campo de Modelo del Vehículo esta vacio","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
             
         }
         if(txtVin.getText().length()<3){
-            JOptionPane.showMessageDialog(null,"Modelo no puede contener menos de 3 letras","Error!",JOptionPane.ERROR_MESSAGE);
-            return;   
+            //JOptionPane.showMessageDialog(null,"Modelo no puede contener menos de 3 letras","Error!",JOptionPane.ERROR_MESSAGE);
+            return false; 
         }
         if(txtVin.getText().length()>15){
-            JOptionPane.showMessageDialog(null,"Modelo solo puede contener hasta 15 letras","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Modelo solo puede contener hasta 15 letras","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
             
         }
          if (!ValidacionNombreMayusculaYDemasMinus(txtVin.getText())){
-            JOptionPane.showMessageDialog(null,"El Modelo debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El Modelo debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtVin.requestFocus();
-            return;
+            return false;
         }else{
 
         }
         
         if(cmbColorVehiculo.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null,"Seleccione una Color","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Seleccione una Color","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
             
@@ -4494,15 +4563,15 @@ public void LimpiarNuevoTipoTransmision(){
         Tipo_color co;
         co = Colorrdao.findTipo_color(cmbColorVehiculo.getSelectedIndex());
         if(co.isEstado()!=true){
-            JOptionPane.showMessageDialog(null,"Este Color esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Este Color esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(cmbTipoVehiculoVehiculo.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null,"Seleccione el Tipo de Vehículo","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Seleccione el Tipo de Vehículo","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
             
@@ -4510,16 +4579,16 @@ public void LimpiarNuevoTipoTransmision(){
         TipoVehiculo tpv;
         tpv = TipoVehiculodao.findTipoVehiculo(cmbTipoVehiculoVehiculo.getSelectedIndex());
         if(tpv.isEstado()!=true){
-            JOptionPane.showMessageDialog(null,"Este Tipo de Vehículo esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Este Tipo de Vehículo esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         
         if(cmbGasolinaVehiculo.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null,"Seleccione un Tipo de Gasolina","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Seleccione un Tipo de Gasolina","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
             
@@ -4527,15 +4596,15 @@ public void LimpiarNuevoTipoTransmision(){
         TipoGasolina tpg;
         tpg = TipoGasolinadao.findTipoGasolina(cmbGasolinaVehiculo.getSelectedIndex());
         if(tpg.isEstado()!=true){
-            JOptionPane.showMessageDialog(null,"Este Tipo de Gasolina esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Este Tipo de Gasolina esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(cmbNumAsientos.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null,"Seleccione el Número de Asientos","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Seleccione el Número de Asientos","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
             
@@ -4543,15 +4612,15 @@ public void LimpiarNuevoTipoTransmision(){
         Numero_Asientos nt;
         nt = NumeroAsientosdao.findNumero_Asientos(cmbNumAsientos.getSelectedIndex());
         if(nt.isEstado()!=true){
-            JOptionPane.showMessageDialog(null,"Este Número de Asientos esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Este Número de Asientos esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(cmbCabinaVehiculo.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null,"Seleccione un Tipo de Cabina","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Seleccione un Tipo de Cabina","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
             
@@ -4559,16 +4628,16 @@ public void LimpiarNuevoTipoTransmision(){
         TipoCabina tpc;
         tpc = TipoCabinadao.findTipoCabina(cmbCabinaVehiculo.getSelectedIndex());
         if(tpc.isEstado()!=true){
-            JOptionPane.showMessageDialog(null,"Este Tipo de Cabina esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Este Tipo de Cabina esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         
         if(cmbTransmisionVehiculo.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null,"Seleccione el Tipo de Transmisión","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Seleccione el Tipo de Transmisión","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
             
@@ -4576,8 +4645,8 @@ public void LimpiarNuevoTipoTransmision(){
         transmision tpt;
         tpt = TipoTransmisiondao.findtransmision(cmbTransmisionVehiculo.getSelectedIndex());
         if(tpt.isEstado()!=true){
-            JOptionPane.showMessageDialog(null,"Este Tipo de Transmisión esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Este Tipo de Transmisión esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
@@ -4585,15 +4654,15 @@ public void LimpiarNuevoTipoTransmision(){
         
         //Validacion de cilindraje
         if("".equals(txtCilindraje.getText())){
-            JOptionPane.showMessageDialog(null, "Por favor, ingresar un cilindraje","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "Por favor, ingresar un cilindraje","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
             
         }    
         if(Integer.parseInt(txtCilindraje.getText())<0 || Integer.parseInt(txtCilindraje.getText())>18 ){
-            JOptionPane.showMessageDialog(null, "Cilindraje ingresado no valido\nSugrencias:\n4\n6\n8\n16","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "Cilindraje ingresado no valido\nSugrencias:\n4\n6\n8\n16","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
             
@@ -4601,79 +4670,79 @@ public void LimpiarNuevoTipoTransmision(){
         //Fin validacion de cilindraje
         //Validacion de stock
         if("".equals(ftxtStock.getText())){
-               JOptionPane.showMessageDialog(null, "Por favor ingrese la cantidad de Stock actual del vehículo","Error!",JOptionPane.ERROR_MESSAGE);
-                return;
+               //JOptionPane.showMessageDialog(null, "Por favor ingrese la cantidad de Stock actual del vehículo","Error!",JOptionPane.ERROR_MESSAGE);
+                return false;
             }
            else{        
            }
         if((Integer.parseInt(ftxtStock.getText())==0)){
-               JOptionPane.showMessageDialog(null, "El Stock actual no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
-                return;
+               //JOptionPane.showMessageDialog(null, "El Stock actual no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
+                return false;
             }
            else{        
            }
         if (!ValidacionRangoStockVehiculo(ftxtStock.getText())){
-            JOptionPane.showMessageDialog(null,"El rango de Stock de Vehículos solo puede estar entre 1-200","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El rango de Stock de Vehículos solo puede estar entre 1-200","Error!", JOptionPane.ERROR_MESSAGE);
             ftxtStock.requestFocus();
-            return;
+            return false;
         }else{
 
         }
         if("".equals(ftxtStockMinimo.getText())){
-               JOptionPane.showMessageDialog(null,"Por favor ingrese la cantidad de Stock Mínimo que puede haber de este Vehiculo","",0);
-               return;
+               //JOptionPane.showMessageDialog(null,"Por favor ingrese la cantidad de Stock Mínimo que puede haber de este Vehiculo","",0);
+               return false;
            }
            else{
                
            }
         if((Integer.parseInt(ftxtStockMinimo.getText())<1)){
-               JOptionPane.showMessageDialog(null, "El Stock Mínimo actual no puedo ser menor que uno","Error!",JOptionPane.ERROR_MESSAGE);
-                return;
+               //JOptionPane.showMessageDialog(null, "El Stock Mínimo actual no puedo ser menor que uno","Error!",JOptionPane.ERROR_MESSAGE);
+                return false;
             }
            else{        
            }
         if(Double.parseDouble(ftxtStock.getText())<Integer.parseInt(ftxtStockMinimo.getText())){
-               JOptionPane.showMessageDialog(null, "El Stock no puede ser menor al Stock Mínimo","Error!",JOptionPane.ERROR_MESSAGE);
-               return;
+               //JOptionPane.showMessageDialog(null, "El Stock no puede ser menor al Stock Mínimo","Error!",JOptionPane.ERROR_MESSAGE);
+               return false;
            }
            if("".equals(ftxtStockMaximo.getText())){
-               JOptionPane.showMessageDialog(null,"Por favor ingrese la cantidad Máxima de Stock que puede haber de este Vehículo","Error!",JOptionPane.ERROR_MESSAGE);
-               return;
+               //JOptionPane.showMessageDialog(null,"Por favor ingrese la cantidad Máxima de Stock que puede haber de este Vehículo","Error!",JOptionPane.ERROR_MESSAGE);
+               return false;
            }
            else{
                
            }
            if((Integer.parseInt(ftxtStockMaximo.getText())==0)){
-               JOptionPane.showMessageDialog(null, "El Stock Máximo no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
-                return;
+               //JOptionPane.showMessageDialog(null, "El Stock Máximo no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
+                return false;
             }
            else{        
            }
            if (!ValidacionRangoStockVehiculo(ftxtStockMaximo.getText())){
-            JOptionPane.showMessageDialog(null,"El rango de Stock de Vehículos solo puede estar entre 1-200","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El rango de Stock de Vehículos solo puede estar entre 1-200","Error!", JOptionPane.ERROR_MESSAGE);
             ftxtStockMaximo.requestFocus();
-            return;
+            return false;
             }else{
 
             }
            
            if(Integer.parseInt(ftxtStockMinimo.getText()) >= Integer.parseInt(ftxtStockMaximo.getText())){
-               JOptionPane.showMessageDialog(null, "El Stock Mínimo no puede ser igual o mayor al stock Máximo","Error!",JOptionPane.ERROR_MESSAGE);
-               return;
+               //JOptionPane.showMessageDialog(null, "El Stock Mínimo no puede ser igual o mayor al stock Máximo","Error!",JOptionPane.ERROR_MESSAGE);
+               return false;
            }
            else{
             }
            if("".equals(txtPrecio.getText())){
-               JOptionPane.showMessageDialog(null,"Por favor ingrese el Precio del Vehículo","Error!",JOptionPane.ERROR_MESSAGE);
-               return;
+               //JOptionPane.showMessageDialog(null,"Por favor ingrese el Precio del Vehículo","Error!",JOptionPane.ERROR_MESSAGE);
+               return false;
            }
            else{
                
            }
            if (!ValidacionRangoPrecioVehiculo(txtPrecio.getText())){
-            JOptionPane.showMessageDialog(null,"El rango de Precio del Vehículo solo puede estar entre 50,000.00-800,000.00","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El rango de Precio del Vehículo solo puede estar entre 50,000.00-800,000.00","Error!", JOptionPane.ERROR_MESSAGE);
             txtPrecio.requestFocus();
-            return;
+            return false;
             }else{
 
             }
@@ -4696,11 +4765,11 @@ public void LimpiarNuevoTipoTransmision(){
            temp.setTotal_cilindraje(Double.parseDouble(txtCilindraje.getText()));
            temp.setVin(txtVin.getText());
            
-        try {
+        /*try {
             vehiculoDao.edit(temp);
         } catch (Exception ex) {
             Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
            
        
         
@@ -4737,11 +4806,11 @@ public void LimpiarNuevoTipoTransmision(){
        // temp2.setId_vehiculo(cmbIDVehiculo.getSelectedIndex());
         
         
-            try {
+            /*try {
                 historicoPrecioVehiculoDao.edit(temp2);
             } catch (Exception ex) {
                 Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
             
             aux1 = Integer.toString(fecha.get(Calendar.YEAR));
             aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH)+1);
@@ -4755,29 +4824,32 @@ public void LimpiarNuevoTipoTransmision(){
            double auxs=(Double.parseDouble(txtPrecio.getText().replace(",", "").replace(",", "").trim()));
            temp3.setPrecio(auxs);
            
-           historicoPrecioVehiculoDao.create(temp3);
+           //historicoPrecioVehiculoDao.create(temp3);
             
             
         }
         Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
-        JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
+        //JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
         createTableVehiculosAgregar();
         createcmbIDVehiculo();
         limpiar();
-        
-    }//GEN-LAST:event_btnModificar7ActionPerformed
-
+        return true;
+}
     private void btnAgregar7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar7ActionPerformed
-        if(cmbIDVehiculo.getSelectedIndex()!=0){
-            JOptionPane.showMessageDialog(null, "El ID Vehículo siempre debe estar en el ITEM de Nuevo para agregar un Vehículo","Error!", JOptionPane.ERROR_MESSAGE);
+       AgregarVehiculos();
+    }//GEN-LAST:event_btnAgregar7ActionPerformed
+public boolean AgregarVehiculos(){
+     if(cmbIDVehiculo.getSelectedIndex()!=0){
+            //JOptionPane.showMessageDialog(null, "El ID Vehículo siempre debe estar en el ITEM de Nuevo para agregar un Vehículo","Error!", JOptionPane.ERROR_MESSAGE);
             cmbIDVehiculo.setSelectedIndex(0);
+            return false;
         }
         else{
 
         }
         if(cmbMarcaVehiculo.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null,"Seleccione una marca","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Seleccione una marca","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
             
         }
         else{
@@ -4786,41 +4858,41 @@ public void LimpiarNuevoTipoTransmision(){
         Marca m;
         m = Marcadao.findMarca(cmbMarcaVehiculo.getSelectedIndex());
         if(m.isEstado()!=true){
-            JOptionPane.showMessageDialog(null,"Esta Marca esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Esta Marca esta Desactivada","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(txtVin.getText().equals("")){
-            JOptionPane.showMessageDialog(null,"El campo de Modelo del Vehículo esta vacio","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"El campo de Modelo del Vehículo esta vacio","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
             
         }
         if(txtVin.getText().length()<3){
-            JOptionPane.showMessageDialog(null,"Modelo no puede contener menos de 3 letras","Error!",JOptionPane.ERROR_MESSAGE);
-            return;   
+            //JOptionPane.showMessageDialog(null,"Modelo no puede contener menos de 3 letras","Error!",JOptionPane.ERROR_MESSAGE);
+            return false; 
         }
         if(txtVin.getText().length()>15){
-            JOptionPane.showMessageDialog(null,"Modelo solo puede contener hasta 15 letras","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Modelo solo puede contener hasta 15 letras","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
             
         }
          if (!ValidacionNombreMayusculaYDemasMinus(txtVin.getText())){
-            JOptionPane.showMessageDialog(null,"El Modelo debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El Modelo debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtVin.requestFocus();
-            return;
+            return false;
         }else{
 
         }
         
         if(cmbColorVehiculo.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null,"Seleccione una Color","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Seleccione una Color","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
             
@@ -4828,15 +4900,15 @@ public void LimpiarNuevoTipoTransmision(){
         Tipo_color co;
         co = Colorrdao.findTipo_color(cmbColorVehiculo.getSelectedIndex());
         if(co.isEstado()!=true){
-            JOptionPane.showMessageDialog(null,"Este Color esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Este Color esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(cmbTipoVehiculoVehiculo.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null,"Seleccione el Tipo de Vehículo","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Seleccione el Tipo de Vehículo","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
             
@@ -4844,16 +4916,16 @@ public void LimpiarNuevoTipoTransmision(){
         TipoVehiculo tpv;
         tpv = TipoVehiculodao.findTipoVehiculo(cmbTipoVehiculoVehiculo.getSelectedIndex());
         if(tpv.isEstado()!=true){
-            JOptionPane.showMessageDialog(null,"Este Tipo de Vehículo esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Este Tipo de Vehículo esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         
         if(cmbGasolinaVehiculo.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null,"Seleccione un Tipo de Gasolina","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Seleccione un Tipo de Gasolina","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
             
@@ -4861,15 +4933,15 @@ public void LimpiarNuevoTipoTransmision(){
         TipoGasolina tpg;
         tpg = TipoGasolinadao.findTipoGasolina(cmbGasolinaVehiculo.getSelectedIndex());
         if(tpg.isEstado()!=true){
-            JOptionPane.showMessageDialog(null,"Este Tipo de Gasolina esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Este Tipo de Gasolina esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(cmbNumAsientos.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null,"Seleccione el Número de Asientos","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Seleccione el Número de Asientos","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
             
@@ -4877,15 +4949,15 @@ public void LimpiarNuevoTipoTransmision(){
         Numero_Asientos nt;
         nt = NumeroAsientosdao.findNumero_Asientos(cmbNumAsientos.getSelectedIndex());
         if(nt.isEstado()!=true){
-            JOptionPane.showMessageDialog(null,"Este Número de Asientos esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Este Número de Asientos esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         if(cmbCabinaVehiculo.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null,"Seleccione un Tipo de Cabina","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Seleccione un Tipo de Cabina","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
             
@@ -4893,16 +4965,16 @@ public void LimpiarNuevoTipoTransmision(){
         TipoCabina tpc;
         tpc = TipoCabinadao.findTipoCabina(cmbCabinaVehiculo.getSelectedIndex());
         if(tpc.isEstado()!=true){
-            JOptionPane.showMessageDialog(null,"Este Tipo de Cabina esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Este Tipo de Cabina esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
         }
         
         if(cmbTransmisionVehiculo.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null,"Seleccione el Tipo de Transmisión","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Seleccione el Tipo de Transmisión","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
             
@@ -4910,8 +4982,8 @@ public void LimpiarNuevoTipoTransmision(){
         transmision tpt;
         tpt = TipoTransmisiondao.findtransmision(cmbTransmisionVehiculo.getSelectedIndex());
         if(tpt.isEstado()!=true){
-            JOptionPane.showMessageDialog(null,"Este Tipo de Transmisión esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Este Tipo de Transmisión esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
 
@@ -4919,15 +4991,15 @@ public void LimpiarNuevoTipoTransmision(){
         
         //Validacion de cilindraje
         if("".equals(txtCilindraje.getText())){
-            JOptionPane.showMessageDialog(null, "Por favor, ingresar un cilindraje","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "Por favor, ingresar un cilindraje","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
             
         }    
         if(Integer.parseInt(txtCilindraje.getText())<0 || Integer.parseInt(txtCilindraje.getText())>18 ){
-            JOptionPane.showMessageDialog(null, "Cilindraje ingresado no valido\nSugrencias:\n4\n6\n8\n16","Error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null, "Cilindraje ingresado no valido\nSugrencias:\n4\n6\n8\n16","Error!",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
             
@@ -4935,79 +5007,79 @@ public void LimpiarNuevoTipoTransmision(){
         //Fin validacion de cilindraje
         //Validacion de stock
         if("".equals(ftxtStock.getText())){
-               JOptionPane.showMessageDialog(null, "Por favor ingrese la cantidad de Stock actual del vehículo","Error!",JOptionPane.ERROR_MESSAGE);
-                return;
+               //JOptionPane.showMessageDialog(null, "Por favor ingrese la cantidad de Stock actual del vehículo","Error!",JOptionPane.ERROR_MESSAGE);
+                return false;
             }
            else{        
            }
         if((Integer.parseInt(ftxtStock.getText())==0)){
-               JOptionPane.showMessageDialog(null, "El Stock actual no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
-                return;
+               //JOptionPane.showMessageDialog(null, "El Stock actual no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
+                return false;
             }
            else{        
            }
         if (!ValidacionRangoStockVehiculo(ftxtStock.getText())){
-            JOptionPane.showMessageDialog(null,"El rango de Stock de Vehículos solo puede estar entre 1-200","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El rango de Stock de Vehículos solo puede estar entre 1-200","Error!", JOptionPane.ERROR_MESSAGE);
             ftxtStock.requestFocus();
-            return;
+            return false;
         }else{
 
         }
         if("".equals(ftxtStockMinimo.getText())){
-               JOptionPane.showMessageDialog(null,"Por favor ingrese la cantidad de Stock Mínimo que puede haber de este Vehiculo","",0);
-               return;
+               //JOptionPane.showMessageDialog(null,"Por favor ingrese la cantidad de Stock Mínimo que puede haber de este Vehiculo","",0);
+               return false;
            }
            else{
                
            }
         if((Integer.parseInt(ftxtStockMinimo.getText())<1)){
-               JOptionPane.showMessageDialog(null, "El Stock Mínimo actual no puedo ser menor que uno","Error!",JOptionPane.ERROR_MESSAGE);
-                return;
+               //JOptionPane.showMessageDialog(null, "El Stock Mínimo actual no puedo ser menor que uno","Error!",JOptionPane.ERROR_MESSAGE);
+                return false;
             }
            else{        
            }
         if(Double.parseDouble(ftxtStock.getText())<Integer.parseInt(ftxtStockMinimo.getText())){
-               JOptionPane.showMessageDialog(null, "El Stock no puede ser menor al Stock Mínimo","Error!",JOptionPane.ERROR_MESSAGE);
-               return;
+               //JOptionPane.showMessageDialog(null, "El Stock no puede ser menor al Stock Mínimo","Error!",JOptionPane.ERROR_MESSAGE);
+               return false;
            }
            if("".equals(ftxtStockMaximo.getText())){
-               JOptionPane.showMessageDialog(null,"Por favor ingrese la cantidad Máxima de Stock que puede haber de este Vehículo","Error!",JOptionPane.ERROR_MESSAGE);
-               return;
+               //JOptionPane.showMessageDialog(null,"Por favor ingrese la cantidad Máxima de Stock que puede haber de este Vehículo","Error!",JOptionPane.ERROR_MESSAGE);
+               return false;
            }
            else{
                
            }
            if((Integer.parseInt(ftxtStockMaximo.getText())==0)){
-               JOptionPane.showMessageDialog(null, "El Stock Máximo no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
-                return;
+               //JOptionPane.showMessageDialog(null, "El Stock Máximo no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
+                return false;
             }
            else{        
            }
            if (!ValidacionRangoStockVehiculo(ftxtStockMaximo.getText())){
-            JOptionPane.showMessageDialog(null,"El rango de Stock de Vehículos solo puede estar entre 1-200","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El rango de Stock de Vehículos solo puede estar entre 1-200","Error!", JOptionPane.ERROR_MESSAGE);
             ftxtStockMaximo.requestFocus();
-            return;
+            return false;
             }else{
 
             }
            
            if(Integer.parseInt(ftxtStockMinimo.getText()) >= Integer.parseInt(ftxtStockMaximo.getText())){
-               JOptionPane.showMessageDialog(null, "El Stock Mínimo no puede ser igual o mayor al stock Máximo","Error!",JOptionPane.ERROR_MESSAGE);
-               return;
+               //JOptionPane.showMessageDialog(null, "El Stock Mínimo no puede ser igual o mayor al stock Máximo","Error!",JOptionPane.ERROR_MESSAGE);
+               return false;
            }
            else{
             }
            if("".equals(txtPrecio.getText())){
-               JOptionPane.showMessageDialog(null,"Por favor ingrese el Precio del Vehículo","Error!",JOptionPane.ERROR_MESSAGE);
-               return;
+               //JOptionPane.showMessageDialog(null,"Por favor ingrese el Precio del Vehículo","Error!",JOptionPane.ERROR_MESSAGE);
+               return false;
            }
            else{
                
            }
            if (!ValidacionRangoPrecioVehiculo(txtPrecio.getText())){
-            JOptionPane.showMessageDialog(null,"El rango de Precio del Vehículo solo puede estar entre 50,000.00-800,000.00","Error!", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null,"El rango de Precio del Vehículo solo puede estar entre 50,000.00-800,000.00","Error!", JOptionPane.ERROR_MESSAGE);
             txtPrecio.requestFocus();
-            return;
+            return false;
             }else{
 
             }
@@ -5031,11 +5103,11 @@ public void LimpiarNuevoTipoTransmision(){
            temp.setTotal_cilindraje(Double.parseDouble(txtCilindraje.getText()));
            temp.setVin(txtVin.getText());
            
-        try {
+        /*try {
             vehiculoDao.create(temp);
         } catch (Exception ex) {
             Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
            
         HistoricoPrecioVehiculos temp2 = new HistoricoPrecioVehiculos();   
         
@@ -5054,21 +5126,21 @@ public void LimpiarNuevoTipoTransmision(){
         temp2.setId_vehiculo(vehiculoDao.getVehiculoCount());
         
         
-        historicoPrecioVehiculoDao.create(temp2);
+        /*historicoPrecioVehiculoDao.create(temp2);*/
         Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
-        JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+        //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         
         createTableVehiculosAgregar();
         createcmbIDVehiculo();
         limpiar();
-    }//GEN-LAST:event_btnAgregar7ActionPerformed
-
+        return true;
+}
     private void limpiar(){
         txtVin.setText("");
         txtCilindraje.setText("");
-        ftxtStock.setText("");
-        ftxtStockMaximo.setText("");
-        ftxtStockMinimo.setText("");
+        ftxtStock.setText("0");
+        ftxtStockMaximo.setText("0");
+        ftxtStockMinimo.setText("0");
         txtPrecio.setText("");
         //cmbColorVehiculo.setSelectedIndex(0);
         cmbTransmisionVehiculo.setSelectedIndex(0);
@@ -5078,6 +5150,7 @@ public void LimpiarNuevoTipoTransmision(){
         cmbNumAsientos.setSelectedIndex(0);
         cmbMarcaVehiculo.setSelectedIndex(0);
         cmbIDVehiculo.setSelectedIndex(0);
+        cmbColorVehiculo.setSelectedIndex(0);
         //createTableVehiculosAgregar();
         //createcmbIDVehiculo();
         btnAgregar7.setEnabled(true);
@@ -5085,7 +5158,7 @@ public void LimpiarNuevoTipoTransmision(){
         btnDesactivar7.setEnabled(false);
         
     }
- private boolean ValidacionRangoStockVehiculo(String num){
+ public boolean ValidacionRangoStockVehiculo(String num){
         Pattern pat = null;
         Matcher mat = null;
         pat = Pattern.compile("^([1]|[2-9]|[1-9][0-9]|[1][0-9][0-9]|[2][0][0])$");
@@ -5096,7 +5169,7 @@ public void LimpiarNuevoTipoTransmision(){
         return false;
         }
     }  
- private boolean ValidacionRangoPrecioVehiculo(String num){
+ public boolean ValidacionRangoPrecioVehiculo(String num){
         Pattern pat = null;
         Matcher mat = null;
         pat = Pattern.compile("^([5-9][0-9][,][0-9][0-9][0-9][.][0-9][0-9]|[1-7][0-9][0-9][,][0-9][0-9][0-9][.][0-9][0-9]|[8][0][0][,][0][0][0][.][0][0])$");
@@ -5185,51 +5258,33 @@ public void LimpiarNuevoTipoTransmision(){
     }//GEN-LAST:event_cmbIDNumeroAsientosItemStateChanged
 
     private void btnAgregar8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar8ActionPerformed
-       
-        if(cmbIDNumeroAsientos.getSelectedIndex()!=0){
-            JOptionPane.showMessageDialog(null, "El ID Número de Asientos siempre debe estar en el ITEM de Nuevo para agregar un nuevo Número de Asientos","Error!", JOptionPane.ERROR_MESSAGE);
+       AgregarNumeroAsientos();
+        
+    }//GEN-LAST:event_btnAgregar8ActionPerformed
+public boolean AgregarNumeroAsientos(){
+    if(cmbIDNumeroAsientos.getSelectedIndex()!=0){
+            //JOptionPane.showMessageDialog(null, "El ID Número de Asientos siempre debe estar en el ITEM de Nuevo para agregar un nuevo Número de Asientos","Error!", JOptionPane.ERROR_MESSAGE);
             cmbIDNumeroAsientos.setSelectedIndex(0);
+            return false;
         }
         else{
 
         }
         if("".equals(txtNumeroAsientos.getText())){
-            JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Número de Asientos","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            //JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Número de Asientos","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
-        /*if(txtNumeroAsientos.getText().length()<1){
-            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Número de Asientos es de 1 Dígito","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+        if((Integer.parseInt(txtNumeroAsientos.getText())<=2)||(Integer.parseInt(txtNumeroAsientos.getText())>=24)){
+            //JOptionPane.showMessageDialog(null,"El Número de Asientos no pueder ser mayor a 24","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
-
-        }
-        if(txtNumeroAsientos.getText().length()>2){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Número de Asientos es de 2 Dígitos","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        else{
-
-        }*/
-        /*if(Integer.parseInt(txtNumeroAsientos.getText())>=2||Integer.parseInt(txtNumeroAsientos.getText())<=9){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Número de Asientos es de 2 Dígitos","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        else{
-
-        }*/
-        if (!ValidacionRangoNumeroAsientos(txtNumeroAsientos.getText())){
-            JOptionPane.showMessageDialog(null,"El Rango de Número de Asientos debe estar entre 2-9","Error!", JOptionPane.ERROR_MESSAGE);
-            txtNumeroAsientos.requestFocus();
-            return;
-        }else{
-
         }
         if("".equals(txtNumeroAsientos.getText())){
             //JOptionPane.showMessageDialog(null, "Ingrese el Número de Asientos que es");
-            return;
+           return false;
         }
         else{
             int i;
@@ -5237,27 +5292,27 @@ public void LimpiarNuevoTipoTransmision(){
             for(i=0;i<NumeroAsientosdao.findNumero_AsientosEntities().size();i++){
                 //System.out.println(i);
                 if(txtNumeroAsientos.getText().toLowerCase().equals(NumeroAsientosdao.findNumero_Asientos(i+1).getNumero_Asientos().toLowerCase())){
-                    JOptionPane.showMessageDialog(null, "Ya existe este Número de Asientos registrado en el sistema");
+                    //JOptionPane.showMessageDialog(null, "Ya existe este Número de Asientos registrado en el sistema");
                     flag=true;
-                    return;
+                    return false;
                 } else {
                 }
             }
             if(flag){
-                return;
+                return false;
             }
             else{
                 Numero_Asientos tp = new Numero_Asientos();
                 tp.setEstado(true);
                 tp.setNumero_Asientos(txtNumeroAsientos.getText());
-                try {
+                /*try {
                     NumeroAsientosdao.create(tp);
                 } catch (Exception ex) {
                     Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                }*/
                 //cmbIDNumeroAsientos.setSelectedIndex(1);
                 Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
-                JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+                //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
                 cmbIDNumeroAsientos.setSelectedIndex(0);
                 createTableNumeroAsientos();
                 createComboBoxNumeroAsientos();
@@ -5268,50 +5323,32 @@ public void LimpiarNuevoTipoTransmision(){
                 LimpiarNuevoNumeroAsientos();
             }
         }
-    }//GEN-LAST:event_btnAgregar8ActionPerformed
-
+        return true;
+}
     private void btnModificar8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar8ActionPerformed
-        if(cmbIDNumeroAsientos.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null, "Número de Asientos no encontrado");
+        ModificarNumeroAsientos();
+    }//GEN-LAST:event_btnModificar8ActionPerformed
+public boolean ModificarNumeroAsientos(){
+    if(cmbIDNumeroAsientos.getSelectedIndex()==0){
+            //JOptionPane.showMessageDialog(null, "Número de Asientos no encontrado");
+            return false;
         }
         else{
-            if("".equals(txtNumeroAsientos.getText())){
-            JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Número de Asientos","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+           if("".equals(txtNumeroAsientos.getText())){
+            //JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Número de Asientos","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
         }
-        /*if(txtNumeroAsientos.getText().length()<1){
-            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Número de Asientos es de 1 Dígito","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+        if((Integer.parseInt(txtNumeroAsientos.getText())<=2)||(Integer.parseInt(txtNumeroAsientos.getText())>=24)){
+            //JOptionPane.showMessageDialog(null,"El Número de Asientos no pueder ser mayor a 24","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         else{
-
-        }
-        if(txtNumeroAsientos.getText().length()>2){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Número de Asientos es de 2 Dígitos","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        else{
-
-        }*/
-        /*if(Integer.parseInt(txtNumeroAsientos.getText())>=2||Integer.parseInt(txtNumeroAsientos.getText())<=9){
-            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Número de Asientos es de 2 Dígitos","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        else{
-
-        }*/
-        if (!ValidacionRangoNumeroAsientos(txtNumeroAsientos.getText())){
-            JOptionPane.showMessageDialog(null,"El Rango de Número de Asientos debe estar entre 2-9","Error!", JOptionPane.ERROR_MESSAGE);
-            txtNumeroAsientos.requestFocus();
-            return;
-        }else{
-
         }
             if("".equals(txtNumeroAsientos.getText())){
                 //JOptionPane.showMessageDialog(null, "Número de Asientos no puede ir vacio");
-                return;
+                return false;
             }
             else{
                 int i;
@@ -5319,27 +5356,27 @@ public void LimpiarNuevoTipoTransmision(){
                 for(i=0;i<NumeroAsientosdao.findNumero_AsientosEntities().size();i++){
                     //System.out.println(i);
                     if(((txtNumeroAsientos.getText())).equals((NumeroAsientosdao.findNumero_Asientos(i+1).getNumero_Asientos()))){
-                        JOptionPane.showMessageDialog(null, "Ya existe este Número de Asientos registrado en el sistema");
+                        //JOptionPane.showMessageDialog(null, "Ya existe este Número de Asientos registrado en el sistema");
                         flag=true;
-                        return;
+                        return false;
                     } else {
                     }
                 }
                 if(flag){
-                    return;
+                    return false;
                 }
                 else{
                     Numero_Asientos tp;
                     tp=NumeroAsientosdao.findNumero_Asientos(cmbIDNumeroAsientos.getSelectedIndex());
                     tp.setNumero_Asientos(txtNumeroAsientos.getText());
-                    try {
+                    /*try {
                         NumeroAsientosdao.edit(tp);
                     } catch (Exception ex) {
                         Logger.getLogger(TipoGasolina.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    }*/
                     //cmbIDNumeroAsientos.setSelectedIndex(1);
                     Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
-                JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
+                //JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
                     cmbIDNumeroAsientos.setSelectedIndex(0);
                     createTableNumeroAsientos();
                     createComboBoxNumeroAsientos();
@@ -5350,13 +5387,14 @@ public void LimpiarNuevoTipoTransmision(){
                 }
             }
         }
-    }//GEN-LAST:event_btnModificar8ActionPerformed
-public void LimpiarNuevoNumeroAsientos(){
+    return true;
+}
+    public void LimpiarNuevoNumeroAsientos(){
     cmbIDNumeroAsientos.setSelectedIndex(0);
     txtNumeroAsientos.setText("");
-        btnAgregar2.setEnabled(true);
-        btnModificar2.setEnabled(false);
-        btnDesactivar2.setEnabled(false);
+        btnAgregar8.setEnabled(true);
+        btnModificar8.setEnabled(false);
+        btnDesactivar8.setEnabled(false);
         createTableNumeroAsientos();
         createComboBoxNumeroAsientos();
 }
@@ -5367,28 +5405,31 @@ public void LimpiarNuevoNumeroAsientos(){
     }//GEN-LAST:event_btnLimpiar8ActionPerformed
 
     private void btnDesactivar8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar8ActionPerformed
-        Numero_Asientos temp;
+        DesactivarNumeroAsientos();
+    }//GEN-LAST:event_btnDesactivar8ActionPerformed
+public boolean DesactivarNumeroAsientos(){
+    Numero_Asientos temp;
         temp = NumeroAsientosdao.findNumero_Asientos(cmbIDNumeroAsientos.getSelectedIndex());
         if(temp.isEstado()){
             temp.setEstado(false);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
-            JOptionPane.showMessageDialog(null,"Número de Asientos Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            //JOptionPane.showMessageDialog(null,"Número de Asientos Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         else{
             temp.setEstado(true);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
-            JOptionPane.showMessageDialog(null,"Número de Asientos Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            //JOptionPane.showMessageDialog(null,"Número de Asientos Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        try {
+        /*try {
             NumeroAsientosdao.edit(temp);
         } catch (Exception ex) {
             Logger.getLogger(transmision.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         createTableNumeroAsientos();
         btnActivarDesactivarNumeroAsientos();
         LimpiarNuevoNumeroAsientos();
-    }//GEN-LAST:event_btnDesactivar8ActionPerformed
-
+        return true;
+}
     private void tblNumeroAsientosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNumeroAsientosMouseClicked
         btnAgregar8.setEnabled(false);
         btnModificar8.setEnabled(true);
@@ -5417,9 +5458,20 @@ public void LimpiarNuevoNumeroAsientos(){
     }//GEN-LAST:event_btnRegresar9ActionPerformed
 
     private void txtMarcaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMarcaKeyTyped
+char c = evt.getKeyChar();
+                if((c < 'a' || c > 'z') && (c < 'A' || c > 'Z'&& c != 'Ñ' && c != 'ñ' && c != 'Á' && c != 'É' && c != 'Í' && c != 'Ó' && c != 'Ú' && c != 'á' && c != 'é' && c != 'í' && c != 'ó' && c != 'ú')&& (c!=KeyEvent.VK_SPACE) ){
 
+            evt.consume();
+
+        }
+              
+        if (txtMarca.getText().length() >= 10){
+        
+        evt.consume();
+        
+        }
     }//GEN-LAST:event_txtMarcaKeyTyped
-private boolean TresletrasMarca(String Marca){
+boolean ValidacionTresLetrasSeguidas(String Marca){
         
             Pattern pat = Pattern.compile("(?i)(.*aaa.*|.*bbb.*|.*ccc.*|.*ddd.*|.*eee.*|.*fff.*|.*ggg.*|.*hhh.*|.*iii.*|.*jjj.*|.*kkk.*|.*lll.*|.*mmm.*|.*nnn.*|.*ooo.*|.*ppp.*|.*qqq.*|.*rrr.*|.*sss.*|.*ttt.*|.*uuu.*|.*vvv.*|.*www.*|.*xxx.*|.*yyy.*|.*zzz.*)");
             Matcher mat = pat.matcher(Marca);
@@ -5433,27 +5485,93 @@ private boolean TresletrasMarca(String Marca){
             }
     }
     private void txtColorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtColorKeyTyped
+char c = evt.getKeyChar();
+                if((c < 'a' || c > 'z') && (c < 'A' || c > 'Z'&& c != 'Ñ' && c != 'ñ' && c != 'Á' && c != 'É' && c != 'Í' && c != 'Ó' && c != 'Ú' && c != 'á' && c != 'é' && c != 'í' && c != 'ó' && c != 'ú')&& (c!=KeyEvent.VK_SPACE) ){
 
+            evt.consume();
+
+        }
+              
+        if (txtColor.getText().length() >= 10){
+        
+        evt.consume();
+        
+        }
     }//GEN-LAST:event_txtColorKeyTyped
 
     private void txtTipoVehiculoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTipoVehiculoKeyTyped
+char c = evt.getKeyChar();
+                if((c < 'a' || c > 'z') && (c < 'A' || c > 'Z'&& c != 'Ñ' && c != 'ñ' && c != 'Á' && c != 'É' && c != 'Í' && c != 'Ó' && c != 'Ú' && c != 'á' && c != 'é' && c != 'í' && c != 'ó' && c != 'ú')&& (c!=KeyEvent.VK_SPACE) ){
 
+            evt.consume();
+
+        }
+              
+        if (txtTipoVehiculo.getText().length() >= 9){
+        
+        evt.consume();
+        
+        }
     }//GEN-LAST:event_txtTipoVehiculoKeyTyped
 
     private void txtTipoTransmisionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTipoTransmisionKeyTyped
+char c = evt.getKeyChar();
+                if((c < 'a' || c > 'z') && (c < 'A' || c > 'Z'&& c != 'Ñ' && c != 'ñ' && c != 'Á' && c != 'É' && c != 'Í' && c != 'Ó' && c != 'Ú' && c != 'á' && c != 'é' && c != 'í' && c != 'ó' && c != 'ú')&& (c!=KeyEvent.VK_SPACE) ){
 
+            evt.consume();
+
+        }
+              
+        if (txtTipoTransmision.getText().length() >= 15){
+        
+        evt.consume();
+        
+        }
     }//GEN-LAST:event_txtTipoTransmisionKeyTyped
 
     private void txtNumeroAsientosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumeroAsientosKeyTyped
- 
+ char c = evt.getKeyChar();
+                if((c < '0' || c > '9') ){
+
+            evt.consume();
+
+        }
+              
+        if (txtNumeroAsientos.getText().length() >= 2){
+        
+        evt.consume();
+        
+        }
     }//GEN-LAST:event_txtNumeroAsientosKeyTyped
 
     private void txtTipoCabinaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTipoCabinaKeyTyped
+char c = evt.getKeyChar();
+                if((c < 'a' || c > 'z') && (c < 'A' || c > 'Z'&& c != 'Ñ' && c != 'ñ' && c != 'Á' && c != 'É' && c != 'Í' && c != 'Ó' && c != 'Ú' && c != 'á' && c != 'é' && c != 'í' && c != 'ó' && c != 'ú')&& (c!=KeyEvent.VK_SPACE) ){
 
+            evt.consume();
+
+        }
+              
+        if (txtTipoCabina.getText().length() >= 14){
+        
+        evt.consume();
+        
+        }
     }//GEN-LAST:event_txtTipoCabinaKeyTyped
 
     private void txtTipoGasolinaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTipoGasolinaKeyTyped
+char c = evt.getKeyChar();
+                if((c < 'a' || c > 'z') && (c < 'A' || c > 'Z'&& c != 'Ñ' && c != 'ñ' && c != 'Á' && c != 'É' && c != 'Í' && c != 'Ó' && c != 'Ú' && c != 'á' && c != 'é' && c != 'í' && c != 'ó' && c != 'ú')&& (c!=KeyEvent.VK_SPACE) ){
 
+            evt.consume();
+
+        }
+              
+        if (txtTipoGasolina.getText().length() >= 8){
+        
+        evt.consume();
+        
+        }
     }//GEN-LAST:event_txtTipoGasolinaKeyTyped
 
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
@@ -5472,11 +5590,12 @@ private boolean TresletrasMarca(String Marca){
     private void txtPrecioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyPressed
 
         
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPrecioKeyPressed
 
     private void txtCilindrajeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCilindrajeKeyPressed
-
+    
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCilindrajeKeyPressed
 
@@ -5575,10 +5694,143 @@ private boolean TresletrasMarca(String Marca){
         // TODO add your handling code here:
     }//GEN-LAST:event_chkTipoGasolinaItemStateChanged
 
+    private void txtVinKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtVinKeyTyped
+        char c = evt.getKeyChar();
+                if((c < 'a' || c > 'z') && (c < 'A' || c > 'Z'&& c != 'Ñ' && c != 'ñ' && c != 'Á' && c != 'É' && c != 'Í' && c != 'Ó' && c != 'Ú' && c != 'á' && c != 'é' && c != 'í' && c != 'ó' && c != 'ú')&& (c != '-' && c != '+' && c != '&' && c != '#' && c != '$' ) && (c < '0' || c > '9')  &&(c!=KeyEvent.VK_SPACE) ){
+
+            evt.consume();
+
+        }
+              
+        if (txtVin.getText().length() >= 25){
+        
+        evt.consume();
+        
+        }
+    }//GEN-LAST:event_txtVinKeyTyped
+
+    private void ftxtStockKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ftxtStockKeyTyped
+        char c = evt.getKeyChar();
+        if((c < '0' || c > '9')){
+
+            evt.consume();
+
+        }
+        if (ftxtStock.getText().length() >= 5){
+        
+        evt.consume();
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_ftxtStockKeyTyped
+
+    private void ftxtStockMinimoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ftxtStockMinimoKeyTyped
+               char c = evt.getKeyChar();
+        if((c < '0' || c > '9')){
+
+            evt.consume();
+
+        }
+        if (ftxtStockMinimo.getText().length() >= 5){
+        
+        evt.consume();
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_ftxtStockMinimoKeyTyped
+
+    private void ftxtStockMaximoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ftxtStockMaximoKeyTyped
+               char c = evt.getKeyChar();
+        if((c < '0' || c > '9')){
+
+            evt.consume();
+
+        }
+        if (ftxtStockMaximo.getText().length() >= 5){
+        
+        evt.consume();
+        }          // TODO add your handling code here:
+    }//GEN-LAST:event_ftxtStockMaximoKeyTyped
+
+    private void txtPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyTyped
+
+        char c = evt.getKeyChar();
+        if((c < '0' || c > '9') && (c != '.' && c != ',') && (c!=8)){
+
+            evt.consume();
+
+        }
+        if (txtPrecio.getText().length() >= 12){
+        
+        evt.consume();
+        }
+        
+// TODO add your handling code here:
+    }//GEN-LAST:event_txtPrecioKeyTyped
+
+    private void txtCilindrajeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCilindrajeKeyTyped
+        char c = evt.getKeyChar();
+                if((c < '0' || c > '9') && (c != '.' ) ){
+
+            evt.consume();
+
+        }
+              
+        if (txtCilindraje.getText().length() >= 5){
+        
+        evt.consume();
+        
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCilindrajeKeyTyped
+
+    private void ftxtStockMaximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ftxtStockMaximoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ftxtStockMaximoActionPerformed
+
+    private void cmbIDVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbIDVehiculoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbIDVehiculoActionPerformed
+
     private void createTableBusqueda(){
-        DefaultTableModel modelo = new DefaultTableModel();
+        if(!chkMarca.isSelected()&& !chkTipoGasolina.isSelected() && !chkTipoVehiculo.isSelected() && !chkColor.isSelected()){
+            JOptionPane.showMessageDialog(null,"No ha Marcado ningún Checkbox","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        if(chkMarca.isSelected()&& cmbMarcaBusqueda.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(null,"No ha seleccionado ninguna Marca","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        if(chkTipoGasolina.isSelected()&& cmbGasolinaBusqueda.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(null,"No ha seleccionado ningún Tipo de Gasolina","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        if(chkTipoVehiculo.isSelected()&& cmbTipoVehiculoBusqueda.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(null,"No ha seleccionado ningún Tipo de Vehículo","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        if(chkColor.isSelected()&& cmbColorBusqueda.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(null,"No ha seleccionado ningún Color","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+
+        }
+        DefaultTableModel modelo = (DefaultTableModel) tbBusqueda.getModel();
         tbBusqueda.setModel(modelo);
-        modelo.addColumn("ID");
+        int i;
+        for(i=modelo.getRowCount()-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
+        /*modelo.addColumn("ID");
         
         modelo.addColumn("Marca");
         modelo.addColumn("Modelo");
@@ -5586,7 +5838,7 @@ private boolean TresletrasMarca(String Marca){
         modelo.addColumn("Combustible");
         modelo.addColumn("Tipo de vehiculo");
         modelo.addColumn("Numero de asientos");
-        modelo.addColumn("Precio");
+        modelo.addColumn("Precio");*/
         
         DecimalFormatSymbols separadoresPersonalizados = new DecimalFormatSymbols();
         separadoresPersonalizados.setDecimalSeparator('.');
@@ -5595,34 +5847,7 @@ private boolean TresletrasMarca(String Marca){
        
 
 
-        if(chkMarca.isSelected()||cmbMarcaBusqueda.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null,"No ha seleccionado ningún Tipo de Gasolina","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        else{
-
-        }
-        if(chkTipoGasolina.isSelected()||cmbGasolinaBusqueda.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null,"No ha seleccionado ninguna Marca","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        else{
-
-        }
-        if(chkTipoVehiculo.isSelected()||cmbTipoVehiculoBusqueda.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null,"No ha seleccionado ninguna Marca","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        else{
-
-        }
-        if(chkColor.isSelected()||cmbColorBusqueda.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null,"No ha seleccionado ninguna Marca","Error!", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        else{
-
-        }
+        
 
         List<Vehiculo> temp = vehiculoDao.findVehiculoEntities();
         List<HistoricoPrecioVehiculos> temp2 = historicoPrecioVehiculoDao.findHistoricoPrecioVehiculosEntities();
@@ -5659,8 +5884,9 @@ private boolean TresletrasMarca(String Marca){
                             aux=t.getPrecio();
                             modelo.addRow(new Object[]{
                                 e.getId_vehiculo(),
-                                e.getVin(),
+                                
                                 Marcadao.findMarca(e.getId_marca()).getMarca(),
+                                e.getVin(),
                                 Colorrdao.findTipo_color(e.getId_tipo_color()).getTipo_color(),
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
@@ -5682,8 +5908,9 @@ private boolean TresletrasMarca(String Marca){
                             aux=t.getPrecio();
                             modelo.addRow(new Object[]{
                                 e.getId_vehiculo(),
-                                e.getVin(),
+                                
                                 Marcadao.findMarca(e.getId_marca()).getMarca(),
+                                e.getVin(),
                                 Colorrdao.findTipo_color(e.getId_tipo_color()).getTipo_color(),
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
@@ -5705,8 +5932,9 @@ private boolean TresletrasMarca(String Marca){
                             aux=t.getPrecio();
                             modelo.addRow(new Object[]{
                                 e.getId_vehiculo(),
-                                e.getVin(),
+                                
                                 Marcadao.findMarca(e.getId_marca()).getMarca(),
+                                e.getVin(),
                                 Colorrdao.findTipo_color(e.getId_tipo_color()).getTipo_color(),
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
@@ -5730,8 +5958,9 @@ private boolean TresletrasMarca(String Marca){
                             aux=t.getPrecio();
                             modelo.addRow(new Object[]{
                                 e.getId_vehiculo(),
-                                e.getVin(),
+                                
                                 Marcadao.findMarca(e.getId_marca()).getMarca(),
+                                e.getVin(),
                                 Colorrdao.findTipo_color(e.getId_tipo_color()).getTipo_color(),
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
@@ -5755,8 +5984,9 @@ private boolean TresletrasMarca(String Marca){
                             aux=t.getPrecio();
                             modelo.addRow(new Object[]{
                                 e.getId_vehiculo(),
-                                e.getVin(),
+                                
                                 Marcadao.findMarca(e.getId_marca()).getMarca(),
+                                e.getVin(),
                                 Colorrdao.findTipo_color(e.getId_tipo_color()).getTipo_color(),
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
@@ -5780,8 +6010,9 @@ private boolean TresletrasMarca(String Marca){
                             aux=t.getPrecio();
                             modelo.addRow(new Object[]{
                                 e.getId_vehiculo(),
-                                e.getVin(),
+                                
                                 Marcadao.findMarca(e.getId_marca()).getMarca(),
+                                e.getVin(),
                                 Colorrdao.findTipo_color(e.getId_tipo_color()).getTipo_color(),
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
@@ -5805,8 +6036,9 @@ private boolean TresletrasMarca(String Marca){
                             aux=t.getPrecio();
                             modelo.addRow(new Object[]{
                                 e.getId_vehiculo(),
-                                e.getVin(),
+                                
                                 Marcadao.findMarca(e.getId_marca()).getMarca(),
+                                e.getVin(),
                                 Colorrdao.findTipo_color(e.getId_tipo_color()).getTipo_color(),
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
@@ -5830,8 +6062,9 @@ private boolean TresletrasMarca(String Marca){
                             aux=t.getPrecio();
                             modelo.addRow(new Object[]{
                                 e.getId_vehiculo(),
-                                e.getVin(),
+                                
                                 Marcadao.findMarca(e.getId_marca()).getMarca(),
+                                e.getVin(),
                                 Colorrdao.findTipo_color(e.getId_tipo_color()).getTipo_color(),
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
@@ -5855,8 +6088,9 @@ private boolean TresletrasMarca(String Marca){
                             aux=t.getPrecio();
                             modelo.addRow(new Object[]{
                                 e.getId_vehiculo(),
-                                e.getVin(),
+                                
                                 Marcadao.findMarca(e.getId_marca()).getMarca(),
+                                e.getVin(),
                                 Colorrdao.findTipo_color(e.getId_tipo_color()).getTipo_color(),
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
@@ -5880,8 +6114,9 @@ private boolean TresletrasMarca(String Marca){
                             aux=t.getPrecio();
                             modelo.addRow(new Object[]{
                                 e.getId_vehiculo(),
-                                e.getVin(),
+                                
                                 Marcadao.findMarca(e.getId_marca()).getMarca(),
+                                e.getVin(),
                                 Colorrdao.findTipo_color(e.getId_tipo_color()).getTipo_color(),
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
@@ -5905,8 +6140,9 @@ private boolean TresletrasMarca(String Marca){
                             aux=t.getPrecio();
                             modelo.addRow(new Object[]{
                                 e.getId_vehiculo(),
-                                e.getVin(),
+                                
                                 Marcadao.findMarca(e.getId_marca()).getMarca(),
+                                e.getVin(),
                                 Colorrdao.findTipo_color(e.getId_tipo_color()).getTipo_color(),
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
@@ -5930,8 +6166,9 @@ private boolean TresletrasMarca(String Marca){
                             aux=t.getPrecio();
                             modelo.addRow(new Object[]{
                                 e.getId_vehiculo(),
-                                e.getVin(),
+                                
                                 Marcadao.findMarca(e.getId_marca()).getMarca(),
+                                e.getVin(),
                                 Colorrdao.findTipo_color(e.getId_tipo_color()).getTipo_color(),
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
@@ -5955,8 +6192,9 @@ private boolean TresletrasMarca(String Marca){
                             aux=t.getPrecio();
                             modelo.addRow(new Object[]{
                                 e.getId_vehiculo(),
-                                e.getVin(),
+                                
                                 Marcadao.findMarca(e.getId_marca()).getMarca(),
+                                e.getVin(),
                                 Colorrdao.findTipo_color(e.getId_tipo_color()).getTipo_color(),
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
@@ -5980,8 +6218,9 @@ private boolean TresletrasMarca(String Marca){
                             aux=t.getPrecio();
                             modelo.addRow(new Object[]{
                                 e.getId_vehiculo(),
-                                e.getVin(),
+                                
                                 Marcadao.findMarca(e.getId_marca()).getMarca(),
+                                e.getVin(),
                                 Colorrdao.findTipo_color(e.getId_tipo_color()).getTipo_color(),
                                 TipoGasolinadao.findTipoGasolina(e.getId_tipo_gasolina()).getTipoGasolina(),
                                 TipoVehiculodao.findTipoVehiculo(e.getId_tipo_vehiculo()).getTipoVehiculo(),
@@ -6060,28 +6299,28 @@ private boolean TresletrasMarca(String Marca){
     private javax.swing.JCheckBox chkMarca;
     private javax.swing.JCheckBox chkTipoGasolina;
     private javax.swing.JCheckBox chkTipoVehiculo;
-    private javax.swing.JComboBox<String> cmbCabinaVehiculo;
+    public javax.swing.JComboBox<String> cmbCabinaVehiculo;
     private javax.swing.JComboBox<String> cmbColorBusqueda;
-    private javax.swing.JComboBox<String> cmbColorVehiculo;
+    public javax.swing.JComboBox<String> cmbColorVehiculo;
     private javax.swing.JComboBox<String> cmbGasolinaBusqueda;
-    private javax.swing.JComboBox<String> cmbGasolinaVehiculo;
-    private javax.swing.JComboBox<String> cmbIDColor;
-    private javax.swing.JComboBox<String> cmbIDMarca;
-    private javax.swing.JComboBox<String> cmbIDNumeroAsientos;
-    private javax.swing.JComboBox<String> cmbIDTipoGasolina;
-    private javax.swing.JComboBox<String> cmbIDTipoTransmision;
-    private javax.swing.JComboBox<String> cmbIDTipoVehiculo;
-    private javax.swing.JComboBox<String> cmbIDVehiculo;
+    public javax.swing.JComboBox<String> cmbGasolinaVehiculo;
+    public javax.swing.JComboBox<String> cmbIDColor;
+    public javax.swing.JComboBox<String> cmbIDMarca;
+    public javax.swing.JComboBox<String> cmbIDNumeroAsientos;
+    public javax.swing.JComboBox<String> cmbIDTipoGasolina;
+    public javax.swing.JComboBox<String> cmbIDTipoTransmision;
+    public javax.swing.JComboBox<String> cmbIDTipoVehiculo;
+    public javax.swing.JComboBox<String> cmbIDVehiculo;
     private javax.swing.JComboBox<String> cmbMarcaBusqueda;
-    private javax.swing.JComboBox<String> cmbMarcaVehiculo;
-    private javax.swing.JComboBox<String> cmbNumAsientos;
-    private javax.swing.JComboBox<String> cmbPiezaClave;
+    public javax.swing.JComboBox<String> cmbMarcaVehiculo;
+    public javax.swing.JComboBox<String> cmbNumAsientos;
+    public javax.swing.JComboBox<String> cmbPiezaClave;
     private javax.swing.JComboBox<String> cmbTipoVehiculoBusqueda;
-    private javax.swing.JComboBox<String> cmbTipoVehiculoVehiculo;
-    private javax.swing.JComboBox<String> cmbTransmisionVehiculo;
-    private javax.swing.JFormattedTextField ftxtStock;
-    private javax.swing.JFormattedTextField ftxtStockMaximo;
-    private javax.swing.JFormattedTextField ftxtStockMinimo;
+    public javax.swing.JComboBox<String> cmbTipoVehiculoVehiculo;
+    public javax.swing.JComboBox<String> cmbTransmisionVehiculo;
+    public javax.swing.JFormattedTextField ftxtStock;
+    public javax.swing.JFormattedTextField ftxtStockMaximo;
+    public javax.swing.JFormattedTextField ftxtStockMinimo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -6152,15 +6391,15 @@ private boolean TresletrasMarca(String Marca){
     private javax.swing.JTable tblTipoGasolina;
     private javax.swing.JTable tblTipoTransmision;
     private javax.swing.JTable tblTipoVehiculo;
-    private javax.swing.JTextField txtCilindraje;
-    private javax.swing.JTextField txtColor;
-    private javax.swing.JTextField txtMarca;
-    private javax.swing.JTextField txtNumeroAsientos;
-    private javax.swing.JTextField txtPrecio;
-    private javax.swing.JTextField txtTipoCabina;
-    private javax.swing.JTextField txtTipoGasolina;
-    private javax.swing.JTextField txtTipoTransmision;
-    private javax.swing.JTextField txtTipoVehiculo;
-    private javax.swing.JTextField txtVin;
+    public javax.swing.JTextField txtCilindraje;
+    public javax.swing.JTextField txtColor;
+    public javax.swing.JTextField txtMarca;
+    public javax.swing.JTextField txtNumeroAsientos;
+    public javax.swing.JTextField txtPrecio;
+    public javax.swing.JTextField txtTipoCabina;
+    public javax.swing.JTextField txtTipoGasolina;
+    public javax.swing.JTextField txtTipoTransmision;
+    public javax.swing.JTextField txtTipoVehiculo;
+    public javax.swing.JTextField txtVin;
     // End of variables declaration//GEN-END:variables
 }

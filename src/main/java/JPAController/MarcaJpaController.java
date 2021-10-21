@@ -24,8 +24,8 @@ import javax.persistence.criteria.Root;
  */
 public class MarcaJpaController implements Serializable {
 
-    public MarcaJpaController() {
-        this.emf= Persistence.createEntityManagerFactory("CarSoft");
+    public MarcaJpaController(EntityManagerFactory emf) {
+        this.emf= emf;
     }
     private EntityManagerFactory emf = null;
 

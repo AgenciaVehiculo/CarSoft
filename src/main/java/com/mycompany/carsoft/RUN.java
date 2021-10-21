@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.mycompany.carsoft;
+import Pantallas.FrmMenu;
 import Pantallas.IniciodeSesion; 
 /**
  *
@@ -11,7 +12,7 @@ import Pantallas.IniciodeSesion;
  */
 public class RUN {
     public static void main(String args[]) {
-        IniciodeSesion a = new IniciodeSesion();
+        FrmMenu a = new FrmMenu();
         a.show();
     }
     

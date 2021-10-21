@@ -12,12 +12,15 @@ import JPAController.HistoricoPrecioPiezaJpaController;
 import JPAController.PiezaJpaController;
 import JPAController.TipoPiezaJpaController;
 import Pantallas.Ventas;
+import com.sun.glass.events.KeyEvent;
+import java.awt.Color;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.List;
+import javax.persistence.EntityManagerFactory;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
+import javax.persistence.Persistence;
 /**
  *
  * @author Kur013
@@ -27,10 +30,10 @@ public class ModalPiezasCombo extends javax.swing.JDialog {
     /**
      * Creates new form ModalPiezas
      */
-    
-    PiezaJpaController piezaDao = new PiezaJpaController();
-    HistoricoPrecioPiezaJpaController historicoPieza = new HistoricoPrecioPiezaJpaController();
-    TipoPiezaJpaController tipoPieza = new TipoPiezaJpaController();
+    EntityManagerFactory emf =Persistence.createEntityManagerFactory("CarSoft");
+    PiezaJpaController piezaDao = new PiezaJpaController(emf);
+    HistoricoPrecioPiezaJpaController historicoPieza = new HistoricoPrecioPiezaJpaController(emf);
+    TipoPiezaJpaController tipoPieza = new TipoPiezaJpaController(emf);
     int id = 0;
     String tipo="";
     String nombre="";
@@ -38,12 +41,25 @@ public class ModalPiezasCombo extends javax.swing.JDialog {
     public ModalPiezasCombo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.jButton1.setBackground( new Color(14, 209, 69));
+        this.jButton2.setBackground( new Color(14, 209, 69));
+        this.btnRegresar.setBackground( new Color(14, 209, 69));
     }
 
      private void crearTableBusquedaPieza(){
-        DefaultTableModel modelo = new DefaultTableModel();
+         if("".equals(txtNombreBusqueda.getText().trim())){
+            JOptionPane.showMessageDialog(null, "El campo para la Busqueda de Piezas esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+        }
+        DefaultTableModel modelo = (DefaultTableModel) tablaBusqueda.getModel();
         tablaBusqueda.setModel(modelo);
-        modelo.addColumn("ID");
+        int i;
+        for(i=modelo.getRowCount()-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
+        /*modelo.addColumn("ID");
         modelo.addColumn("Tipo de Pieza");
         modelo.addColumn("Nombre");
         modelo.addColumn("Característica");
@@ -51,7 +67,7 @@ public class ModalPiezasCombo extends javax.swing.JDialog {
         modelo.addColumn("Stock");
         modelo.addColumn("Estado Maximo");
         modelo.addColumn("Estado minimo");
-        modelo.addColumn("Estado");
+        modelo.addColumn("Estado");*/
         List<Pieza> temp = piezaDao.findPiezaEntities();
         DecimalFormatSymbols separadoresPersonalizados = new DecimalFormatSymbols();
         separadoresPersonalizados.setDecimalSeparator('.');
@@ -122,6 +138,7 @@ public class ModalPiezasCombo extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel17 = new javax.swing.JLabel();
+        btnRegresar = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -134,6 +151,12 @@ public class ModalPiezasCombo extends javax.swing.JDialog {
         jLabel14.setText("Nombre:");
         jPanel3.add(jLabel14);
         jLabel14.setBounds(70, 130, 70, 30);
+
+        txtNombreBusqueda.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreBusquedaKeyTyped(evt);
+            }
+        });
         jPanel3.add(txtNombreBusqueda);
         txtNombreBusqueda.setBounds(120, 130, 160, 30);
 
@@ -142,19 +165,12 @@ public class ModalPiezasCombo extends javax.swing.JDialog {
 
             },
             new String [] {
-                "ID Pieza", "Tipo Pieza", "Características", "Precio", "Estado"
+                "ID Pieza", "Tipo Pieza", "Nombre", "Características", "Precio", "Stock", "Stock Máximo", "Stock Mínimo", "Estado"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Boolean.class
-            };
             boolean[] canEdit = new boolean [] {
-                false, true, true, false, true
+                false, false, false, false, false, false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -168,7 +184,7 @@ public class ModalPiezasCombo extends javax.swing.JDialog {
         jScrollPane5.setViewportView(tablaBusqueda);
 
         jPanel3.add(jScrollPane5);
-        jScrollPane5.setBounds(30, 250, 660, 183);
+        jScrollPane5.setBounds(30, 250, 1040, 183);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/buscar.png"))); // NOI18N
         jButton1.setText("Buscar");
@@ -178,7 +194,7 @@ public class ModalPiezasCombo extends javax.swing.JDialog {
             }
         });
         jPanel3.add(jButton1);
-        jButton1.setBounds(290, 120, 130, 40);
+        jButton1.setBounds(290, 120, 140, 40);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Seleccionar.png"))); // NOI18N
         jButton2.setText("Seleccionar");
@@ -188,13 +204,25 @@ public class ModalPiezasCombo extends javax.swing.JDialog {
             }
         });
         jPanel3.add(jButton2);
-        jButton2.setBounds(290, 180, 130, 40);
+        jButton2.setBounds(290, 180, 140, 40);
 
         jLabel17.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
         jLabel17.setText("Busqueda de Piezas");
         jPanel3.add(jLabel17);
-        jLabel17.setBounds(720, 10, 240, 35);
+        jLabel17.setBounds(600, 10, 240, 35);
+
+        btnRegresar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Regresar.png"))); // NOI18N
+        btnRegresar.setText("Regresar");
+        btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnRegresar);
+        btnRegresar.setBounds(893, 470, 170, 45);
 
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Fondo.jpg"))); // NOI18N
         jPanel3.add(jLabel15);
@@ -246,6 +274,18 @@ public class ModalPiezasCombo extends javax.swing.JDialog {
         return nombre;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int selectedRow = tablaBusqueda.getSelectedRow();
         id=(int) tablaBusqueda.getValueAt(selectedRow, 0);
@@ -257,6 +297,28 @@ public class ModalPiezasCombo extends javax.swing.JDialog {
 // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void txtNombreBusquedaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreBusquedaKeyTyped
+char c = evt.getKeyChar();
+        if((c < 'A' || c > 'Z') && (c < 'a' || c > 'z' && c != 'Ñ' && c != 'ñ' && c != 'Á' && c != 'É' && c != 'Í' && c != 'Ó' && c != 'Ú' && c != 'á' && c != 'é' && c != 'í' && c != 'ó' && c != 'ú')&& (c!=KeyEvent.VK_SPACE) ){
+
+            evt.consume();
+
+        }
+              
+        if (txtNombreBusqueda.getText().length() >= 25){
+        
+        evt.consume();
+        
+        }          // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreBusquedaKeyTyped
+
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        //FrmMenu m = new FrmMenu();
+        // m.setVisible(true);
+        this.setVisible(false);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRegresarActionPerformed
+
     
     
     /**
@@ -265,6 +327,7 @@ public class ModalPiezasCombo extends javax.swing.JDialog {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel14;

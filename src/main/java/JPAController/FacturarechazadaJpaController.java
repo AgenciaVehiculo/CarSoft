@@ -23,8 +23,8 @@ import org.hibernate.jpamodelgen.xml.jaxb.Persistence;
  */
 public class FacturarechazadaJpaController implements Serializable {
 
-    public FacturarechazadaJpaController() {
-        this.emf= javax.persistence.Persistence.createEntityManagerFactory("CarSoft");
+    public FacturarechazadaJpaController(EntityManagerFactory emf) {
+        this.emf= emf;
     }
     private EntityManagerFactory emf = null;
 
