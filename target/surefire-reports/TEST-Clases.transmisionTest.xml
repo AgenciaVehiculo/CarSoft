@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="6" failures="0" name="Clases.transmisionTest" time="0" errors="0" skipped="0">
+<testsuite tests="6" failures="0" name="Clases.transmisionTest" time="0.008" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_251\jre\bin"/>
@@ -65,10 +65,10 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="Clases.transmisionTest" name="testGetId_transmision" time="0"/>
-  <testcase classname="Clases.transmisionTest" name="testSetTransmision" time="0"/>
-  <testcase classname="Clases.transmisionTest" name="testIsEstado" time="0"/>
+  <testcase classname="Clases.transmisionTest" name="testGetId_transmision" time="0.001"/>
+  <testcase classname="Clases.transmisionTest" name="testSetTransmision" time="0.001"/>
+  <testcase classname="Clases.transmisionTest" name="testIsEstado" time="0.005"/>
   <testcase classname="Clases.transmisionTest" name="testGetTransmision" time="0"/>
-  <testcase classname="Clases.transmisionTest" name="testSetEstado" time="0"/>
+  <testcase classname="Clases.transmisionTest" name="testSetEstado" time="0.001"/>
   <testcase classname="Clases.transmisionTest" name="testSetId_transmision" time="0"/>
 </testsuite>

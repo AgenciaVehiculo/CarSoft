@@ -48,6 +48,12 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -858,6 +864,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
         btnRegresar1 = new javax.swing.JButton();
         btnSalir1 = new javax.swing.JButton();
         jLabel36 = new javax.swing.JLabel();
+        btnAgregar9 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         cmbIDColor = new javax.swing.JComboBox<>();
         jLabel27 = new javax.swing.JLabel();
@@ -1304,6 +1311,16 @@ public class FrmVehiculos extends javax.swing.JFrame {
         jLabel36.setForeground(new java.awt.Color(255, 255, 255));
         jLabel36.setText("Nueva Marca");
 
+        btnAgregar9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAgregar9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/agregar.png"))); // NOI18N
+        btnAgregar9.setText("Reporte");
+        btnAgregar9.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnAgregar9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregar9ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -1331,7 +1348,9 @@ public class FrmVehiculos extends javax.swing.JFrame {
                         .addComponent(btnDesactivar1))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(46, 46, 46)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 842, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnAgregar9)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 842, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(937, 937, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1374,7 +1393,9 @@ public class FrmVehiculos extends javax.swing.JFrame {
                         .addComponent(btnDesactivar1)))
                 .addGap(38, 38, 38)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
+                .addGap(37, 37, 37)
+                .addComponent(btnAgregar9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addComponent(btnRegresar1)
                 .addGap(145, 145, 145))
         );
@@ -1687,7 +1708,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel6Layout.createSequentialGroup()
                                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jLabel33, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                                            .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 131, Short.MAX_VALUE)
                                             .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGap(18, 18, 18)
                                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2232,7 +2253,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
                             .addGroup(jPanel9Layout.createSequentialGroup()
                                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel47, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel48, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE))
+                                    .addComponent(jLabel48, javax.swing.GroupLayout.PREFERRED_SIZE, 153, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cmbIDNumeroAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2407,7 +2428,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
                                     .addComponent(btnLimpiar6))
                                 .addGroup(jPanel5Layout.createSequentialGroup()
                                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jLabel42, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+                                        .addComponent(jLabel42, javax.swing.GroupLayout.PREFERRED_SIZE, 132, Short.MAX_VALUE)
                                         .addComponent(jLabel43, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -5788,6 +5809,21 @@ char c = evt.getKeyChar();
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbIDVehiculoActionPerformed
 
+    private void btnAgregar9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar9ActionPerformed
+        //JasperReport reporteFactura = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteMarca.jrxml");
+//        try {
+//    JasperReport reporte;
+//    reporte=(JasperReport)JRLoader.loadObjectFromLocation("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteMarca.jrxml");
+//    JasperPrint jasperPrint;
+//    jasperPrint = JasperFillManager.fillReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteMarca.jrxml",null);
+//    JasperViewer viewer = new JasperViewer(jasperPrint);
+//    viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+//    viewer.setVisible(true);
+//} catch (JRException e) {
+//}
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAgregar9ActionPerformed
+
     private void createTableBusqueda(){
         if(!chkMarca.isSelected()&& !chkTipoGasolina.isSelected() && !chkTipoVehiculo.isSelected() && !chkColor.isSelected()){
             JOptionPane.showMessageDialog(null,"No ha Marcado ningún Checkbox","Error!", JOptionPane.ERROR_MESSAGE);
@@ -6699,6 +6735,7 @@ public boolean BuscarVehiculosTest(){
     private javax.swing.JButton btnAgregar6;
     private javax.swing.JButton btnAgregar7;
     private javax.swing.JButton btnAgregar8;
+    private javax.swing.JButton btnAgregar9;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnDesactivar1;
     private javax.swing.JButton btnDesactivar2;

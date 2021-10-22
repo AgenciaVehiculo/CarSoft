@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="16" failures="0" name="Clases.PiezaTest" time="0" errors="0" skipped="0">
+<testsuite tests="16" failures="0" name="Clases.PiezaTest" time="0.003" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_251\jre\bin"/>
@@ -70,15 +70,15 @@
   <testcase classname="Clases.PiezaTest" name="testGetStock" time="0"/>
   <testcase classname="Clases.PiezaTest" name="testIsEstado" time="0"/>
   <testcase classname="Clases.PiezaTest" name="testGetStock_Maximo" time="0"/>
-  <testcase classname="Clases.PiezaTest" name="testGetStock_Minimo" time="0"/>
+  <testcase classname="Clases.PiezaTest" name="testGetStock_Minimo" time="0.001"/>
   <testcase classname="Clases.PiezaTest" name="testSetId_Tipo_Pieza" time="0"/>
   <testcase classname="Clases.PiezaTest" name="testSetEstado" time="0"/>
-  <testcase classname="Clases.PiezaTest" name="testGetCarateristica_Pieza" time="0"/>
+  <testcase classname="Clases.PiezaTest" name="testGetCarateristica_Pieza" time="0.001"/>
   <testcase classname="Clases.PiezaTest" name="testSetId_Pieza" time="0"/>
   <testcase classname="Clases.PiezaTest" name="testGetId_Pieza" time="0"/>
   <testcase classname="Clases.PiezaTest" name="testSetNombre" time="0"/>
   <testcase classname="Clases.PiezaTest" name="testGetNombre" time="0"/>
-  <testcase classname="Clases.PiezaTest" name="testSetStock_Maximo" time="0"/>
+  <testcase classname="Clases.PiezaTest" name="testSetStock_Maximo" time="0.001"/>
   <testcase classname="Clases.PiezaTest" name="testSetStock_Minimo" time="0"/>
   <testcase classname="Clases.PiezaTest" name="testSetStock" time="0"/>
 </testsuite>

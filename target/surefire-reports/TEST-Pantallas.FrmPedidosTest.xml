@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="10" failures="0" name="Pantallas.FrmPedidosTest" time="2.969" errors="0" skipped="0">
+<testsuite tests="10" failures="0" name="Pantallas.FrmPedidosTest" time="2.746" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_251\jre\bin"/>
@@ -65,14 +65,14 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="Pantallas.FrmPedidosTest" name="testValidacionRangoPrecioVehiculo" time="0.437"/>
-  <testcase classname="Pantallas.FrmPedidosTest" name="testValidacionNumerosSiTienenDecimal" time="0.237"/>
-  <testcase classname="Pantallas.FrmPedidosTest" name="testValidacionNumerosDecimales" time="0.233"/>
-  <testcase classname="Pantallas.FrmPedidosTest" name="testAgregarPedidoTest" time="0.393"/>
-  <testcase classname="Pantallas.FrmPedidosTest" name="testValidacionCantidadPiezas" time="0.371"/>
-  <testcase classname="Pantallas.FrmPedidosTest" name="testBtnDesactivarActionPerfomedTest" time="0.258"/>
-  <testcase classname="Pantallas.FrmPedidosTest" name="testValidacionCantidadVehiculos" time="0.302"/>
-  <testcase classname="Pantallas.FrmPedidosTest" name="testValidacionNumeros" time="0.224"/>
-  <testcase classname="Pantallas.FrmPedidosTest" name="testValidacionRangoPrecioPieza" time="0.228"/>
-  <testcase classname="Pantallas.FrmPedidosTest" name="testValidacionFechaDDMMYYYY" time="0.286"/>
+  <testcase classname="Pantallas.FrmPedidosTest" name="testValidacionRangoPrecioVehiculo" time="0.239"/>
+  <testcase classname="Pantallas.FrmPedidosTest" name="testValidacionNumerosSiTienenDecimal" time="0.25"/>
+  <testcase classname="Pantallas.FrmPedidosTest" name="testValidacionNumerosDecimales" time="0.247"/>
+  <testcase classname="Pantallas.FrmPedidosTest" name="testAgregarPedidoTest" time="0.321"/>
+  <testcase classname="Pantallas.FrmPedidosTest" name="testValidacionCantidadPiezas" time="0.303"/>
+  <testcase classname="Pantallas.FrmPedidosTest" name="testBtnDesactivarActionPerfomedTest" time="0.284"/>
+  <testcase classname="Pantallas.FrmPedidosTest" name="testValidacionCantidadVehiculos" time="0.366"/>
+  <testcase classname="Pantallas.FrmPedidosTest" name="testValidacionNumeros" time="0.23"/>
+  <testcase classname="Pantallas.FrmPedidosTest" name="testValidacionRangoPrecioPieza" time="0.281"/>
+  <testcase classname="Pantallas.FrmPedidosTest" name="testValidacionFechaDDMMYYYY" time="0.225"/>
 </testsuite>

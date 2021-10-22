@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="29" failures="0" name="Clases.FacturaTest" time="0.001" errors="0" skipped="0">
+<testsuite tests="29" failures="0" name="Clases.FacturaTest" time="0.006" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_251\jre\bin"/>
@@ -65,19 +65,19 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="Clases.FacturaTest" name="testSetIdCliente" time="0"/>
+  <testcase classname="Clases.FacturaTest" name="testSetIdCliente" time="0.001"/>
   <testcase classname="Clases.FacturaTest" name="testGetIdRazonSocial" time="0"/>
-  <testcase classname="Clases.FacturaTest" name="testGetIdInf" time="0"/>
+  <testcase classname="Clases.FacturaTest" name="testGetIdInf" time="0.003"/>
   <testcase classname="Clases.FacturaTest" name="testSetNumFactura" time="0"/>
   <testcase classname="Clases.FacturaTest" name="testSetiDFactura" time="0"/>
   <testcase classname="Clases.FacturaTest" name="testToString" time="0"/>
-  <testcase classname="Clases.FacturaTest" name="testGetIDFactura" time="0"/>
+  <testcase classname="Clases.FacturaTest" name="testGetIDFactura" time="0.001"/>
   <testcase classname="Clases.FacturaTest" name="testGetIdEmpleado" time="0"/>
   <testcase classname="Clases.FacturaTest" name="testGetCantidadPago" time="0"/>
   <testcase classname="Clases.FacturaTest" name="testSetFechaHora" time="0"/>
   <testcase classname="Clases.FacturaTest" name="testSetNumeroTarjeta" time="0"/>
   <testcase classname="Clases.FacturaTest" name="testSetIdEmpleado" time="0"/>
-  <testcase classname="Clases.FacturaTest" name="testSetCantidadPago" time="0"/>
+  <testcase classname="Clases.FacturaTest" name="testSetCantidadPago" time="0.001"/>
   <testcase classname="Clases.FacturaTest" name="testGetIdTipoPago" time="0"/>
   <testcase classname="Clases.FacturaTest" name="testSetiDtipofactura" time="0"/>
   <testcase classname="Clases.FacturaTest" name="testSetIDFactura" time="0"/>
@@ -89,7 +89,7 @@
   <testcase classname="Clases.FacturaTest" name="testGetEstado" time="0"/>
   <testcase classname="Clases.FacturaTest" name="testEquals" time="0"/>
   <testcase classname="Clases.FacturaTest" name="testGetiDFactura" time="0"/>
-  <testcase classname="Clases.FacturaTest" name="testGetNumeroTarjeta" time="0.001"/>
+  <testcase classname="Clases.FacturaTest" name="testGetNumeroTarjeta" time="0"/>
   <testcase classname="Clases.FacturaTest" name="testGetNumFactura" time="0"/>
   <testcase classname="Clases.FacturaTest" name="testGetFechaHora" time="0"/>
   <testcase classname="Clases.FacturaTest" name="testSetIdInf" time="0"/>

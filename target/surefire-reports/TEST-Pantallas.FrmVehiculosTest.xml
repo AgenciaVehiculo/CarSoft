@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="28" failures="0" name="Pantallas.FrmVehiculosTest" time="10.727" errors="0" skipped="0">
+<testsuite tests="28" failures="0" name="Pantallas.FrmVehiculosTest" time="10.875" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_251\jre\bin"/>
@@ -65,32 +65,32 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testModificarColor" time="0.46"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testModificarMarca" time="0.415"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testDesactivarTipoCombustible" time="0.694"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testValidacionRangoPrecioVehiculo" time="0.448"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testDesactivarTipoCabina" time="0.454"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testDesactivarNumeroAsientos" time="0.336"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testAgregarTipoVehiculo" time="0.298"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testAgregarNumeroAsientos" time="0.326"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testDesactivarVehiculo" time="0.337"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testModificarNumeroAsientos" time="0.31"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testAgregarTipoCabina" time="0.338"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testAgregarColor" time="0.405"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testAgregarMarca" time="0.401"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testValidacionRangoStockVehiculo" time="0.34"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testAgregarTipoCombustible" time="0.341"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testDesactivarColor" time="0.372"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testDesactivarMarca" time="0.373"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testDesactivarTipoVehiculo" time="0.434"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testValidacionNombreMayusculaYDemasMinus" time="0.332"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testAgregarTransmision" time="0.328"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testModificarTipoCabina" time="0.409"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testModificarTransmision" time="0.339"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testModificarVehiculo" time="0.436"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testModificarTipoVehiculo" time="0.311"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testValidacionTresLetrasSeguidas" time="0.269"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testDesactivarTransmision" time="0.452"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testAgregarVehiculos" time="0.376"/>
-  <testcase classname="Pantallas.FrmVehiculosTest" name="testModificarTipoCombustible" time="0.393"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testModificarColor" time="0.484"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testModificarMarca" time="0.419"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testDesactivarTipoCombustible" time="0.437"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testValidacionRangoPrecioVehiculo" time="0.384"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testDesactivarTipoCabina" time="0.403"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testDesactivarNumeroAsientos" time="0.558"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testAgregarTipoVehiculo" time="0.3"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testAgregarNumeroAsientos" time="0.335"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testDesactivarVehiculo" time="0.635"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testModificarNumeroAsientos" time="0.283"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testAgregarTipoCabina" time="0.328"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testAgregarColor" time="0.312"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testAgregarMarca" time="0.365"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testValidacionRangoStockVehiculo" time="0.307"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testAgregarTipoCombustible" time="0.372"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testDesactivarColor" time="0.557"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testDesactivarMarca" time="0.381"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testDesactivarTipoVehiculo" time="0.389"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testValidacionNombreMayusculaYDemasMinus" time="0.405"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testAgregarTransmision" time="0.382"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testModificarTipoCabina" time="0.363"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testModificarTransmision" time="0.309"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testModificarVehiculo" time="0.327"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testModificarTipoVehiculo" time="0.313"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testValidacionTresLetrasSeguidas" time="0.279"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testDesactivarTransmision" time="0.353"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testAgregarVehiculos" time="0.511"/>
+  <testcase classname="Pantallas.FrmVehiculosTest" name="testModificarTipoCombustible" time="0.384"/>
 </testsuite>

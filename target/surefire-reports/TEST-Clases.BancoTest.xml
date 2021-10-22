@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="12" failures="0" name="Clases.BancoTest" time="0.012" errors="0" skipped="0">
+<testsuite tests="12" failures="0" name="Clases.BancoTest" time="0.009" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_251\jre\bin"/>
@@ -65,16 +65,16 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="Clases.BancoTest" name="testSetTelefono_contacto" time="0.009"/>
-  <testcase classname="Clases.BancoTest" name="testGetTelefono_contacto" time="0.001"/>
+  <testcase classname="Clases.BancoTest" name="testSetTelefono_contacto" time="0.008"/>
+  <testcase classname="Clases.BancoTest" name="testGetTelefono_contacto" time="0"/>
   <testcase classname="Clases.BancoTest" name="testGetNombre_banco" time="0"/>
   <testcase classname="Clases.BancoTest" name="testSetCorreo_electronico" time="0"/>
   <testcase classname="Clases.BancoTest" name="testSetNombre_banco" time="0"/>
-  <testcase classname="Clases.BancoTest" name="testIsEstado" time="0.001"/>
+  <testcase classname="Clases.BancoTest" name="testIsEstado" time="0"/>
   <testcase classname="Clases.BancoTest" name="testGetNombre_contacto" time="0"/>
-  <testcase classname="Clases.BancoTest" name="testGetCorreo_electronico" time="0"/>
+  <testcase classname="Clases.BancoTest" name="testGetCorreo_electronico" time="0.001"/>
   <testcase classname="Clases.BancoTest" name="testSetEstado" time="0"/>
   <testcase classname="Clases.BancoTest" name="testSetId_banco" time="0"/>
   <testcase classname="Clases.BancoTest" name="testGetId_banco" time="0"/>
-  <testcase classname="Clases.BancoTest" name="testSetNombre_contacto" time="0.001"/>
+  <testcase classname="Clases.BancoTest" name="testSetNombre_contacto" time="0"/>
 </testsuite>

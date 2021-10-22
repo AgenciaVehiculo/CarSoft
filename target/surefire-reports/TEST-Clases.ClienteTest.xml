@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="8" failures="0" name="Clases.ClienteTest" time="0" errors="0" skipped="0">
+<testsuite tests="8" failures="0" name="Clases.ClienteTest" time="0.004" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_251\jre\bin"/>
@@ -70,7 +70,7 @@
   <testcase classname="Clases.ClienteTest" name="testGetFecha_ingreso_sistema" time="0"/>
   <testcase classname="Clases.ClienteTest" name="testSetEstado" time="0"/>
   <testcase classname="Clases.ClienteTest" name="testGetId_cliente" time="0"/>
-  <testcase classname="Clases.ClienteTest" name="testGetId_Persona" time="0"/>
-  <testcase classname="Clases.ClienteTest" name="testSetId_cliente" time="0"/>
+  <testcase classname="Clases.ClienteTest" name="testGetId_Persona" time="0.003"/>
+  <testcase classname="Clases.ClienteTest" name="testSetId_cliente" time="0.001"/>
   <testcase classname="Clases.ClienteTest" name="testSetId_Persona" time="0"/>
 </testsuite>

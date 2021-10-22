@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="10" failures="0" name="Pantallas.FrmPiezaTest" time="3.621" errors="0" skipped="0">
+<testsuite tests="10" failures="0" name="Pantallas.FrmPiezaTest" time="3.702" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_251\jre\bin"/>
@@ -65,14 +65,14 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="Pantallas.FrmPiezaTest" name="testModificarPieza" time="0.246"/>
-  <testcase classname="Pantallas.FrmPiezaTest" name="testAgregarTipoPieza" time="0.241"/>
-  <testcase classname="Pantallas.FrmPiezaTest" name="testValidacionRangoStockPieza" time="1.375"/>
-  <testcase classname="Pantallas.FrmPiezaTest" name="tesDesactivarTipoPieza" time="0.251"/>
-  <testcase classname="Pantallas.FrmPiezaTest" name="testAgregarPieza" time="0.269"/>
-  <testcase classname="Pantallas.FrmPiezaTest" name="testDesactivarPieza" time="0.26"/>
-  <testcase classname="Pantallas.FrmPiezaTest" name="testValidacionNombreMayusculaYDemasMinus" time="0.237"/>
-  <testcase classname="Pantallas.FrmPiezaTest" name="testValidacionCaracteristicas" time="0.266"/>
-  <testcase classname="Pantallas.FrmPiezaTest" name="testModificarTipoPieza" time="0.219"/>
-  <testcase classname="Pantallas.FrmPiezaTest" name="testValidacionRangoPrecioPieza" time="0.257"/>
+  <testcase classname="Pantallas.FrmPiezaTest" name="testModificarPieza" time="0.275"/>
+  <testcase classname="Pantallas.FrmPiezaTest" name="testAgregarTipoPieza" time="0.235"/>
+  <testcase classname="Pantallas.FrmPiezaTest" name="testValidacionRangoStockPieza" time="0.268"/>
+  <testcase classname="Pantallas.FrmPiezaTest" name="tesDesactivarTipoPieza" time="0.203"/>
+  <testcase classname="Pantallas.FrmPiezaTest" name="testAgregarPieza" time="0.245"/>
+  <testcase classname="Pantallas.FrmPiezaTest" name="testDesactivarPieza" time="1.483"/>
+  <testcase classname="Pantallas.FrmPiezaTest" name="testValidacionNombreMayusculaYDemasMinus" time="0.226"/>
+  <testcase classname="Pantallas.FrmPiezaTest" name="testValidacionCaracteristicas" time="0.29"/>
+  <testcase classname="Pantallas.FrmPiezaTest" name="testModificarTipoPieza" time="0.199"/>
+  <testcase classname="Pantallas.FrmPiezaTest" name="testValidacionRangoPrecioPieza" time="0.278"/>
 </testsuite>

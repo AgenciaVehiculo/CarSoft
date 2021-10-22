@@ -66,13 +66,13 @@
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
   <testcase classname="Clases.Detalle_Pedido_VehiculoTest" name="testGetId_vehiculo" time="0"/>
-  <testcase classname="Clases.Detalle_Pedido_VehiculoTest" name="testSetId_pedido_Vehiculo" time="0.001"/>
-  <testcase classname="Clases.Detalle_Pedido_VehiculoTest" name="testGetId_pedido" time="0"/>
+  <testcase classname="Clases.Detalle_Pedido_VehiculoTest" name="testSetId_pedido_Vehiculo" time="0"/>
+  <testcase classname="Clases.Detalle_Pedido_VehiculoTest" name="testGetId_pedido" time="0.001"/>
   <testcase classname="Clases.Detalle_Pedido_VehiculoTest" name="testSetId_vehiculo" time="0.001"/>
   <testcase classname="Clases.Detalle_Pedido_VehiculoTest" name="testSetPrecio" time="0.001"/>
   <testcase classname="Clases.Detalle_Pedido_VehiculoTest" name="testSetCantidad" time="0"/>
-  <testcase classname="Clases.Detalle_Pedido_VehiculoTest" name="testGetId_pedido_Vehiculo" time="0.001"/>
+  <testcase classname="Clases.Detalle_Pedido_VehiculoTest" name="testGetId_pedido_Vehiculo" time="0"/>
   <testcase classname="Clases.Detalle_Pedido_VehiculoTest" name="testGetCantidad" time="0"/>
   <testcase classname="Clases.Detalle_Pedido_VehiculoTest" name="testGetPrecio" time="0"/>
-  <testcase classname="Clases.Detalle_Pedido_VehiculoTest" name="testSetId_pedido" time="0"/>
+  <testcase classname="Clases.Detalle_Pedido_VehiculoTest" name="testSetId_pedido" time="0.001"/>
 </testsuite>

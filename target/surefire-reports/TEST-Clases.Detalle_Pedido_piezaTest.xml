@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="10" failures="0" name="Clases.Detalle_Pedido_piezaTest" time="0.001" errors="0" skipped="0">
+<testsuite tests="10" failures="0" name="Clases.Detalle_Pedido_piezaTest" time="0" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_251\jre\bin"/>
@@ -67,7 +67,7 @@
   </properties>
   <testcase classname="Clases.Detalle_Pedido_piezaTest" name="testGetId_pedido_pieza" time="0"/>
   <testcase classname="Clases.Detalle_Pedido_piezaTest" name="testSetId_pedido_pieza" time="0"/>
-  <testcase classname="Clases.Detalle_Pedido_piezaTest" name="testGetId_pedido" time="0.001"/>
+  <testcase classname="Clases.Detalle_Pedido_piezaTest" name="testGetId_pedido" time="0"/>
   <testcase classname="Clases.Detalle_Pedido_piezaTest" name="testSetId_pieza" time="0"/>
   <testcase classname="Clases.Detalle_Pedido_piezaTest" name="testGetId_pieza" time="0"/>
   <testcase classname="Clases.Detalle_Pedido_piezaTest" name="testSetPrecio" time="0"/>

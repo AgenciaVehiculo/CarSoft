@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="7" failures="0" name="Pantallas.FrmBancoTest" time="7.832" errors="0" skipped="0">
+<testsuite tests="7" failures="0" name="Pantallas.FrmBancoTest" time="7.589" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_251\jre\bin"/>
@@ -65,11 +65,11 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="Pantallas.FrmBancoTest" name="testBuscarBancoTest" time="4.008"/>
-  <testcase classname="Pantallas.FrmBancoTest" name="testDesactivarBanco" time="0.637"/>
+  <testcase classname="Pantallas.FrmBancoTest" name="testBuscarBancoTest" time="4.059"/>
+  <testcase classname="Pantallas.FrmBancoTest" name="testDesactivarBanco" time="0.721"/>
   <testcase classname="Pantallas.FrmBancoTest" name="testDesactivarPrestamo" time="0.768"/>
-  <testcase classname="Pantallas.FrmBancoTest" name="testBtnModificarActionPerfomed" time="0.594"/>
-  <testcase classname="Pantallas.FrmBancoTest" name="testBtnAgregarActionPerfomed" time="0.767"/>
-  <testcase classname="Pantallas.FrmBancoTest" name="testBtnModificar1ActionPerfomed" time="0.581"/>
-  <testcase classname="Pantallas.FrmBancoTest" name="testBtnAgrear1ActionPerfomed" time="0.477"/>
+  <testcase classname="Pantallas.FrmBancoTest" name="testBtnModificarActionPerfomed" time="0.49"/>
+  <testcase classname="Pantallas.FrmBancoTest" name="testBtnAgregarActionPerfomed" time="0.598"/>
+  <testcase classname="Pantallas.FrmBancoTest" name="testBtnModificar1ActionPerfomed" time="0.453"/>
+  <testcase classname="Pantallas.FrmBancoTest" name="testBtnAgrear1ActionPerfomed" time="0.5"/>
 </testsuite>

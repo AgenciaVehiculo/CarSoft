@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="20" failures="0" name="Pantallas.FrmEmpleadosTest" time="7.633" errors="0" skipped="0">
+<testsuite tests="20" failures="0" name="Pantallas.FrmEmpleadosTest" time="7.96" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_251\jre\bin"/>
@@ -65,24 +65,24 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="Pantallas.FrmEmpleadosTest" name="testAgregarUsuario" time="0.665"/>
-  <testcase classname="Pantallas.FrmEmpleadosTest" name="testModificarCargo" time="0.432"/>
-  <testcase classname="Pantallas.FrmEmpleadosTest" name="testValidacionContrasenia2" time="0.44"/>
-  <testcase classname="Pantallas.FrmEmpleadosTest" name="testDesactivarEmpleado" time="0.406"/>
-  <testcase classname="Pantallas.FrmEmpleadosTest" name="testValidacionNombreMayuscula" time="0.385"/>
-  <testcase classname="Pantallas.FrmEmpleadosTest" name="testValidacionRTN3" time="0.385"/>
-  <testcase classname="Pantallas.FrmEmpleadosTest" name="testValidacionVISA" time="0.369"/>
-  <testcase classname="Pantallas.FrmEmpleadosTest" name="testBuscarEmpleadoDocumento" time="0.371"/>
-  <testcase classname="Pantallas.FrmEmpleadosTest" name="testTelefono" time="0.341"/>
-  <testcase classname="Pantallas.FrmEmpleadosTest" name="testAgregarEmpleado" time="0.538"/>
-  <testcase classname="Pantallas.FrmEmpleadosTest" name="testAgregarCargo" time="0.36"/>
-  <testcase classname="Pantallas.FrmEmpleadosTest" name="testModificarEmpleado" time="0.385"/>
-  <testcase classname="Pantallas.FrmEmpleadosTest" name="testDesactivarCargo" time="0.432"/>
-  <testcase classname="Pantallas.FrmEmpleadosTest" name="testValidacionNombreMayusculaYDemasMinus" time="0.283"/>
-  <testcase classname="Pantallas.FrmEmpleadosTest" name="testDesactivarUsuario" time="0.414"/>
-  <testcase classname="Pantallas.FrmEmpleadosTest" name="testValidacionPasaporte" time="0.357"/>
-  <testcase classname="Pantallas.FrmEmpleadosTest" name="testModificarUsuario" time="0.287"/>
-  <testcase classname="Pantallas.FrmEmpleadosTest" name="testValidacionDireccion" time="0.277"/>
-  <testcase classname="Pantallas.FrmEmpleadosTest" name="testCorreo" time="0.22"/>
-  <testcase classname="Pantallas.FrmEmpleadosTest" name="testValidacionNombreUsuario" time="0.286"/>
+  <testcase classname="Pantallas.FrmEmpleadosTest" name="testAgregarUsuario" time="0.747"/>
+  <testcase classname="Pantallas.FrmEmpleadosTest" name="testModificarCargo" time="0.487"/>
+  <testcase classname="Pantallas.FrmEmpleadosTest" name="testValidacionContrasenia2" time="0.42"/>
+  <testcase classname="Pantallas.FrmEmpleadosTest" name="testDesactivarEmpleado" time="0.492"/>
+  <testcase classname="Pantallas.FrmEmpleadosTest" name="testValidacionNombreMayuscula" time="0.375"/>
+  <testcase classname="Pantallas.FrmEmpleadosTest" name="testValidacionRTN3" time="0.367"/>
+  <testcase classname="Pantallas.FrmEmpleadosTest" name="testValidacionVISA" time="0.371"/>
+  <testcase classname="Pantallas.FrmEmpleadosTest" name="testBuscarEmpleadoDocumento" time="0.406"/>
+  <testcase classname="Pantallas.FrmEmpleadosTest" name="testTelefono" time="0.466"/>
+  <testcase classname="Pantallas.FrmEmpleadosTest" name="testAgregarEmpleado" time="0.363"/>
+  <testcase classname="Pantallas.FrmEmpleadosTest" name="testAgregarCargo" time="0.49"/>
+  <testcase classname="Pantallas.FrmEmpleadosTest" name="testModificarEmpleado" time="0.386"/>
+  <testcase classname="Pantallas.FrmEmpleadosTest" name="testDesactivarCargo" time="0.352"/>
+  <testcase classname="Pantallas.FrmEmpleadosTest" name="testValidacionNombreMayusculaYDemasMinus" time="0.338"/>
+  <testcase classname="Pantallas.FrmEmpleadosTest" name="testDesactivarUsuario" time="0.422"/>
+  <testcase classname="Pantallas.FrmEmpleadosTest" name="testValidacionPasaporte" time="0.383"/>
+  <testcase classname="Pantallas.FrmEmpleadosTest" name="testModificarUsuario" time="0.325"/>
+  <testcase classname="Pantallas.FrmEmpleadosTest" name="testValidacionDireccion" time="0.255"/>
+  <testcase classname="Pantallas.FrmEmpleadosTest" name="testCorreo" time="0.23"/>
+  <testcase classname="Pantallas.FrmEmpleadosTest" name="testValidacionNombreUsuario" time="0.285"/>
 </testsuite>

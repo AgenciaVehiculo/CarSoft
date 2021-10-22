@@ -66,12 +66,12 @@
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
   <testcase classname="Clases.HistoricoCargo_empleadoTest" name="testGetFecha_final" time="0"/>
-  <testcase classname="Clases.HistoricoCargo_empleadoTest" name="testGetFecha_inicial" time="0.001"/>
+  <testcase classname="Clases.HistoricoCargo_empleadoTest" name="testGetFecha_inicial" time="0"/>
   <testcase classname="Clases.HistoricoCargo_empleadoTest" name="testSetId_cargo_historico" time="0"/>
-  <testcase classname="Clases.HistoricoCargo_empleadoTest" name="testSetId_empleado" time="0.001"/>
+  <testcase classname="Clases.HistoricoCargo_empleadoTest" name="testSetId_empleado" time="0"/>
   <testcase classname="Clases.HistoricoCargo_empleadoTest" name="testIsEstado" time="0"/>
   <testcase classname="Clases.HistoricoCargo_empleadoTest" name="testSetFecha_final" time="0"/>
-  <testcase classname="Clases.HistoricoCargo_empleadoTest" name="testSetFecha_inicial" time="0"/>
+  <testcase classname="Clases.HistoricoCargo_empleadoTest" name="testSetFecha_inicial" time="0.002"/>
   <testcase classname="Clases.HistoricoCargo_empleadoTest" name="testSetEstado" time="0"/>
   <testcase classname="Clases.HistoricoCargo_empleadoTest" name="testGetId_cargo_historico" time="0"/>
   <testcase classname="Clases.HistoricoCargo_empleadoTest" name="testSetId_cargo" time="0"/>

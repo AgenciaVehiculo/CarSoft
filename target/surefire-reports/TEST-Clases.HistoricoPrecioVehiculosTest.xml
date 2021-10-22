@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="14" failures="0" name="Clases.HistoricoPrecioVehiculosTest" time="0.003" errors="0" skipped="0">
+<testsuite tests="14" failures="0" name="Clases.HistoricoPrecioVehiculosTest" time="0.005" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_251\jre\bin"/>
@@ -67,16 +67,16 @@
   </properties>
   <testcase classname="Clases.HistoricoPrecioVehiculosTest" name="testGetFechaFinal" time="0"/>
   <testcase classname="Clases.HistoricoPrecioVehiculosTest" name="testGetId_vehiculo" time="0"/>
-  <testcase classname="Clases.HistoricoPrecioVehiculosTest" name="testSetIdPrecioHistorico" time="0.003"/>
+  <testcase classname="Clases.HistoricoPrecioVehiculosTest" name="testSetIdPrecioHistorico" time="0"/>
   <testcase classname="Clases.HistoricoPrecioVehiculosTest" name="testSetFechaFinal" time="0"/>
-  <testcase classname="Clases.HistoricoPrecioVehiculosTest" name="testGetIdPrecioHistorico" time="0"/>
+  <testcase classname="Clases.HistoricoPrecioVehiculosTest" name="testGetIdPrecioHistorico" time="0.001"/>
   <testcase classname="Clases.HistoricoPrecioVehiculosTest" name="testGetFechaInicial" time="0"/>
   <testcase classname="Clases.HistoricoPrecioVehiculosTest" name="testSetId_vehiculo" time="0"/>
   <testcase classname="Clases.HistoricoPrecioVehiculosTest" name="testSetEstado" time="0"/>
   <testcase classname="Clases.HistoricoPrecioVehiculosTest" name="testHashCode" time="0"/>
   <testcase classname="Clases.HistoricoPrecioVehiculosTest" name="testGetEstado" time="0"/>
-  <testcase classname="Clases.HistoricoPrecioVehiculosTest" name="testSetFechaInicial" time="0"/>
-  <testcase classname="Clases.HistoricoPrecioVehiculosTest" name="testSetPrecio" time="0"/>
-  <testcase classname="Clases.HistoricoPrecioVehiculosTest" name="testEquals" time="0"/>
+  <testcase classname="Clases.HistoricoPrecioVehiculosTest" name="testSetFechaInicial" time="0.002"/>
+  <testcase classname="Clases.HistoricoPrecioVehiculosTest" name="testSetPrecio" time="0.001"/>
+  <testcase classname="Clases.HistoricoPrecioVehiculosTest" name="testEquals" time="0.001"/>
   <testcase classname="Clases.HistoricoPrecioVehiculosTest" name="testGetPrecio" time="0"/>
 </testsuite>
