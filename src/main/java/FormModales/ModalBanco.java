@@ -20,9 +20,13 @@ import JPAController.PiezaJpaController;
 import JPAController.TipoPiezaJpaController;
 import JPAController.Tipo_DocumentoJpaController;
 import Pantallas.Ventas;
+import com.sun.glass.events.KeyEvent;
+import java.awt.Color;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.List;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -35,24 +39,38 @@ public class ModalBanco extends javax.swing.JDialog {
     /**
      * Creates new form ModalPiezas
      */
-    
-    BancoJpaController BancoDao = new BancoJpaController();
+    EntityManagerFactory emf =Persistence.createEntityManagerFactory("CarSoft");
+    BancoJpaController BancoDao = new BancoJpaController(emf);
     int id = 0;
     String nombre ="";
     public ModalBanco(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.jButton1.setBackground( new Color(14, 209, 69));
+        this.jButton2.setBackground( new Color(14, 209, 69));
+        this.btnRegresar.setBackground( new Color(14, 209, 69));
     }
 
      private void crearTableBusquedaCliente(){
-        DefaultTableModel modelo = new DefaultTableModel();
+         if("".equals(txtNombreBusqueda.getText().trim())){
+            JOptionPane.showMessageDialog(null, "El campo para la Busqueda del Banco esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+        }
+
+        DefaultTableModel modelo = (DefaultTableModel) tblBancoBusqueda.getModel();
         tblBancoBusqueda.setModel(modelo);
-        modelo.addColumn("ID Banco");
+        int i;
+        for(i=modelo.getRowCount()-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
+        /*modelo.addColumn("ID Banco");
         modelo.addColumn("Nombre Banco");
         modelo.addColumn("Nombre Contacto");
         modelo.addColumn("Teléfono del Contacto");
         modelo.addColumn("Correo electrónico");
-        modelo.addColumn("Estado");
+        modelo.addColumn("Estado");*/
         boolean bandera = false;
         List<Banco> temp = BancoDao.findBancoEntities();
         for(Banco tp : temp){
@@ -78,9 +96,60 @@ public class ModalBanco extends javax.swing.JDialog {
             }
         
         if(!bandera){
-            JOptionPane.showMessageDialog(null,"No se encontro ningun cliente");
+            JOptionPane.showMessageDialog(null,"No se encontro ningún Banco");
         }   
     }
+     
+     public boolean BuscarBancoTest(){
+         if("".equals(txtNombreBusqueda.getText().trim())){
+            //JOptionPane.showMessageDialog(null, "El campo para la Busqueda del Banco esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        else{
+        }
+
+        DefaultTableModel modelo = (DefaultTableModel) tblBancoBusqueda.getModel();
+        tblBancoBusqueda.setModel(modelo);
+        int i;
+        for(i=modelo.getRowCount()-1;i>=0;i--){
+            modelo.removeRow(i);
+        }
+        /*modelo.addColumn("ID Banco");
+        modelo.addColumn("Nombre Banco");
+        modelo.addColumn("Nombre Contacto");
+        modelo.addColumn("Teléfono del Contacto");
+        modelo.addColumn("Correo electrónico");
+        modelo.addColumn("Estado");*/
+        boolean bandera = false;
+        List<Banco> temp = BancoDao.findBancoEntities();
+        for(Banco tp : temp){
+            
+                if(tp.getNombre_banco().equalsIgnoreCase(txtNombreBusqueda.getText())){
+                modelo.addRow(
+                    new Object[]{
+                        tp.getId_banco(),
+                        tp.getNombre_banco(),
+                        tp.getNombre_contacto(),
+                        tp.getTelefono_contacto(),
+                        tp.getCorreo_electronico(),
+                        (tp.isEstado())?"Activo":"Inactivo"
+            });  
+            
+            
+            bandera=true;
+            
+                }
+            else{
+                
+            }
+            }
+        
+        if(!bandera){
+            //JOptionPane.showMessageDialog(null,"No se encontro ningún Banco");
+            return false;
+        }   
+        return true;
+     }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -98,6 +167,7 @@ public class ModalBanco extends javax.swing.JDialog {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblBancoBusqueda = new javax.swing.JTable();
         jLabel17 = new javax.swing.JLabel();
+        btnRegresar = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -110,6 +180,12 @@ public class ModalBanco extends javax.swing.JDialog {
         jLabel14.setText("Nombre:");
         jPanel3.add(jLabel14);
         jLabel14.setBounds(70, 130, 70, 30);
+
+        txtNombreBusqueda.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreBusquedaKeyTyped(evt);
+            }
+        });
         jPanel3.add(txtNombreBusqueda);
         txtNombreBusqueda.setBounds(120, 130, 160, 30);
 
@@ -121,7 +197,7 @@ public class ModalBanco extends javax.swing.JDialog {
             }
         });
         jPanel3.add(jButton1);
-        jButton1.setBounds(290, 120, 130, 40);
+        jButton1.setBounds(290, 120, 140, 40);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Seleccionar.png"))); // NOI18N
         jButton2.setText("Seleccionar");
@@ -131,32 +207,22 @@ public class ModalBanco extends javax.swing.JDialog {
             }
         });
         jPanel3.add(jButton2);
-        jButton2.setBounds(290, 180, 130, 40);
+        jButton2.setBounds(290, 180, 140, 40);
 
         tblBancoBusqueda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
                 "ID Banco", "Nombre Banco", "Nombre Contacto", "Teléfono del Contacto", "Correo electrónico", "Estado"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
             };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         tblBancoBusqueda.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -171,9 +237,21 @@ public class ModalBanco extends javax.swing.JDialog {
 
         jLabel17.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel17.setText("Busqueda de Bancos");
+        jLabel17.setText("Búsqueda de Bancos");
         jPanel3.add(jLabel17);
         jLabel17.setBounds(610, 10, 310, 35);
+
+        btnRegresar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Regresar.png"))); // NOI18N
+        btnRegresar.setText("Regresar");
+        btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnRegresar);
+        btnRegresar.setBounds(913, 500, 170, 45);
 
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Fondo.jpg"))); // NOI18N
         jPanel3.add(jLabel15);
@@ -215,6 +293,14 @@ public class ModalBanco extends javax.swing.JDialog {
     public String getNombre() {
         return nombre;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
     
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -229,6 +315,28 @@ public class ModalBanco extends javax.swing.JDialog {
         
     }//GEN-LAST:event_tblBancoBusquedaMouseClicked
 
+    private void txtNombreBusquedaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreBusquedaKeyTyped
+char c = evt.getKeyChar();
+        if((c < 'A' || c > 'Z') && (c < 'a' || c > 'z' && c != 'Ñ' && c != 'ñ' && c != 'Á' && c != 'É' && c != 'Í' && c != 'Ó' && c != 'Ú' && c != 'á' && c != 'é' && c != 'í' && c != 'ó' && c != 'ú')&& (c!=KeyEvent.VK_SPACE) ){
+
+            evt.consume();
+
+        }
+              
+        if (txtNombreBusqueda.getText().length() >= 25){
+        
+        evt.consume();
+        
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreBusquedaKeyTyped
+
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        //FrmMenu m = new FrmMenu();
+        // m.setVisible(true);
+        this.setVisible(false);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRegresarActionPerformed
+
     
     
     /**
@@ -237,6 +345,7 @@ public class ModalBanco extends javax.swing.JDialog {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel14;
@@ -245,6 +354,6 @@ public class ModalBanco extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblBancoBusqueda;
-    private javax.swing.JTextField txtNombreBusqueda;
+    public javax.swing.JTextField txtNombreBusqueda;
     // End of variables declaration//GEN-END:variables
 }

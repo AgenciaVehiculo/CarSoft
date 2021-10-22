@@ -23,37 +23,22 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "tipo_pieza")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "TipoPieza.findAll", query = "SELECT t FROM TipoPieza t")
-    , @NamedQuery(name = "TipoPieza.findByIDtipopieza", query = "SELECT t FROM TipoPieza t WHERE t.iDtipopieza = :iDtipopieza")
-    , @NamedQuery(name = "TipoPieza.findByTipopieza", query = "SELECT t FROM TipoPieza t WHERE t.tipopieza = :tipopieza")
-    , @NamedQuery(name = "TipoPieza.findByEstado", query = "SELECT t FROM TipoPieza t WHERE t.estado = :estado")})
+
 public class TipoPieza implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
     @Column(name = "ID_tipo_pieza")
-    private Integer iDtipopieza;
+    private int iDtipopieza;
     @Column(name = "Tipo_pieza")
     private String tipopieza;
     @Column(name = "estado")
-    private Boolean estado;
+    private boolean estado;
 
-    public TipoPieza() {
-    }
-
-    public TipoPieza(Integer iDtipopieza) {
-        this.iDtipopieza = iDtipopieza;
-    }
-
-    public Integer getIDtipopieza() {
+    public int getIDtipopieza() {
         return iDtipopieza;
     }
 
-    public void setIDtipopieza(Integer iDtipopieza) {
+    public void setiDtipopieza(int iDtipopieza) {
         this.iDtipopieza = iDtipopieza;
     }
 
@@ -65,37 +50,14 @@ public class TipoPieza implements Serializable {
         this.tipopieza = tipopieza;
     }
 
-    public Boolean getEstado() {
+    public boolean getEstado() {
         return estado;
     }
 
-    public void setEstado(Boolean estado) {
+    public void setEstado(boolean estado) {
         this.estado = estado;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (iDtipopieza != null ? iDtipopieza.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TipoPieza)) {
-            return false;
-        }
-        TipoPieza other = (TipoPieza) object;
-        if ((this.iDtipopieza == null && other.iDtipopieza != null) || (this.iDtipopieza != null && !this.iDtipopieza.equals(other.iDtipopieza))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Clases.TipoPieza[ iDtipopieza=" + iDtipopieza + " ]";
-    }
+    
     
 }

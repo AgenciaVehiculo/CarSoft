@@ -7,24 +7,24 @@ package JPAController;
 
 import Clases.HistoricoPrecioPieza;
 import JPAController.exceptions.NonexistentEntityException;
+import JPAController.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 /**
  *
- * @author Kur013
+ * @author Usuario
  */
 public class HistoricoPrecioPiezaJpaController implements Serializable {
 
-    public HistoricoPrecioPiezaJpaController() {
-        this.emf = Persistence.createEntityManagerFactory("CarSoft");
+    public HistoricoPrecioPiezaJpaController(EntityManagerFactory emf) {
+        this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
@@ -32,18 +32,43 @@ public class HistoricoPrecioPiezaJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(HistoricoPrecioPieza historicoPrecioPieza) {
+    public void create(HistoricoPrecioPieza historicoPrecioPieza) throws PreexistingEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             em.persist(historicoPrecioPieza);
             em.getTransaction().commit();
+        } catch (Exception ex) {
+            if (findHistoricoPrecioPieza(historicoPrecioPieza.getIdPrecioHistorico()) != null) {
+                throw new PreexistingEntityException("HistoricoPrecioPieza " + historicoPrecioPieza + " already exists.", ex);
+            }
+            throw ex;
         } finally {
             if (em != null) {
                 em.close();
             }
         }
+    }
+    
+        public boolean createTest(HistoricoPrecioPieza historicoPrecioPieza) throws PreexistingEntityException, Exception {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            em.persist(historicoPrecioPieza);
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            if (findHistoricoPrecioPieza(historicoPrecioPieza.getIdPrecioHistorico()) != null) {
+                throw new PreexistingEntityException("HistoricoPrecioPieza " + historicoPrecioPieza + " already exists.", ex);
+            }
+            throw ex;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+        return true;
     }
 
     public void edit(HistoricoPrecioPieza historicoPrecioPieza) throws NonexistentEntityException, Exception {
@@ -67,6 +92,26 @@ public class HistoricoPrecioPiezaJpaController implements Serializable {
                 em.close();
             }
         }
+    }
+    
+        public boolean editTest(HistoricoPrecioPieza historicoPrecioPieza) throws NonexistentEntityException, Exception {
+        EntityManager em = null;
+        try {
+        } catch (Exception ex) {
+            String msg = ex.getLocalizedMessage();
+            if (msg == null || msg.length() == 0) {
+                Integer id = historicoPrecioPieza.getIdPrecioHistorico();
+                if (findHistoricoPrecioPieza(id) == null) {
+                    throw new NonexistentEntityException("The historicoPrecioPieza with id " + id + " no longer exists.");
+                }
+            }
+            throw ex;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+        return true;
     }
 
     public void destroy(Integer id) throws NonexistentEntityException {
