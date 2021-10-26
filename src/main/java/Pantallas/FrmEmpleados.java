@@ -4582,7 +4582,7 @@ public void reporteHistorialCargos(){
         } catch (JRException ex) {
             Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
         }
-            JasperViewer.viewReport(print);
+            JasperViewer.viewReport(print, false);
     }//GEN-LAST:event_btnGenerar4ActionPerformed
 
     private void btnGenerar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar5ActionPerformed
@@ -4624,7 +4624,7 @@ public void reporteHistorialCargos(){
         } catch (JRException ex) {
             Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
         }
-            JasperViewer.viewReport(print);
+            JasperViewer.viewReport(print, false);
     }//GEN-LAST:event_btnGenerar6ActionPerformed
 
     private void btnGenerar7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar7ActionPerformed
@@ -4666,7 +4666,7 @@ public void reporteHistorialCargos(){
         } catch (JRException ex) {
             Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
         }
-            JasperViewer.viewReport(print);
+            JasperViewer.viewReport(print, false);
     }//GEN-LAST:event_btnGenerar8ActionPerformed
 
     private void btnGenerar9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar9ActionPerformed
@@ -4711,7 +4711,8 @@ public void reporteHistorialCargos(){
         } catch (JRException ex) {
             Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
         }
-            JasperViewer.viewReport(print);
+            JasperViewer.viewReport(print, false);
+            
     }//GEN-LAST:event_btnGenerar10ActionPerformed
 public boolean GenerarReporteCargo() throws JRException, ClassNotFoundException, SQLException{
             HashMap param = new HashMap();
@@ -4724,7 +4725,7 @@ public boolean GenerarReporteCargo() throws JRException, ClassNotFoundException,
             updateQuery.setText(query);
             JasperReport jreport = JasperCompileManager.compileReport(reporteCargo);
             JasperPrint print = JasperFillManager.fillReport(jreport,param,con);
-            JasperViewer.viewReport(print);
+            JasperViewer.viewReport(print, false);
             //JasperViewer view = new JasperViewer(print, false);
             //view.setVisible(true);
             //view.setTitle("Cargos" + Integer.parseInt("1"));

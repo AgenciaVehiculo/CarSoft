@@ -2371,7 +2371,7 @@ public boolean ModificarPieza(){
         } catch (JRException ex) {
             Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
         }
-            JasperViewer.viewReport(print);
+            JasperViewer.viewReport(print, false);
     }//GEN-LAST:event_btnGenerarActionPerformed
 
     private void btnGenerar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar2ActionPerformed
@@ -2459,7 +2459,7 @@ public void reportePiezas(){
         } catch (JRException ex) {
             Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
         }
-            JasperViewer.viewReport(print);
+            JasperViewer.viewReport(print, false);
     }//GEN-LAST:event_btnGenerar3ActionPerformed
 
     private void btnGenerar4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar4ActionPerformed
@@ -2545,7 +2545,7 @@ public void reporteHistorialPrecioPieza(){
         } catch (JRException ex) {
             Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
         }
-            JasperViewer.viewReport(print);
+            JasperViewer.viewReport(print, false);
     }//GEN-LAST:event_btnGenerar5ActionPerformed
 
     private void btnGenerar6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar6ActionPerformed
