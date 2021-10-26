@@ -1499,11 +1499,11 @@ public class Ventas extends javax.swing.JFrame {
                 .addGap(41, 41, 41)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 192, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton21)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnAgregar5)
-                        .addComponent(btnAgregar6)))
+                        .addComponent(btnAgregar6))
+                    .addComponent(jButton21))
                 .addGap(417, 417, 417))
         );
 
@@ -1717,11 +1717,11 @@ public class Ventas extends javax.swing.JFrame {
                 .addGap(38, 38, 38)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 200, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton23)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnAgregar7)
-                        .addComponent(btnAgregar8)))
+                        .addComponent(btnAgregar8))
+                    .addComponent(jButton23))
                 .addGap(397, 397, 397))
         );
 
@@ -2597,8 +2597,8 @@ public class Ventas extends javax.swing.JFrame {
         }
         
         for(int i = 0;i<arregloVehiculos.size();i++){
-            arrayDetallesFactura[i][0]=arregloVehiculos.get(i).getIdVehiculo();
-            arrayDetallesFactura[i][1]=arregloVehiculos.get(i).getCantidad()+" "+Marcadao.findMarca(vehiculoDao.findVehiculo(arregloVehiculos.get(i).getIdVehiculo()).getId_marca()).getMarca();
+            arrayDetallesFactura[i+arregloPiezas.size()][0]=arregloVehiculos.get(i).getIdVehiculo();
+            arrayDetallesFactura[i+arregloPiezas.size()][1]=arregloVehiculos.get(i).getCantidad()+" "+Marcadao.findMarca(vehiculoDao.findVehiculo(arregloVehiculos.get(i).getIdVehiculo()).getId_marca()).getMarca();
             //arrayDetallesFactura[i][2]
             List<HistoricoPrecioVehiculos> temporalHPV=historicoVehiculoDao.findHistoricoPrecioVehiculosEntities();
             for(HistoricoPrecioVehiculos htp : temporalHPV){
@@ -2614,7 +2614,7 @@ public class Ventas extends javax.swing.JFrame {
                                         
                 }
                 else{
-                        arrayDetallesFactura[i][2]=String.valueOf(htp.getPrecio());
+                        arrayDetallesFactura[i+arregloPiezas.size()][2]=String.valueOf(htp.getPrecio());
                         break;
                 }
                 
@@ -2622,10 +2622,10 @@ public class Ventas extends javax.swing.JFrame {
             }
             
             //Fin de array para precio
-            arrayDetallesFactura[i][3]=String.valueOf(1);
-            arrayDetallesFactura[i][4]=String.valueOf(Double.parseDouble(String.valueOf(arrayDetallesFactura[i][2]))*1);
-            containerPrecio += Double.parseDouble(String.valueOf(arrayDetallesFactura[i][4]));
-            containerImpuesto += Double.parseDouble(String.valueOf(arrayDetallesFactura[i][4]))*0.18;
+            arrayDetallesFactura[i+arregloPiezas.size()][3]=String.valueOf(1);
+            arrayDetallesFactura[i+arregloPiezas.size()][4]=String.valueOf(Double.parseDouble(String.valueOf(arrayDetallesFactura[i+arregloPiezas.size()][2]))*1);
+            containerPrecio += Double.parseDouble(String.valueOf(arrayDetallesFactura[i+arregloPiezas.size()][4]));
+            containerImpuesto += Double.parseDouble(String.valueOf(arrayDetallesFactura[i+arregloPiezas.size()][4]))*0.18;
             
         }
         

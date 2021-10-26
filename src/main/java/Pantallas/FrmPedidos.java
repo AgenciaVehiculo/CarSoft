@@ -9,14 +9,21 @@ import Clases.Cliente;
 import Clases.Detalle_Banco_Cliente;
 import Clases.Detalle_Pedido_Vehiculo;
 import Clases.Detalle_Pedido_pieza;
+import Clases.Empleado;
+import Clases.FacturaJRADATASOURCE;
 import Clases.HistoricoPrecioPieza;
+import Clases.HistoricoPrecioVehiculos;
 import Clases.Marca;
 import Clases.Pedido;
 import Clases.Persona;
 import Clases.Pieza;
+import Clases.PiezaFactura;
+import Clases.RazonSocial;
 import Clases.TipoPieza;
 import Clases.Tipo_Documento;
 import Clases.Vehiculo;
+import Clases.VehiculoFactura;
+import Clases.informacionFiscal;
 import FormModales.ModalPiezasCombo;
 import FormModales.ModalVehiculosCombo;
 import JPAController.Detalle_Pedido_VehiculoJpaController;
@@ -31,14 +38,19 @@ import JPAController.VehiculoJpaController;
 import java.awt.Color;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.event.KeyAdapter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,6 +65,15 @@ import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -74,6 +95,17 @@ public class FrmPedidos extends javax.swing.JFrame {
     HistoricoPrecioPiezaJpaController historicoPiezaDao = new HistoricoPrecioPiezaJpaController(emf);
     HistoricoPrecioVehiculosJpaController historicoVehiculoDao = new HistoricoPrecioVehiculosJpaController(emf);
     MarcaJpaController Marcadao = new MarcaJpaController(emf);
+    String empNomb;
+
+    public String getEmpNomb() {
+        return empNomb;
+    }
+
+    public void setEmpNomb(String empNomb) {
+        this.empNomb = empNomb;
+    }
+    
+    
     public FrmPedidos() {
         initComponents();
          setIconImage(new ImageIcon(getClass().getResource("/Img/CarSoft-removebg-preview.png")).getImage());
@@ -401,6 +433,8 @@ public void createTablePedido(){
         btnDesactivar = new javax.swing.JButton();
         btnSalir1 = new javax.swing.JButton();
         btnRegresar1 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -657,7 +691,7 @@ public void createTablePedido(){
                             .addComponent(btnRegresar)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -833,6 +867,22 @@ public void createTablePedido(){
             }
         });
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/pdf (1).png"))); // NOI18N
+        jButton1.setText("Imprimir PDF");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/excel (1).png"))); // NOI18N
+        jButton2.setText("Imprimir Excel");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -843,7 +893,12 @@ public void createTablePedido(){
                     .addComponent(btnRegresar1)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnDesactivar))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(btnDesactivar)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jButton1)
+                            .addGap(12, 12, 12)
+                            .addComponent(jButton2)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel14)
                         .addGap(299, 299, 299)
@@ -860,10 +915,17 @@ public void createTablePedido(){
                 .addGap(189, 189, 189)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnDesactivar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(102, 102, 102)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnDesactivar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1))
+                        .addGap(102, 102, 102))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(btnRegresar1)
-                .addContainerGap(440, Short.MAX_VALUE))
+                .addContainerGap(432, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Lista de Pedidos", jPanel1);
@@ -1392,6 +1454,375 @@ DefaultTableModel modelo = (DefaultTableModel) tblPedidoPiezaVehiculo.getModel()
         evt.consume();
         }
     }//GEN-LAST:event_txtCantidadPiezasKeyTyped
+
+    private void imprimirReportePDF(Pedido d) throws JRException, IOException{
+         Object [][] arrayDetallesFactura;
+        int contador = 0;
+        List<Detalle_Pedido_pieza> arregloPiezas = new ArrayList<>();
+        List<Detalle_Pedido_Vehiculo> arregloVehiculos = new ArrayList<>();
+//        JOptionPane.showMessageDialog(null, d.getId_pedido());
+        List<Detalle_Pedido_pieza> piezaFTemp = PedidoPiezadao.findDetalle_Pedido_piezaEntities();
+        for(Detalle_Pedido_pieza pf : piezaFTemp){
+            if(pf.getId_pedido()==d.getId_pedido()){
+                arregloPiezas.add(pf);
+                contador++;
+            }
+        }
+        List<Detalle_Pedido_Vehiculo> vehiculoFTemp = PedidoVehiculodao.findDetalle_Pedido_VehiculoEntities();
+        for(Detalle_Pedido_Vehiculo vF : vehiculoFTemp){
+            if(vF.getId_pedido()==d.getId_pedido()){
+                arregloVehiculos.add(vF);
+                contador++;
+            }
+        }
+        
+        
+        
+        
+        
+        arrayDetallesFactura = new Object[contador][5];
+        double containerPrecio = 0;
+        double containerImpuesto = 0;
+        
+        for(int i = 0;i<arregloPiezas.size();i++){
+            arrayDetallesFactura[i][0]=(i+1);
+            arrayDetallesFactura[i][1]=PiezaDao.findPieza(arregloPiezas.get(i).getId_pieza()).getNombre()+PiezaDao.findPieza(arregloPiezas.get(i).getId_pieza()).getCarateristica_Pieza();
+            //arrayDetallesFactura[i][2]
+            List<HistoricoPrecioPieza> temporalHPP=historicoPiezaDao.findHistoricoPrecioPiezaEntities();
+            for(HistoricoPrecioPieza htp : temporalHPP){
+                if(htp.getIdPieza()==arregloPiezas.get(i).getId_pieza() && htp.getFechaFinal()!=null){
+                    LocalDate auxFechaInicial = LocalDate.parse(htp.getFechaInicial());
+                    LocalDate auxFechaFinal = LocalDate.parse(htp.getFechaFinal());
+                    LocalDate auxFechaEmision = LocalDate.parse(d.getFecha_pedido());
+                    if(auxFechaEmision.isAfter(auxFechaInicial) && auxFechaEmision.isBefore(auxFechaFinal)){
+                        arrayDetallesFactura[i][2]=String.valueOf(htp.getPrecio());
+                        break;
+                    }
+                                        
+                }
+                else{
+                        arrayDetallesFactura[i][2]=String.valueOf(htp.getPrecio());
+                        break;
+                }
+                
+                
+            }
+            
+            //Fin de array para precio
+            arrayDetallesFactura[i][3]=String.valueOf(arregloPiezas.get(i).getCantidad());
+            arrayDetallesFactura[i][4]=String.valueOf(Double.parseDouble(String.valueOf(arrayDetallesFactura[i][2]))*arregloPiezas.get(i).getCantidad());
+            containerPrecio += Double.parseDouble(String.valueOf(arrayDetallesFactura[i][4]));
+            containerImpuesto += Double.parseDouble(String.valueOf(arrayDetallesFactura[i][4]))*0.18;
+        }
+        
+        for(int i = 0;i<arregloVehiculos.size();i++){
+            arrayDetallesFactura[i+arregloPiezas.size()][0]=arregloVehiculos.get(i).getId_vehiculo();
+            arrayDetallesFactura[i+arregloPiezas.size()][1]=arregloVehiculos.get(i).getCantidad()+" "+Marcadao.findMarca(Vehiculodao.findVehiculo(arregloVehiculos.get(i).getId_vehiculo()).getId_marca()).getMarca();
+            //arrayDetallesFactura[i][2]
+            List<HistoricoPrecioVehiculos> temporalHPV=historicoVehiculoDao.findHistoricoPrecioVehiculosEntities();
+            for(HistoricoPrecioVehiculos htp : temporalHPV){
+                if(htp.getId_vehiculo()==arregloVehiculos.get(i).getId_vehiculo() && htp.getFechaFinal()!=null){
+                    LocalDate auxFechaInicial = LocalDate.parse(htp.getFechaInicial());
+                    LocalDate auxFechaFinal = LocalDate.parse(htp.getFechaFinal());
+                    LocalDate auxFechaEmision = LocalDate.parse(d.getFecha_pedido());
+                    if(auxFechaEmision.isAfter(auxFechaInicial) && auxFechaEmision.isBefore(auxFechaFinal)){
+                        arrayDetallesFactura[i][2]=String.valueOf(htp.getPrecio());
+                        //JOptionPane.showMessageDialog(null,"");
+                        break;
+                    }
+                                        
+                }
+                else{
+                        arrayDetallesFactura[i+arregloPiezas.size()][2]=String.valueOf(htp.getPrecio());
+                        break;
+                }
+                
+                
+            }
+            
+            //Fin de array para precio
+            arrayDetallesFactura[i+arregloPiezas.size()][3]=String.valueOf(1);
+            arrayDetallesFactura[i+arregloPiezas.size()][4]=String.valueOf(Double.parseDouble(String.valueOf(arrayDetallesFactura[i][2]))*1);
+            containerPrecio += Double.parseDouble(String.valueOf(arrayDetallesFactura[i+arregloPiezas.size()][4]));
+            containerImpuesto += Double.parseDouble(String.valueOf(arrayDetallesFactura[i+arregloPiezas.size()][4]))*0.18;
+            
+        }
+        
+        
+        
+       /* for(int i = 0;i<contador;i++){
+            
+                    arrayDetallesFactura[i][0]=tbVenta.getValueAt(i,0);
+                    arrayDetallesFactura[i][1]=tbVenta.getValueAt(i, 1);
+                    arrayDetallesFactura[i][2]=tbVenta.getValueAt(i, 2);
+                    arrayDetallesFactura[i][3]=tbVenta.getValueAt(i,3);
+                    arrayDetallesFactura[i][4]=tbVenta.getValueAt(i, 4);
+                    
+                
+        }*/
+                //JOptionPane.showMessageDialog(null, arrayDetallesFactura[0][1]);
+        
+        
+        
+        
+        
+       
+        DecimalFormatSymbols separadoresPersonalizados = new DecimalFormatSymbols();
+        separadoresPersonalizados.setDecimalSeparator('.');
+        DecimalFormat formato1 = new DecimalFormat("#,###,##0.00", separadoresPersonalizados);
+        
+        HashMap param = new HashMap();
+        param.put("numFactura",String.valueOf(d.getId_pedido()));
+        param.put("Empleado",empNomb);
+        param.put("fechaHora",d.getFecha_pedido());
+        param.put("impuesto", String.valueOf(containerImpuesto));
+        param.put("total",String.valueOf(containerImpuesto+containerPrecio));
+        //param.put("rtnvendedor",rs.getRtn());
+        //param.put("cai", iF.getCai());
+        //param.put("tipopago",tipoPagoDao.findTipoPago(f.getIdTipoPago()).getNombre());
+       // param.put("limite",(iF.getFechaFinal().substring(8, 10)+"/"+iF.getFechaFinal().substring(5, 7)+"/"+iF.getFechaFinal().substring(0, 4)));
+        
+        
+        //param.put("monto",formato1.format(f.getCantidadPago()) );
+        
+        //pp = personaDao.findPersona(c.getId_Persona()); // En caso de que no salga declara una persona distinta
+        
+        //p/aram.put("cliente", pp.getNombre()+" "+pp.getApellido());
+        //param.put("documento",pp.getDocumento_id());
+        
+        
+        
+            JasperReport reporteFactura = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\pedido.jrxml");
+            JasperPrint print = JasperFillManager.fillReport(reporteFactura, param,FacturaJRADATASOURCE.getDataSource(arrayDetallesFactura));
+            
+            //JasperRunManager.runReportToPdf(reporteFactura, param);
+            
+            File pdf = File.createTempFile("Reporte de Pedido"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+            //JasperExportManager.exportReportToPdfFile(print, empNomb);
+            JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
+            //JOptionPane.showMessageDialog(null,pdf.getPath());
+            ProcessBuilder p = new ProcessBuilder();
+            p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
+            p.start();
+            
+            
+    }
+    
+    private void imprimirReporteExcel(Pedido d) throws JRException, IOException{
+         Object [][] arrayDetallesFactura;
+        int contador = 0;
+        List<Detalle_Pedido_pieza> arregloPiezas = new ArrayList<>();
+        List<Detalle_Pedido_Vehiculo> arregloVehiculos = new ArrayList<>();
+//        JOptionPane.showMessageDialog(null, d.getId_pedido());
+        List<Detalle_Pedido_pieza> piezaFTemp = PedidoPiezadao.findDetalle_Pedido_piezaEntities();
+        for(Detalle_Pedido_pieza pf : piezaFTemp){
+            if(pf.getId_pedido()==d.getId_pedido()){
+                //JOptionPane.showMessageDialog(null,"Piezas");
+                arregloPiezas.add(pf);
+                contador++;
+            }
+        }
+        List<Detalle_Pedido_Vehiculo> vehiculoFTemp = PedidoVehiculodao.findDetalle_Pedido_VehiculoEntities();
+        for(Detalle_Pedido_Vehiculo vF : vehiculoFTemp){
+            if(vF.getId_pedido()==d.getId_pedido()){
+                arregloVehiculos.add(vF);
+                contador++;
+            }
+        }
+        
+        
+        
+        
+        
+        arrayDetallesFactura = new Object[contador][5];
+        double containerPrecio = 0;
+        double containerImpuesto = 0;
+        //JOptionPane.showMessageDialog(null,arregloPiezas.size());
+        for(int i = 0;i<arregloPiezas.size();i++){
+          //  JOptionPane.showMessageDialog(null,arregloPiezas.get(i).getId_pieza());
+            arrayDetallesFactura[i][0]=(i+1);
+            arrayDetallesFactura[i][1]=PiezaDao.findPieza(arregloPiezas.get(i).getId_pieza()).getNombre()+PiezaDao.findPieza(arregloPiezas.get(i).getId_pieza()).getCarateristica_Pieza();
+            //arrayDetallesFactura[i][2]
+            List<HistoricoPrecioPieza> temporalHPP=historicoPiezaDao.findHistoricoPrecioPiezaEntities();
+            for(HistoricoPrecioPieza htp : temporalHPP){
+                if(htp.getIdPieza()==arregloPiezas.get(i).getId_pieza() && htp.getFechaFinal()!=null){
+                    LocalDate auxFechaInicial = LocalDate.parse(htp.getFechaInicial());
+                    LocalDate auxFechaFinal = LocalDate.parse(htp.getFechaFinal());
+                    LocalDate auxFechaEmision = LocalDate.parse(d.getFecha_pedido());
+                    if(auxFechaEmision.isAfter(auxFechaInicial) && auxFechaEmision.isBefore(auxFechaFinal)){
+                        arrayDetallesFactura[i][2]=String.valueOf(htp.getPrecio());
+                        break;
+                    }
+                                        
+                }
+                else{
+                        arrayDetallesFactura[i][2]=String.valueOf(htp.getPrecio());
+                        break;
+                }
+                
+                
+            }
+            
+            //Fin de array para precio
+            arrayDetallesFactura[i][3]=String.valueOf(arregloPiezas.get(i).getCantidad());
+            arrayDetallesFactura[i][4]=String.valueOf(Double.parseDouble(String.valueOf(arrayDetallesFactura[i][2]))*arregloPiezas.get(i).getCantidad());
+            containerPrecio += Double.parseDouble(String.valueOf(arrayDetallesFactura[i][4]));
+            containerImpuesto += Double.parseDouble(String.valueOf(arrayDetallesFactura[i][4]))*0.18;
+        }
+        
+        for(int i = 0;i<arregloVehiculos.size();i++){
+            
+            arrayDetallesFactura[i+arregloPiezas.size()][0]=arregloVehiculos.get(i).getId_vehiculo();
+            arrayDetallesFactura[i+arregloPiezas.size()][1]=arregloVehiculos.get(i).getCantidad()+" "+Marcadao.findMarca(Vehiculodao.findVehiculo(arregloVehiculos.get(i).getId_vehiculo()).getId_marca()).getMarca();
+            //arrayDetallesFactura[i][2]
+            List<HistoricoPrecioVehiculos> temporalHPV=historicoVehiculoDao.findHistoricoPrecioVehiculosEntities();
+            for(HistoricoPrecioVehiculos htp : temporalHPV){
+                if(htp.getId_vehiculo()==arregloVehiculos.get(i).getId_vehiculo() && htp.getFechaFinal()!=null){
+                    LocalDate auxFechaInicial = LocalDate.parse(htp.getFechaInicial());
+                    LocalDate auxFechaFinal = LocalDate.parse(htp.getFechaFinal());
+                    LocalDate auxFechaEmision = LocalDate.parse(d.getFecha_pedido());
+                    if(auxFechaEmision.isAfter(auxFechaInicial) && auxFechaEmision.isBefore(auxFechaFinal)){
+                        arrayDetallesFactura[i][2]=String.valueOf(htp.getPrecio());
+                        //JOptionPane.showMessageDialog(null,"");
+                        break;
+                    }
+                                        
+                }
+                else{
+                        arrayDetallesFactura[i+arregloPiezas.size()][2]=String.valueOf(htp.getPrecio());
+                        break;
+                }
+                
+                
+            }
+            
+            //Fin de array para precio
+            arrayDetallesFactura[i+arregloPiezas.size()][3]=String.valueOf(1);
+            arrayDetallesFactura[i+arregloPiezas.size()][4]=String.valueOf(Double.parseDouble(String.valueOf(arrayDetallesFactura[i][2]))*1);
+            containerPrecio += Double.parseDouble(String.valueOf(arrayDetallesFactura[i+arregloPiezas.size()][4]));
+            containerImpuesto += Double.parseDouble(String.valueOf(arrayDetallesFactura[i+arregloPiezas.size()][4]))*0.18;
+            
+        }
+        
+        
+        
+       /* for(int i = 0;i<contador;i++){
+            
+                    arrayDetallesFactura[i][0]=tbVenta.getValueAt(i,0);
+                    arrayDetallesFactura[i][1]=tbVenta.getValueAt(i, 1);
+                    arrayDetallesFactura[i][2]=tbVenta.getValueAt(i, 2);
+                    arrayDetallesFactura[i][3]=tbVenta.getValueAt(i,3);
+                    arrayDetallesFactura[i][4]=tbVenta.getValueAt(i, 4);
+                    
+                
+        }*/
+                //JOptionPane.showMessageDialog(null, arrayDetallesFactura[0][1]);
+        
+        
+        
+        
+        
+       
+        DecimalFormatSymbols separadoresPersonalizados = new DecimalFormatSymbols();
+        separadoresPersonalizados.setDecimalSeparator('.');
+        DecimalFormat formato1 = new DecimalFormat("#,###,##0.00", separadoresPersonalizados);
+        
+        HashMap param = new HashMap();
+        param.put("numFactura",String.valueOf(d.getId_pedido()));
+        param.put("Empleado",empNomb);
+        param.put("fechaHora",d.getFecha_pedido());
+        param.put("impuesto", String.valueOf(containerImpuesto));
+        param.put("total",String.valueOf(containerImpuesto+containerPrecio));
+        //param.put("rtnvendedor",rs.getRtn());
+        //param.put("cai", iF.getCai());
+        //param.put("tipopago",tipoPagoDao.findTipoPago(f.getIdTipoPago()).getNombre());
+       // param.put("limite",(iF.getFechaFinal().substring(8, 10)+"/"+iF.getFechaFinal().substring(5, 7)+"/"+iF.getFechaFinal().substring(0, 4)));
+        
+        
+        //param.put("monto",formato1.format(f.getCantidadPago()) );
+        
+        //pp = personaDao.findPersona(c.getId_Persona()); // En caso de que no salga declara una persona distinta
+        
+        //p/aram.put("cliente", pp.getNombre()+" "+pp.getApellido());
+        //param.put("documento",pp.getDocumento_id());
+        
+        
+        
+            JasperReport reporteFactura = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\pedido.jrxml");
+            JasperPrint print = JasperFillManager.fillReport(reporteFactura, param,FacturaJRADATASOURCE.getDataSource(arrayDetallesFactura));
+            
+            //JasperRunManager.runReportToPdf(reporteFactura, param);
+            
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\Reportes\\reportePedido.xlsx");
+
+            exporter.exportReport();
+            
+            ProcessBuilder p = new ProcessBuilder();
+            p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\Reportes\\reportePedido.xlsx");
+            p.start();
+
+            
+            
+    }
+    
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Pedido d = null;
+        int fila = tblPedido.getSelectedRow();
+        if(fila > -1){
+            List<Pedido> fac = Pedidodao.findPedidoEntities();
+            ///JOptionPane.showMessageDialog(null,String.valueOf(tblPedido.getValueAt(fila, 0)));
+            for(Pedido w : fac ){
+                if(w.getId_pedido()==Integer.parseInt(String.valueOf(tblPedido.getValueAt(fila, 0)))){
+                   // JOptionPane.showMessageDialog(null,w.getId_pedido());
+                    d=w;
+                    break;
+                }
+            }
+        
+        
+        try {
+            //Codigo de Buscar Pedido
+            
+            imprimirReportePDF(d);
+            
+            // TODO add your handling code here:
+        } catch (JRException | IOException ex) {
+            Logger.getLogger(FrmPedidos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+        Pedido d = null;
+        int fila = tblPedido.getSelectedRow();
+        if(fila > -1){
+            List<Pedido> fac = Pedidodao.findPedidoEntities();
+            ///JOptionPane.showMessageDialog(null,String.valueOf(tblPedido.getValueAt(fila, 0)));
+            for(Pedido w : fac ){
+                if(w.getId_pedido()==Integer.parseInt(String.valueOf(tblPedido.getValueAt(fila, 0)))){
+                   // JOptionPane.showMessageDialog(null,w.getId_pedido());
+                    d=w;
+                    break;
+                }
+            }
+        
+        
+        try {
+            //Codigo de Buscar Pedido
+            
+            imprimirReporteExcel(d);
+            
+            // TODO add your handling code here:
+        } catch (JRException | IOException ex) {
+            Logger.getLogger(FrmPedidos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
     
     public int AgregarPedidoTest(int cmbIDPieza,int cmbIDVehiculo){
         Pedido temp = new Pedido();
@@ -2027,6 +2458,8 @@ private boolean NumerosEnteros(String num){
     private javax.swing.JComboBox<String> cmbIDPedido;
     private javax.swing.JComboBox<String> cmbIDPieza;
     private javax.swing.JComboBox<String> cmbIDVehiculo;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
