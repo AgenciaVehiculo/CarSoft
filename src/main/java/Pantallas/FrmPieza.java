@@ -12,12 +12,17 @@ import Clases.Validaciones;
 import JPAController.HistoricoPrecioPiezaJpaController;
 import JPAController.PiezaJpaController;
 import JPAController.TipoPiezaJpaController;
+import static Pantallas.FrmMenu.labelEmple1;
 import com.sun.glass.events.KeyEvent;
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +36,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -47,7 +61,7 @@ public class FrmPieza extends javax.swing.JFrame {
     PiezaJpaController piezaDao = new PiezaJpaController(emf);
     HistoricoPrecioPiezaJpaController historicoPieza = new HistoricoPrecioPiezaJpaController(emf);
     TipoPiezaJpaController tipoPieza = new TipoPiezaJpaController(emf);
-    
+    Connection con;
     
     public FrmPieza() {
         initComponents();
@@ -102,14 +116,25 @@ public class FrmPieza extends javax.swing.JFrame {
             
             tablaBusqueda.setForeground(Color.WHITE);
             tablaBusqueda.setBackground(Color.BLACK);
-
+            this.btnGenerar.setBackground( new Color(14, 209, 69));
+        this.btnGenerar2.setBackground( new Color(14, 209, 69));
+        this.btnGenerar3.setBackground( new Color(14, 209, 69));
+        this.btnGenerar4.setBackground( new Color(14, 209, 69));
+        this.btnGenerar5.setBackground( new Color(14, 209, 69));
+        this.btnGenerar6.setBackground( new Color(14, 209, 69));
 
         createTablaPieza();
         createCmbTipoPieza();
         createCmbIDPieza();
         crearcmbPiezaHistorico();
+        setlabelEmpleado(String.valueOf(labelEmple1.getText()));
+        labelempleado.setVisible(false);
     }
-    
+ public void setlabelEmpleado(String valor){
+        //IniciodeSesion i = new IniciodeSesion();
+        //String valor = i.labelEmple1.getText();
+        labelempleado.setText(valor);
+    }   
     public void crearTbHistorialPrecio(){
         DefaultTableModel modelo = (DefaultTableModel) jTbHistorialPrecio.getModel();
         
@@ -513,8 +538,11 @@ public class FrmPieza extends javax.swing.JFrame {
         jFtxtStock = new javax.swing.JFormattedTextField();
         jFtxtStockMinimo = new javax.swing.JFormattedTextField();
         jFtxtPrecio = new javax.swing.JTextField();
+        labelempleado = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jtxtNombre = new javax.swing.JTextField();
+        btnGenerar = new javax.swing.JButton();
+        btnGenerar2 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -523,6 +551,8 @@ public class FrmPieza extends javax.swing.JFrame {
         jTbHistorialPrecio = new javax.swing.JTable();
         btnSalir2 = new javax.swing.JButton();
         btnRegresar2 = new javax.swing.JButton();
+        btnGenerar3 = new javax.swing.JButton();
+        btnGenerar4 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel28 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
@@ -537,6 +567,8 @@ public class FrmPieza extends javax.swing.JFrame {
         btnSalir1 = new javax.swing.JButton();
         btnRegresar1 = new javax.swing.JButton();
         txtIDTipoPieza = new javax.swing.JComboBox<>();
+        btnGenerar5 = new javax.swing.JButton();
+        btnGenerar6 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         txtNombreBusqueda = new javax.swing.JTextField();
@@ -753,6 +785,9 @@ public class FrmPieza extends javax.swing.JFrame {
         });
         pnlPieza.add(jFtxtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 130, 98, 30));
 
+        labelempleado.setText("jLabel1");
+        pnlPieza.add(labelempleado, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 50, -1));
+
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setText("Nombre:");
@@ -764,6 +799,28 @@ public class FrmPieza extends javax.swing.JFrame {
             }
         });
         pnlPieza.add(jtxtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 90, 214, 30));
+
+        btnGenerar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnGenerar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/pdf (1).png"))); // NOI18N
+        btnGenerar.setText("Generar PDF");
+        btnGenerar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGenerar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarActionPerformed(evt);
+            }
+        });
+        pnlPieza.add(btnGenerar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 520, -1, -1));
+
+        btnGenerar2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnGenerar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/excel (1).png"))); // NOI18N
+        btnGenerar2.setText("Generar EXCEL");
+        btnGenerar2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGenerar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerar2ActionPerformed(evt);
+            }
+        });
+        pnlPieza.add(btnGenerar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 520, -1, -1));
 
         jTabbedPane3.addTab("Piezas", pnlPieza);
 
@@ -822,26 +879,54 @@ public class FrmPieza extends javax.swing.JFrame {
             }
         });
 
+        btnGenerar3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnGenerar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/pdf (1).png"))); // NOI18N
+        btnGenerar3.setText("Generar PDF");
+        btnGenerar3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGenerar3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerar3ActionPerformed(evt);
+            }
+        });
+
+        btnGenerar4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnGenerar4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/excel (1).png"))); // NOI18N
+        btnGenerar4.setText("Generar EXCEL");
+        btnGenerar4.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGenerar4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerar4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(517, 517, 517)
-                .addComponent(jLabel16)
-                .addGap(361, 361, 361)
-                .addComponent(btnSalir2))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(cmbIDPieza, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 837, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(1190, 1190, 1190)
-                .addComponent(btnRegresar2))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(517, 517, 517)
+                        .addComponent(jLabel16)
+                        .addGap(361, 361, 361)
+                        .addComponent(btnSalir2))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbIDPieza, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(1190, 1190, 1190)
+                        .addComponent(btnRegresar2))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(btnGenerar3)
+                                .addGap(11, 11, 11)
+                                .addComponent(btnGenerar4))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 837, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(34, 34, 34))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -858,7 +943,11 @@ public class FrmPieza extends javax.swing.JFrame {
                     .addComponent(cmbIDPieza, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(70, 70, 70)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(203, 203, 203)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnGenerar3)
+                    .addComponent(btnGenerar4))
+                .addGap(144, 144, 144)
                 .addComponent(btnRegresar2))
         );
 
@@ -990,6 +1079,26 @@ public class FrmPieza extends javax.swing.JFrame {
             }
         });
 
+        btnGenerar5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnGenerar5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/pdf (1).png"))); // NOI18N
+        btnGenerar5.setText("Generar PDF");
+        btnGenerar5.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGenerar5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerar5ActionPerformed(evt);
+            }
+        });
+
+        btnGenerar6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnGenerar6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/excel (1).png"))); // NOI18N
+        btnGenerar6.setText("Generar EXCEL");
+        btnGenerar6.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGenerar6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerar6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -1023,7 +1132,12 @@ public class FrmPieza extends javax.swing.JFrame {
                             .addComponent(btnSalir1))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGap(68, 68, 68)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 875, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(btnGenerar5)
+                                    .addGap(11, 11, 11)
+                                    .addComponent(btnGenerar6))
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 875, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(0, 55, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -1055,7 +1169,11 @@ public class FrmPieza extends javax.swing.JFrame {
                         .addComponent(btnDesactivar2)))
                 .addGap(47, 47, 47)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(91, 91, 91)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnGenerar5)
+                    .addComponent(btnGenerar6))
+                .addGap(32, 32, 32)
                 .addComponent(btnRegresar1))
         );
 
@@ -1236,18 +1354,18 @@ public boolean DesactivarTipoPieza(){
         if(temp.getEstado()){
             temp.setEstado(false);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
-            //JOptionPane.showMessageDialog(null,"Tipo de pieza Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            JOptionPane.showMessageDialog(null,"Tipo de pieza Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         else{
             temp.setEstado(true);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
-            //JOptionPane.showMessageDialog(null,"Tipo de pieza Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            JOptionPane.showMessageDialog(null,"Tipo de pieza Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        /*try {
+        try {
             tipoPieza.edit(temp);
         } catch (Exception ex) {
             Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
         createTableTipoPieza();
         btnActivarDesactivar();
         LimpiarNuevoTipoPieza();
@@ -1271,30 +1389,30 @@ return true;
     }//GEN-LAST:event_btnModificar2ActionPerformed
 public boolean ModificarTipoPieza(){
     if(txtIDTipoPieza.getSelectedIndex()==0){
-            //JOptionPane.showMessageDialog(null, "Tipo de pieza no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Tipo de pieza no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
             if("".equals(txtTipoPiezaNuevo.getText().trim())){
-                //JOptionPane.showMessageDialog(null, "El campo de de tipo de pieza esta vacío","ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "El campo de de tipo de pieza esta vacío","ERROR", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
             if(txtTipoPiezaNuevo.getText().length()<3){
-                //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
             else{
 
             }
             if(txtTipoPiezaNuevo.getText().length()>25){
-                //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Pieza es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Pieza es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
             else{
 
             }
             if (!ValidacionNombreMayusculaYDemasMinus(txtTipoPiezaNuevo.getText())){
-                //JOptionPane.showMessageDialog(null,"El Tipo de Pieza debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El Tipo de Pieza debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
                 txtTipoPiezaNuevo.requestFocus();
                 return false;
             }else{
@@ -1307,11 +1425,11 @@ public boolean ModificarTipoPieza(){
             Matcher mat = pat.matcher(txtTipoPiezaNuevo.getText());
 
             if(mat.matches()){
-                //JOptionPane.showMessageDialog(null, "No se Admite en el Tipo de Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "No se Admite en el Tipo de Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
             if("".equals(txtTipoPiezaNuevo.getText())){
-                //JOptionPane.showMessageDialog(null, "Tipo de Pieza no puede ir vacio", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Tipo de Pieza no puede ir vacio", "Error", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
             else{
@@ -1333,13 +1451,13 @@ public boolean ModificarTipoPieza(){
                     TipoPieza e1;
                     e1=tipoPieza.findTipoPieza(txtIDTipoPieza.getSelectedIndex());
                     e1.setTipopieza(txtTipoPiezaNuevo.getText());
-                    /*try {
+                    try {
                         tipoPieza.edit(e1);
                     } catch (Exception ex) {
                         Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-                    }*/
+                    }
                     Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
-                    //JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
+                    JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
                     txtIDTipoPieza.setSelectedIndex(1);
                     txtIDTipoPieza.setSelectedIndex(0);
                     createTableTipoPieza();
@@ -1363,7 +1481,7 @@ public boolean ModificarTipoPieza(){
     }//GEN-LAST:event_btnAgregar2ActionPerformed
 public boolean AgregarTipoPieza(){
     if(txtIDTipoPieza.getSelectedIndex()!=0){
-            //JOptionPane.showMessageDialog(null, "El ID Tipo de Pieza siempre debe estar en el ITEM de Nuevo para agregar un nuevo Tipo de Pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El ID Tipo de Pieza siempre debe estar en el ITEM de Nuevo para agregar un nuevo Tipo de Pieza","Error!", JOptionPane.ERROR_MESSAGE);
             txtIDTipoPieza.setSelectedIndex(0);
             return false;
         }
@@ -1371,25 +1489,25 @@ public boolean AgregarTipoPieza(){
 
         }
         if("".equals(txtTipoPiezaNuevo.getText().trim())){
-            //JOptionPane.showMessageDialog(null, "El campo de de tipo de pieza esta vacío","ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo de de tipo de pieza esta vacío","ERROR", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if(txtTipoPiezaNuevo.getText().length()<3){
-            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Tipo de pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if(txtTipoPiezaNuevo.getText().length()>25){
-            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Pieza es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Tipo de Pieza es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if (!ValidacionNombreMayusculaYDemasMinus(txtTipoPiezaNuevo.getText())){
-            //JOptionPane.showMessageDialog(null,"El Tipo de Pieza debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El Tipo de Pieza debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtTipoPiezaNuevo.requestFocus();
             return false;
         }else{
@@ -1402,7 +1520,7 @@ public boolean AgregarTipoPieza(){
         Matcher mat = pat.matcher(txtTipoPiezaNuevo.getText());
 
         if(mat.matches()){
-            //JOptionPane.showMessageDialog(null, "No se Admite en el Tipo de Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No se Admite en el Tipo de Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
@@ -1412,7 +1530,7 @@ public boolean AgregarTipoPieza(){
             for(i=0;i<tipoPieza.findTipoPiezaEntities().size();i++){
                 //System.out.println(i);
                 if(txtTipoPiezaNuevo.getText().toLowerCase().equals(tipoPieza.findTipoPieza(i+1).getTipopieza().toLowerCase())){
-                    //JOptionPane.showMessageDialog(null, "Ya existe este tipo de pieza registrada en el sistema","ERROR", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ya existe este tipo de pieza registrada en el sistema","ERROR", JOptionPane.ERROR_MESSAGE);
                     flag=true;
                     return false;
                 } else {
@@ -1425,13 +1543,13 @@ public boolean AgregarTipoPieza(){
                 TipoPieza e1 = new TipoPieza();
                 e1.setEstado(true);
                 e1.setTipopieza(txtTipoPiezaNuevo.getText());
-                /*try {
+                try {
                     tipoPieza.create(e1);
                 } catch (Exception ex) {
                     Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                }
                 Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
-                //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+                JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
                 //           txtIDTipoPieza.setSelectedIndex(1);
                 txtIDTipoPieza.setSelectedIndex(0);
                 
@@ -1561,18 +1679,18 @@ public boolean DesactivarPieza(){
         if(temp.isEstado()){
             temp.setEstado(false);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
-            //JOptionPane.showMessageDialog(null,"Pieza Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            JOptionPane.showMessageDialog(null,"Pieza Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         else{
             temp.setEstado(true);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
-            //JOptionPane.showMessageDialog(null,"Pieza Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            JOptionPane.showMessageDialog(null,"Pieza Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        /*try {
+        try {
             piezaDao.edit(temp);
         } catch (Exception ex) {
             Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
         createTablaPieza();
         btnActivarDesactivarPieza();
         createCmbTipoPieza();
@@ -1593,37 +1711,37 @@ public boolean DesactivarPieza(){
 public boolean ModificarPieza(){
     
         if(jCmbTipoPieza.getSelectedIndex()==0){
-            //JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Tipo de pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Tipo de pieza","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
                if(jCmbTipoPieza.getSelectedIndex()==0){
-            //JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Tipo de pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Tipo de pieza","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if(jtxtNombre.getText().trim().equals("")){
-            //JOptionPane.showMessageDialog(null, "El campo de Nombre de la Pieza esta vacío","ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo de Nombre de la Pieza esta vacío","ERROR", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if(jtxtNombre.getText().length()<3){
-            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Nombre de la Pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Nombre de la Pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if(jtxtNombre.getText().length()>25){
-            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Nombre de la Pieza es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Nombre de la Pieza es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if (!ValidacionNombreMayusculaYDemasMinus(jtxtNombre.getText())){
-            //JOptionPane.showMessageDialog(null,"El Nombre de la Pieza debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El Nombre de la Pieza debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             jtxtNombre.requestFocus();
             return false;
         }
@@ -1636,28 +1754,28 @@ public boolean ModificarPieza(){
 
         Matcher mat = pat.matcher(jtxtNombre.getText());
         if(mat.matches()){
-            //JOptionPane.showMessageDialog(null, "No se Admite en el nombre de la Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No se Admite en el nombre de la Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if(jTxtAreaCaracteristica.getText().trim().equals("")){
-            //JOptionPane.showMessageDialog(null, "Por favor, ingrese las Características de la pieza","ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese las Características de la pieza","ERROR", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if(jTxtAreaCaracteristica.getText().length()<3){
-            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para la Característica de la Pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para la Característica de la Pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if(jTxtAreaCaracteristica.getText().length()>50){
-            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para la Característica de la Pieza es de 50 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para la Característica de la Pieza es de 50 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -1665,95 +1783,95 @@ public boolean ModificarPieza(){
         }
         Matcher matt = pat.matcher(jTxtAreaCaracteristica.getText());
         if(matt.matches()){
-            //JOptionPane.showMessageDialog(null, "No se Admite en la Características de la Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No se Admite en la Características de la Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if (!ValidacionCaracteristicas(jTxtAreaCaracteristica.getText())){
-            //JOptionPane.showMessageDialog(null,"La Características solo puede contener números, letras y los siguiente signos(&:|#\";.,-)","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"La Características solo puede contener números, letras y los siguiente signos(&:|#\";.,-)","Error!", JOptionPane.ERROR_MESSAGE);
             jTxtAreaCaracteristica.requestFocus();
             return false;
         }
         else{
         }
         if("".equals(jFtxtStock.getText().trim())){
-            //JOptionPane.showMessageDialog(null, "El campo de Stock de la Pieza esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo de Stock de la Pieza esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if((Integer.parseInt(jFtxtStock.getText())==0)){
-               //JOptionPane.showMessageDialog(null, "El Stock no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
+               JOptionPane.showMessageDialog(null, "El Stock no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
                return false;
             }
            else{        
            }
         if (!ValidacionRangoStockPieza(jFtxtStock.getText())){
-            //JOptionPane.showMessageDialog(null,"El rango de Stock de Piezas solo puede estar entre 1-400","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El rango de Stock de Piezas solo puede estar entre 1-400","Error!", JOptionPane.ERROR_MESSAGE);
             jFtxtStock.requestFocus();
             return false;
         }else{
 
         }
         if("".equals(jFtxtPrecio.getText().trim())){
-            //JOptionPane.showMessageDialog(null, "Por favor, ingrese el precio de la pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese el precio de la pieza","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if (!ValidacionRangoPrecioPieza(jFtxtPrecio.getText())){
-            //JOptionPane.showMessageDialog(null,"El rango de Precio de la Pieza solo puede estar entre 20.00-40,000.00","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El rango de Precio de la Pieza solo puede estar entre 20.00-40,000.00","Error!", JOptionPane.ERROR_MESSAGE);
             jFtxtPrecio.requestFocus();
             return false;
         }
         else{
         }
         if("".equals(jFtxtStockMaximo.getText().trim())){
-            //JOptionPane.showMessageDialog(null,"Por favor, ingrese la cantidad Máxima que puede haber de esta pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Por favor, ingrese la cantidad Máxima que puede haber de esta pieza","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if((Integer.parseInt(jFtxtStockMaximo.getText())==0)){
-               //JOptionPane.showMessageDialog(null, "El Stock Máximo no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
+               JOptionPane.showMessageDialog(null, "El Stock Máximo no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
                 return false;
             }
            else{        
            }
         if (!ValidacionRangoStockPieza(jFtxtStockMaximo.getText())){
-            //JOptionPane.showMessageDialog(null,"El rango de Stock Máximo de Piezas solo puede estar entre 1-400","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El rango de Stock Máximo de Piezas solo puede estar entre 1-400","Error!", JOptionPane.ERROR_MESSAGE);
             //jFtxtStockMaximo.requestFocus();
             return false;
         }else{
 
         }
         if(Double.parseDouble(jFtxtStock.getText())>Integer.parseInt(jFtxtStockMaximo.getText())){
-            //JOptionPane.showMessageDialog(null, "El Stock no puede ser mayor al Stock Máximo","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El Stock no puede ser mayor al Stock Máximo","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if("".equals(jFtxtStockMinimo.getText().trim())){
-            //JOptionPane.showMessageDialog(null,"Por favor, ingrese el Stock Mínimo de la Pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Por favor, ingrese el Stock Mínimo de la Pieza","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if((Integer.parseInt(jFtxtStockMinimo.getText())<1)){
-               //JOptionPane.showMessageDialog(null, "El Stock Mínimo actual no puedo ser menor que uno","Error!",JOptionPane.ERROR_MESSAGE);
+               JOptionPane.showMessageDialog(null, "El Stock Mínimo actual no puedo ser menor que uno","Error!",JOptionPane.ERROR_MESSAGE);
                 return false;
             }
            else{        
            }
         if(Integer.parseInt(jFtxtStockMinimo.getText()) >= Integer.parseInt(jFtxtStockMaximo.getText())){
-            //JOptionPane.showMessageDialog(null, "El Stock Mínimo no puede ser igual o mayor al Stock Máximo","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El Stock Mínimo no puede ser igual o mayor al Stock Máximo","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if(Double.parseDouble(jFtxtStock.getText())<Integer.parseInt(jFtxtStockMinimo.getText())){
-            //JOptionPane.showMessageDialog(null, "El Stock no puede ser menor al Stock Mínimo ","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El Stock no puede ser menor al Stock Mínimo ","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -1809,11 +1927,11 @@ public boolean ModificarPieza(){
             //double aux=Double.parseDouble(jFtxtPrecio.getText().trim());
             //temp2.setPrecio(auxsueldo);
             temp2.setIdPieza(txtIDPieza.getSelectedIndex());
-            /*try {
+            try {
                 historicoPieza.edit(temp2);
             } catch (Exception ex) {
                 Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
+            }
             aux1 = Integer.toString(fecha.get(Calendar.YEAR));
             aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH)+1);
             aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
@@ -1825,12 +1943,12 @@ public boolean ModificarPieza(){
             double auxsueldo1=(Double.parseDouble(jFtxtPrecio.getText().replace(",", "").replace(",", "").trim()));
             temp3.setPrecio(auxsueldo1);
             temp3.setEstado(true);
-            /*try {
+            try {
                 historicoPieza.create(temp3);
                 //txtIDPieza.setSelectedIndex(1);
             } catch (Exception ex) {
                 Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
+            }
 
         }
         txtIDPieza.setSelectedIndex(0);
@@ -1838,7 +1956,7 @@ public boolean ModificarPieza(){
         createCmbIDPieza();
 
         Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
-        //JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
+        JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
         btnAgregar3.setEnabled(true);
         btnModificar3.setEnabled(false);
         btnDesactivar3.setEnabled(false);
@@ -1858,35 +1976,35 @@ public boolean ModificarPieza(){
         }
         else{
             txtIDPieza.setSelectedIndex(0);
-            //JOptionPane.showMessageDialog(null, "El ID Pieza siempre debe estar en el ITEM de Nuevo para agregar una Pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El ID Pieza siempre debe estar en el ITEM de Nuevo para agregar una Pieza","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if(jCmbTipoPieza.getSelectedIndex()==0){
-            //JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Tipo de pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Tipo de pieza","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if(jtxtNombre.getText().trim().equals("")){
-            //JOptionPane.showMessageDialog(null, "El campo de Nombre de la Pieza esta vacío","ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo de Nombre de la Pieza esta vacío","ERROR", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if(jtxtNombre.getText().length()<3){
-            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Nombre de la Pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Nombre de la Pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if(jtxtNombre.getText().length()>25){
-            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Nombre de la Pieza es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Nombre de la Pieza es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if (!ValidacionNombreMayusculaYDemasMinus(jtxtNombre.getText())){
-            //JOptionPane.showMessageDialog(null,"El Nombre de la Pieza debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El Nombre de la Pieza debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             //jtxtNombre.requestFocus();
             return false;
         }
@@ -1899,28 +2017,28 @@ public boolean ModificarPieza(){
 
         Matcher mat = pat.matcher(jtxtNombre.getText());
         if(mat.matches()){
-            //JOptionPane.showMessageDialog(null, "No se Admite en el nombre de la Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No se Admite en el nombre de la Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if(jTxtAreaCaracteristica.getText().trim().equals("")){
-            //JOptionPane.showMessageDialog(null, "Por favor, ingrese las Características de la pieza","ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese las Características de la pieza","ERROR", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if(jTxtAreaCaracteristica.getText().length()<3){
-            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para la Característica de la Pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para la Característica de la Pieza es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if(jTxtAreaCaracteristica.getText().length()>50){
-            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para la Característica de la Pieza es de 50 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para la Característica de la Pieza es de 50 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -1928,13 +2046,13 @@ public boolean ModificarPieza(){
         }
         Matcher matt = pat.matcher(jTxtAreaCaracteristica.getText());
         if(matt.matches()){
-            //JOptionPane.showMessageDialog(null, "No se Admite en la Características de la Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No se Admite en la Características de la Pieza la misma letra 3 veces en forma consecutiva","ERROR", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if (!ValidacionCaracteristicas(jTxtAreaCaracteristica.getText())){
-            //JOptionPane.showMessageDialog(null,"La Características solo puede contener números, letras y los siguiente signos(&:|#\";.,-)","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"La Características solo puede contener números, letras y los siguiente signos(&:|#\";.,-)","Error!", JOptionPane.ERROR_MESSAGE);
             //jTxtAreaCaracteristica.requestFocus();
             return false;
         }
@@ -1948,75 +2066,75 @@ public boolean ModificarPieza(){
 
         }
         if((Integer.parseInt(jFtxtStock.getText())==0)){
-               //JOptionPane.showMessageDialog(null, "El Stock no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
+               JOptionPane.showMessageDialog(null, "El Stock no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
                 return false;
             }
            else{        
            }
         if (!ValidacionRangoStockPieza(jFtxtStock.getText())){
-            //JOptionPane.showMessageDialog(null,"El rango de Stock de Piezas solo puede estar entre 1-400","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El rango de Stock de Piezas solo puede estar entre 1-400","Error!", JOptionPane.ERROR_MESSAGE);
             jFtxtStock.requestFocus();
             return false;
         }else{
 
         }
         if("".equals(jFtxtPrecio.getText().trim())){
-           // JOptionPane.showMessageDialog(null, "Por favor, ingrese el precio de la pieza","Error!", JOptionPane.ERROR_MESSAGE);
+           JOptionPane.showMessageDialog(null, "Por favor, ingrese el precio de la pieza","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if (!ValidacionRangoPrecioPieza(jFtxtPrecio.getText())){
-            //JOptionPane.showMessageDialog(null,"El rango de Precio de la Pieza solo puede estar entre 20.00-40,000.00","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El rango de Precio de la Pieza solo puede estar entre 20.00-40,000.00","Error!", JOptionPane.ERROR_MESSAGE);
             jFtxtPrecio.requestFocus();
             return false;
         }
         else{
         }
         if("".equals(jFtxtStockMaximo.getText().trim())){
-            //JOptionPane.showMessageDialog(null,"Por favor, ingrese la cantidad Máxima que puede haber de esta pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Por favor, ingrese la cantidad Máxima que puede haber de esta pieza","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if((Integer.parseInt(jFtxtStockMaximo.getText())==0)){
-               //JOptionPane.showMessageDialog(null, "El Stock Máximo no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
+               JOptionPane.showMessageDialog(null, "El Stock Máximo no puedo ser cero","Error!",JOptionPane.ERROR_MESSAGE);
                 return false;
             }
            else{        
            }
         if (!ValidacionRangoStockPieza(jFtxtStockMaximo.getText())){
-            //JOptionPane.showMessageDialog(null,"El rango de Stock Máximo de Piezas solo puede estar entre 1-400","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El rango de Stock Máximo de Piezas solo puede estar entre 1-400","Error!", JOptionPane.ERROR_MESSAGE);
             jFtxtStockMaximo.requestFocus();
             return false;
         }else{
 
         }
         if(Double.parseDouble(jFtxtStock.getText())>Integer.parseInt(jFtxtStockMaximo.getText())){
-            //JOptionPane.showMessageDialog(null, "El Stock no puede ser mayor al Stock Máximo","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El Stock no puede ser mayor al Stock Máximo","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if("".equals(jFtxtStockMinimo.getText().trim())){
-            //JOptionPane.showMessageDialog(null,"Por favor, ingrese el Stock Mínimo de la Pieza","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Por favor, ingrese el Stock Mínimo de la Pieza","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if((Integer.parseInt(jFtxtStockMinimo.getText())<1)){
-               //JOptionPane.showMessageDialog(null, "El Stock Mínimo actual no puedo ser menor que uno","Error!",JOptionPane.ERROR_MESSAGE);
+               JOptionPane.showMessageDialog(null, "El Stock Mínimo actual no puedo ser menor que uno","Error!",JOptionPane.ERROR_MESSAGE);
                 return false;
             }
            else{        
            }
         if(Integer.parseInt(jFtxtStockMinimo.getText()) >= Integer.parseInt(jFtxtStockMaximo.getText())){
-            //JOptionPane.showMessageDialog(null, "El Stock Mínimo no puede ser igual o mayor al Stock Máximo","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El Stock Mínimo no puede ser igual o mayor al Stock Máximo","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if(Double.parseDouble(jFtxtStock.getText())<Integer.parseInt(jFtxtStockMinimo.getText())){
-            //JOptionPane.showMessageDialog(null, "El Stock no puede ser menor al Stock Mínimo ","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El Stock no puede ser menor al Stock Mínimo ","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -2031,11 +2149,11 @@ public boolean ModificarPieza(){
         temp.setStock_Maximo(Integer.parseInt(jFtxtStockMaximo.getText()));
         temp.setStock_Minimo(Integer.parseInt(jFtxtStockMinimo.getText()));
 
-        /*try {
+        try {
             piezaDao.create(temp);
         } catch (Exception ex) {
             Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
 
         HistoricoPrecioPieza temp2 = new HistoricoPrecioPieza();
         temp2.setEstado(true);
@@ -2051,15 +2169,15 @@ public boolean ModificarPieza(){
         //double aux=Float.parseFloat(jFtxtPrecio.getText().trim());
         temp2.setPrecio(auxsueldo);
         temp2.setIdPieza(piezaDao.getPiezaCount());
-        /*try {
+        try {
             historicoPieza.create(temp2);
         } catch (Exception ex) {
             Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
 
         //           txtIDPieza.setSelectedIndex(1);
         Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
-        //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+        JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         txtIDPieza.setSelectedIndex(0);
         createTablaPieza();
         createCmbIDPieza();
@@ -2214,6 +2332,132 @@ public boolean ModificarPieza(){
         
         }
     }//GEN-LAST:event_jFtxtPrecioKeyTyped
+
+    private void btnGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarActionPerformed
+                    HashMap param = new HashMap();
+            param.put("Empleado",labelempleado.getText());
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperDesign reporteEmpleados = null;
+        try {
+            reporteEmpleados = JRXmlLoader.load("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reportePiezas.jrxml");
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            String query = "select SYSDATE() as 'HoraSistema', pieza.ID_pieza as 'ID Pieza', tipo_pieza.Tipo_pieza as 'Tipo de Pieza',pieza.nombre as 'Nombre', pieza.Caracteristicas_pieza as 'Características', FORMAT(historico_precio_pieza.precio,2,'en_US')  as 'Precio', pieza.Stock as 'Stock', pieza.Stock_maximo as 'Stock máximo', pieza.Stock_minimo as 'Stock minimo', If(pieza.estado=true, 'Activo', 'Inactivo') as 'Estado' from pieza, tipo_pieza, historico_precio_pieza\n" +
+"where pieza.ID_tipo_pieza=tipo_pieza.ID_tipo_pieza and pieza.ID_pieza=historico_precio_pieza.ID_pieza order by pieza.ID_pieza;";
+            JRDesignQuery updateQuery = new JRDesignQuery();
+            updateQuery.setText(query);
+            JasperReport jreport = null;
+        try {
+            jreport = JasperCompileManager.compileReport(reporteEmpleados);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperPrint print = null;
+        try {
+            print = JasperFillManager.fillReport(jreport,param,con);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperViewer.viewReport(print);
+    }//GEN-LAST:event_btnGenerarActionPerformed
+
+    private void btnGenerar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGenerar2ActionPerformed
+
+    private void btnGenerar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar3ActionPerformed
+                            HashMap param = new HashMap();
+            param.put("Empleado",labelempleado.getText());
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperDesign reporteEmpleados = null;
+        try {
+            reporteEmpleados = JRXmlLoader.load("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteHistorialPiezas.jrxml");
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            String query = "select SYSDATE() as 'HoraSistema', historico_precio_pieza.id_precio_historico as 'ID Pieza Histórico', tipo_pieza.Tipo_pieza as 'Tipo Pieza' ,pieza.nombre as 'Nombre', pieza.Caracteristicas_pieza as 'Características', FORMAT(historico_precio_pieza.precio,2,'en_US') as 'Precio', concat_ws('/', substring(historico_precio_pieza.fecha_inicial from 9 for 10),substring(historico_precio_pieza.fecha_inicial from 6 for 2), substring(historico_precio_pieza.fecha_inicial from 1 for 4)) as 'Fecha Inicial', \n" +
+                "If(historico_precio_pieza.fecha_final=null, '', concat_ws('/', substring(historico_precio_pieza.fecha_final from 9 for 10),substring(historico_precio_pieza.fecha_final from 6 for 2), substring(historico_precio_pieza.fecha_final from 1 for 4))) as 'Fecha Final' , If(historico_precio_pieza.estado=true, 'Activo', 'Inactivo') as 'Estado'\n" +
+                    "from historico_precio_pieza, pieza, tipo_pieza where historico_precio_pieza.ID_pieza=pieza.ID_pieza and pieza.ID_tipo_pieza=tipo_pieza.ID_tipo_pieza order by historico_precio_pieza.id_precio_historico;";
+            JRDesignQuery updateQuery = new JRDesignQuery();
+            updateQuery.setText(query);
+            JasperReport jreport = null;
+        try {
+            jreport = JasperCompileManager.compileReport(reporteEmpleados);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperPrint print = null;
+        try {
+            print = JasperFillManager.fillReport(jreport,param,con);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperViewer.viewReport(print);
+    }//GEN-LAST:event_btnGenerar3ActionPerformed
+
+    private void btnGenerar4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGenerar4ActionPerformed
+
+    private void btnGenerar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar5ActionPerformed
+                                    HashMap param = new HashMap();
+            param.put("Empleado",labelempleado.getText());
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperDesign reporteEmpleados = null;
+        try {
+            reporteEmpleados = JRXmlLoader.load("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reportTipoPieza.jrxml");
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            String query = "select SYSDATE() as 'HoraSistema', tipo_pieza.ID_tipo_pieza as 'ID Tipo Pieza', tipo_pieza.Tipo_pieza as 'Tipo de Pieza', If(tipo_pieza.estado=true, 'Activo', 'Inactivo') as 'Estado' from tipo_pieza order by tipo_pieza.ID_tipo_pieza;";
+            JRDesignQuery updateQuery = new JRDesignQuery();
+            updateQuery.setText(query);
+            JasperReport jreport = null;
+        try {
+            jreport = JasperCompileManager.compileReport(reporteEmpleados);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperPrint print = null;
+        try {
+            print = JasperFillManager.fillReport(jreport,param,con);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperViewer.viewReport(print);
+    }//GEN-LAST:event_btnGenerar5ActionPerformed
+
+    private void btnGenerar6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGenerar6ActionPerformed
 public boolean ValidacionNombreMayusculaYDemasMinus(String num){
         Pattern pat = null;
         Matcher mat = null;
@@ -2318,6 +2562,12 @@ public boolean ValidacionRangoStockPieza(String num){
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnDesactivar2;
     private javax.swing.JButton btnDesactivar3;
+    private javax.swing.JButton btnGenerar;
+    private javax.swing.JButton btnGenerar2;
+    private javax.swing.JButton btnGenerar3;
+    private javax.swing.JButton btnGenerar4;
+    private javax.swing.JButton btnGenerar5;
+    private javax.swing.JButton btnGenerar6;
     private javax.swing.JButton btnLimpiar2;
     private javax.swing.JButton btnLimpiar3;
     private javax.swing.JButton btnModificar2;
@@ -2366,6 +2616,7 @@ public boolean ValidacionRangoStockPieza(String num){
     private javax.swing.JTable jTbHistorialPrecio;
     public javax.swing.JTextArea jTxtAreaCaracteristica;
     public javax.swing.JTextField jtxtNombre;
+    public javax.swing.JLabel labelempleado;
     private javax.swing.JPanel pnlPieza;
     private javax.swing.JTable tablaBusqueda;
     public javax.swing.JComboBox<String> txtIDPieza;

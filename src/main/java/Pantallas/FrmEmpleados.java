@@ -7,6 +7,7 @@ package Pantallas;
 
 import Clases.Cargo_empleado;
 import Clases.Empleado;
+import Clases.FacturaJRADATASOURCE;
 import Clases.Hash;
 import Clases.HistoricoCargo_empleado;
 import Clases.HistoricoSueldo_empleado;
@@ -23,16 +24,23 @@ import JPAController.HistoricoSueldo_empleadoJpaController;
 import JPAController.PersonaJpaController;
 import JPAController.Tipo_DocumentoJpaController;
 import JPAController.UsuariosJpaController;
+import static Pantallas.FrmMenu.labelEmple1;
 import com.sun.glass.events.KeyEvent;
 import java.awt.Color;
 import java.awt.Component;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.event.KeyAdapter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,6 +55,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
@@ -54,12 +63,27 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.JasperRunManager;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 /**
  *
  * @author Usuario
  */
-public class FrmEmpleados extends javax.swing.JFrame {
+public final class FrmEmpleados extends javax.swing.JFrame {
     
     EntityManagerFactory emf =Persistence.createEntityManagerFactory("CarSoft");
     UsuariosJpaController UsuariosDao = new UsuariosJpaController(emf);
@@ -72,6 +96,7 @@ public class FrmEmpleados extends javax.swing.JFrame {
     Tipo_DocumentoJpaController TipoDocumentodao = new Tipo_DocumentoJpaController(emf);
     PersonaJpaController Personadao = new PersonaJpaController(emf);
     EmpleadoJpaController Empleadodao = new EmpleadoJpaController(emf);
+    Connection con;
     
     public FrmEmpleados() {
         initComponents();
@@ -93,6 +118,7 @@ for (int i = 0; i < this.Tab_Empleado.getTabCount(); i++) {
         this.jPanel3.setBackground( new Color(0, 75, 143));
         this.jPanel4.setBackground( new Color(0, 75, 143));
         this.jPanel5.setBackground( new Color(0, 75, 143));
+        labelempleado.setVisible(false);
         this.btnAgregar1.setBackground( new Color(14, 209, 69));
         setIconImage(new ImageIcon(getClass().getResource("/Img/CarSoft-removebg-preview.png")).getImage());
         this.btnSalir1.setBackground( new Color(236, 28, 36));
@@ -100,6 +126,16 @@ for (int i = 0; i < this.Tab_Empleado.getTabCount(); i++) {
         this.btnLimpiar1.setBackground( new Color(14, 209, 69));
         this.btnDesactivar1.setBackground( new Color(14, 209, 69));
         this.btnRegresar1.setBackground( new Color(14, 209, 69));
+        this.btnGenerar.setBackground( new Color(14, 209, 69));
+        this.btnGenerar2.setBackground( new Color(14, 209, 69));
+        this.btnGenerar3.setBackground( new Color(14, 209, 69));
+        this.btnGenerar4.setBackground( new Color(14, 209, 69));
+        this.btnGenerar5.setBackground( new Color(14, 209, 69));
+        this.btnGenerar6.setBackground( new Color(14, 209, 69));
+        this.btnGenerar7.setBackground( new Color(14, 209, 69));
+        this.btnGenerar8.setBackground( new Color(14, 209, 69));
+        this.btnGenerar9.setBackground( new Color(14, 209, 69));
+        this.btnGenerar10.setBackground( new Color(14, 209, 69));
         
         this.btnAgregar.setBackground( new Color(14, 209, 69));
         this.btnSalir.setBackground( new Color(236, 28, 36));
@@ -163,6 +199,7 @@ for (int i = 0; i < this.Tab_Empleado.getTabCount(); i++) {
         crearTbHistorialSueldo();
         crearTbHistorialCargo();
         habilitarAgregarEmpleado();
+        setlabelEmpleado(String.valueOf(labelEmple1.getText()));
         txtIDUsuario.setText(String.valueOf(UsuariosDao.getUsuariosCount()+1));
     }
     private void habilitarAgregarEmpleado(){
@@ -689,6 +726,9 @@ private void btnActivarDesactivarEmpleado(){
         btnBuscar1 = new javax.swing.JButton();
         jScrollPane8 = new javax.swing.JScrollPane();
         tblEmpleados = new javax.swing.JTable();
+        btnGenerar9 = new javax.swing.JButton();
+        btnGenerar10 = new javax.swing.JButton();
+        labelempleado = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         btnRegresar2 = new javax.swing.JButton();
         btnSalir2 = new javax.swing.JButton();
@@ -703,6 +743,8 @@ private void btnActivarDesactivarEmpleado(){
         btnLimpiar2 = new javax.swing.JButton();
         btnDesactivar2 = new javax.swing.JButton();
         jLabel29 = new javax.swing.JLabel();
+        btnGenerar = new javax.swing.JButton();
+        btnGenerar2 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
@@ -725,6 +767,8 @@ private void btnActivarDesactivarEmpleado(){
         txtConfirmarContraseña = new javax.swing.JPasswordField();
         btnBuscar = new javax.swing.JButton();
         btnBuscar2 = new javax.swing.JButton();
+        btnGenerar3 = new javax.swing.JButton();
+        btnGenerar4 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         tblHistorialSueldo = new javax.swing.JTable();
@@ -733,6 +777,8 @@ private void btnActivarDesactivarEmpleado(){
         jLabel16 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         txtEmpleadoSueldo = new javax.swing.JTextField();
+        btnGenerar5 = new javax.swing.JButton();
+        btnGenerar6 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         btnRegresar4 = new javax.swing.JButton();
         btnSalirCargoHistorico = new javax.swing.JButton();
@@ -741,6 +787,8 @@ private void btnActivarDesactivarEmpleado(){
         jLabel15 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         txtEmpleadoCargo = new javax.swing.JTextField();
+        btnGenerar7 = new javax.swing.JButton();
+        btnGenerar8 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -995,75 +1043,110 @@ private void btnActivarDesactivarEmpleado(){
             tblEmpleados.getColumnModel().getColumn(11).setPreferredWidth(20);
         }
 
+        btnGenerar9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnGenerar9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/excel (1).png"))); // NOI18N
+        btnGenerar9.setText("Generar EXCEL");
+        btnGenerar9.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGenerar9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerar9ActionPerformed(evt);
+            }
+        });
+
+        btnGenerar10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnGenerar10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/pdf (1).png"))); // NOI18N
+        btnGenerar10.setText("Generar PDF");
+        btnGenerar10.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGenerar10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerar10ActionPerformed(evt);
+            }
+        });
+
+        labelempleado.setText("jLabel1");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnRegresar1)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(630, 630, 630)
-                                .addComponent(jLabel11)
-                                .addGap(495, 495, 495)
-                                .addComponent(btnSalir1))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(43, 43, 43)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cmbIDEmpleado1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtNombre1)
-                                        .addComponent(txtApellidos, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(txtTel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmbIDEmpleado1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtNombre1)
+                                .addComponent(txtApellidos, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(txtTel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btnBuscar1))
+                                    .addComponent(cmbTipoDocumentoEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(btnBuscar1))
-                                            .addComponent(cmbTipoDocumentoEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(18, 18, 18)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                    .addComponent(cmbCargoEmpleado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(txtSueldo, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
-                                        .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addGap(373, 373, 373))))
+                                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(cmbCargoEmpleado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(txtSueldo, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+                                .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(522, 522, 522))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnAgregar1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnModificar1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnRegresar1)
+                                .addGap(9, 9, 9))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(btnAgregar1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnModificar1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(btnLimpiar1)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnDesactivar1))
+                                .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1346, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(630, 630, 630)
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSalir1)
+                        .addGap(162, 162, 162))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelempleado)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnGenerar10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnLimpiar1)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnDesactivar1))
-                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 1346, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(149, Short.MAX_VALUE))
+                        .addComponent(btnGenerar9)))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1105,10 +1188,7 @@ private void btnActivarDesactivarEmpleado(){
                             .addComponent(btnDesactivar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnLimpiar1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(26, 26, 26)
-                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34)
-                        .addComponent(btnRegresar1)
-                        .addContainerGap(298, Short.MAX_VALUE))
+                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cmbIDEmpleado1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1128,8 +1208,15 @@ private void btnActivarDesactivarEmpleado(){
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jLabel6))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGenerar10)
+                    .addComponent(btnGenerar9)
+                    .addComponent(btnRegresar1))
+                .addGap(155, 155, 155)
+                .addComponent(labelempleado)
+                .addGap(139, 139, 139))
         );
 
         Tab_Empleado.addTab("Empleados", jPanel1);
@@ -1248,6 +1335,26 @@ private void btnActivarDesactivarEmpleado(){
         jLabel29.setForeground(new java.awt.Color(255, 255, 255));
         jLabel29.setText("Ingresar Nuevo Cargo");
 
+        btnGenerar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnGenerar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/pdf (1).png"))); // NOI18N
+        btnGenerar.setText("Generar PDF");
+        btnGenerar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGenerar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarActionPerformed(evt);
+            }
+        });
+
+        btnGenerar2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnGenerar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/excel (1).png"))); // NOI18N
+        btnGenerar2.setText("Generar EXCEL");
+        btnGenerar2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGenerar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerar2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -1255,6 +1362,10 @@ private void btnActivarDesactivarEmpleado(){
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(btnGenerar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnGenerar2))
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 904, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1281,9 +1392,9 @@ private void btnActivarDesactivarEmpleado(){
                     .addComponent(btnRegresar2)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel29)
-                        .addGap(494, 494, 494)
+                        .addGap(379, 379, 379)
                         .addComponent(btnSalir2)))
-                .addGap(62, 62, 62))
+                .addGap(177, 177, 177))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1310,9 +1421,13 @@ private void btnActivarDesactivarEmpleado(){
                     .addComponent(btnDesactivar2))
                 .addGap(43, 43, 43)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGenerar)
+                    .addComponent(btnGenerar2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addComponent(btnRegresar2)
-                .addGap(281, 281, 281))
+                .addGap(279, 279, 279))
         );
 
         Tab_Empleado.addTab("Cargos", jPanel3);
@@ -1488,6 +1603,26 @@ private void btnActivarDesactivarEmpleado(){
             }
         });
 
+        btnGenerar3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnGenerar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/excel (1).png"))); // NOI18N
+        btnGenerar3.setText("Generar EXCEL");
+        btnGenerar3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGenerar3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerar3ActionPerformed(evt);
+            }
+        });
+
+        btnGenerar4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnGenerar4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/pdf (1).png"))); // NOI18N
+        btnGenerar4.setText("Generar PDF");
+        btnGenerar4.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGenerar4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerar4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -1495,6 +1630,11 @@ private void btnActivarDesactivarEmpleado(){
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(btnGenerar4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnGenerar3)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel25, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
@@ -1546,7 +1686,7 @@ private void btnActivarDesactivarEmpleado(){
                         .addComponent(jLabel13)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnSalir)))
-                .addGap(56, 56, 56))
+                .addGap(176, 176, 176))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1587,9 +1727,13 @@ private void btnActivarDesactivarEmpleado(){
                     .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(50, 50, 50)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(79, 79, 79)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGenerar4)
+                    .addComponent(btnGenerar3))
+                .addGap(18, 18, 18)
                 .addComponent(btnRegresar)
-                .addGap(302, 302, 302))
+                .addGap(304, 304, 304))
         );
 
         Tab_Empleado.addTab("Usuarios", jPanel4);
@@ -1657,6 +1801,26 @@ private void btnActivarDesactivarEmpleado(){
             }
         });
 
+        btnGenerar5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnGenerar5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/excel (1).png"))); // NOI18N
+        btnGenerar5.setText("Generar EXCEL");
+        btnGenerar5.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGenerar5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerar5ActionPerformed(evt);
+            }
+        });
+
+        btnGenerar6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnGenerar6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/pdf (1).png"))); // NOI18N
+        btnGenerar6.setText("Generar PDF");
+        btnGenerar6.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGenerar6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerar6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -1664,6 +1828,10 @@ private void btnActivarDesactivarEmpleado(){
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(52, 52, 52)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(btnGenerar6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnGenerar5))
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 1069, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1676,9 +1844,9 @@ private void btnActivarDesactivarEmpleado(){
                     .addComponent(btnRegresar3)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel16)
-                        .addGap(421, 421, 421)
+                        .addGap(326, 326, 326)
                         .addComponent(btnSalir3)))
-                .addGap(66, 66, 66))
+                .addGap(161, 161, 161))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1693,9 +1861,13 @@ private void btnActivarDesactivarEmpleado(){
                     .addComponent(txtEmpleadoSueldo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(47, 47, 47)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGenerar6)
+                    .addComponent(btnGenerar5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 163, Short.MAX_VALUE)
                 .addComponent(btnRegresar3)
-                .addGap(291, 291, 291))
+                .addGap(290, 290, 290))
         );
 
         Tab_Empleado.addTab("Historial de Sueldos", jPanel2);
@@ -1763,10 +1935,43 @@ private void btnActivarDesactivarEmpleado(){
             }
         });
 
+        btnGenerar7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnGenerar7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/excel (1).png"))); // NOI18N
+        btnGenerar7.setText("Generar EXCEL");
+        btnGenerar7.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGenerar7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerar7ActionPerformed(evt);
+            }
+        });
+
+        btnGenerar8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnGenerar8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/pdf (1).png"))); // NOI18N
+        btnGenerar8.setText("Generar PDF");
+        btnGenerar8.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGenerar8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerar8ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(btnGenerar8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnGenerar7))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtEmpleadoCargo, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 1267, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(198, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
@@ -1777,16 +1982,7 @@ private void btnActivarDesactivarEmpleado(){
                         .addComponent(jLabel17)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnSalirCargoHistorico)))
-                .addGap(78, 78, 78))
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtEmpleadoCargo, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 1267, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(198, Short.MAX_VALUE))
+                .addGap(160, 160, 160))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1801,9 +1997,13 @@ private void btnActivarDesactivarEmpleado(){
                     .addComponent(txtEmpleadoCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(44, 44, 44)
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 228, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGenerar8)
+                    .addComponent(btnGenerar7))
+                .addGap(171, 171, 171)
                 .addComponent(btnRegresar4)
-                .addGap(295, 295, 295))
+                .addContainerGap(293, Short.MAX_VALUE))
         );
 
         Tab_Empleado.addTab("Historial de Cargos", jPanel5);
@@ -1928,13 +2128,13 @@ public boolean DesactivarUsuario(){
         if(temp.isEstado()){
             temp.setEstado(false);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
-            //JOptionPane.showMessageDialog(null,"Usuario Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            JOptionPane.showMessageDialog(null,"Usuario Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         else{
             temp.setEstado(true);
             temp.setIntentos(0);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
-            //JOptionPane.showMessageDialog(null,"Usuario Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            JOptionPane.showMessageDialog(null,"Usuario Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         try {
             UsuariosDao.edit(temp);
@@ -1974,7 +2174,7 @@ public boolean ModificarUsuario(){
         String Contrasenia = txtContraseña.getText();
         String ConfirmarContrasenia = txtConfirmarContraseña.getText();
         if(cmbIDEmpleado.getSelectedIndex()==0){
-            //JOptionPane.showMessageDialog(null,"No ha seleccionado ningún Empleado","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"No ha seleccionado ningún Empleado","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -1983,28 +2183,28 @@ public boolean ModificarUsuario(){
         Empleado tempopp;
         tempopp = Empleadodao.findEmpleado(cmbIDEmpleado.getSelectedIndex());
         if(tempopp.isEstado()!=true){
-            //JOptionPane.showMessageDialog(null,"El Empleado seleccionado esta Inactivo","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El Empleado seleccionado esta Inactivo","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if("".equals(txtNombre.getText())){
-            //JOptionPane.showMessageDialog(null, "El campo del nombre del usuario esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo del nombre del usuario esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if(txtNombre.getText().length()<5){
-            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el usuario del empleado es de 5 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el usuario del empleado es de 5 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if(txtNombre.getText().length()>15){
-            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el usuario del empleado es de 15 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el usuario del empleado es de 15 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -2014,59 +2214,59 @@ public boolean ModificarUsuario(){
         Matcher mat = pat.matcher(txtNombre.getText());
 
         if(mat.matches()){
-            //JOptionPane.showMessageDialog(null, "No puede haber espacios en el nombre del usuario","Error",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No puede haber espacios en el nombre del usuario","Error",JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
         if (!ValidacionNombreUsuario(txtNombre.getText())){
-            //JOptionPane.showMessageDialog(null,"Formato de Nombre de usuario invalido!\nDebe contener letras Minúsculas, un punto, letras Minúsculas y un número\nEjemplo: agencia.carsoft1","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Formato de Nombre de usuario invalido!\nDebe contener letras Minúsculas, un punto, letras Minúsculas y un número\nEjemplo: agencia.carsoft1","Error!", JOptionPane.ERROR_MESSAGE);
             txtContraseña.requestFocus();
             return false;
         }else{
         }
         if("".equals(Contrasenia)){
-            //JOptionPane.showMessageDialog(null, "El campo de Contraseña esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo de Contraseña esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if(Contrasenia.length()<8){
-            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para la Contraseña es de 8 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para la Contraseña es de 8 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if(Contrasenia.length()>15){
-            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para la Contraseña es de 15 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para la Contraseña es de 15 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if (!ValidacionContrasenia2(Contrasenia)){
-            //JOptionPane.showMessageDialog(null,"Formato de Contraseña invalido!\nDebe contener la primera letra Mayúscula, letras Minúsculas, un Número y un caracter","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Formato de Contraseña invalido!\nDebe contener la primera letra Mayúscula, letras Minúsculas, un Número y un caracter","Error!", JOptionPane.ERROR_MESSAGE);
             txtContraseña.requestFocus();
             return false;
         }else{
         }
         if("".equals(ConfirmarContrasenia)){
-            //JOptionPane.showMessageDialog(null, "El campo de Confirmar Contraseña esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo de Confirmar Contraseña esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if(ConfirmarContrasenia.length()<8){
-            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el campo Confirmar la Contraseña es de 8 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el campo Confirmar la Contraseña es de 8 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if(ConfirmarContrasenia.length()>15){
-            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el campo Confirmar Contraseña es de 15 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el campo Confirmar Contraseña es de 15 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -2085,18 +2285,18 @@ public boolean ModificarUsuario(){
             //usu.setContraseña(txtConfirmarContrasenia.getText());
 
         } else {
-            //JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden","Error!",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden","Error!",JOptionPane.ERROR_MESSAGE);
             return false;
 
         }
 
-        /*try {
+        try {
             UsuariosDao.edit(usu);
         } catch (Exception ex) {
             Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
         Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
-        //JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
+        JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
         //txtNombre.setEditable(true);
         createTableUsuario();
         limpiar();//NUEVO
@@ -2123,7 +2323,7 @@ public boolean AgregarUsuario(){
         String Contrasenia = txtContraseña.getText();
         String ConfirmarContrasenia = txtConfirmarContraseña.getText();
         if(cmbIDEmpleado.getSelectedIndex()==0){
-            //JOptionPane.showMessageDialog(null,"No ha seleccionado ningún Empleado","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"No ha seleccionado ningún Empleado","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -2132,28 +2332,28 @@ public boolean AgregarUsuario(){
         Empleado tempopp;
         tempopp = Empleadodao.findEmpleado(cmbIDEmpleado.getSelectedIndex());
         if(tempopp.isEstado()!=true){
-            //JOptionPane.showMessageDialog(null,"El Empleado seleccionado esta Inactivo","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El Empleado seleccionado esta Inactivo","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if("".equals(txtNombre.getText())){
-            //JOptionPane.showMessageDialog(null, "El campo del nombre del usuario esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo del nombre del usuario esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if(txtNombre.getText().length()<5){
-            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el usuario del empleado es de 5 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el usuario del empleado es de 5 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if(txtNombre.getText().length()>15){
-            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el usuario del empleado es de 15 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el usuario del empleado es de 15 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -2163,63 +2363,63 @@ public boolean AgregarUsuario(){
         Matcher mat = pat.matcher(txtNombre.getText());
 
         if(mat.matches()){
-            //JOptionPane.showMessageDialog(null, "No puede haber espacios en el nombre del usuario","Error",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No puede haber espacios en el nombre del usuario","Error",JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
         if (!ValidacionNombreUsuario(txtNombre.getText())){
-            //JOptionPane.showMessageDialog(null,"Formato de Nombre de usuario invalido!\nDebe contener letras Minúsculas, un punto, letras Minúsculas y un número\nEjemplo: agencia.carsoft1","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Formato de Nombre de usuario invalido!\nDebe contener letras Minúsculas, un punto, letras Minúsculas y un número\nEjemplo: agencia.carsoft1","Error!", JOptionPane.ERROR_MESSAGE);
             txtContraseña.requestFocus();
             return false;
         }else{
         }
         if(bandera){
-            //JOptionPane.showMessageDialog(null, "Nombre de usuario no disponible \n Ingrese otro nombre de usuario","Error",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Nombre de usuario no disponible \n Ingrese otro nombre de usuario","Error",JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if("".equals(Contrasenia)){
-            //JOptionPane.showMessageDialog(null, "El campo de Contraseña esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo de Contraseña esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if(Contrasenia.length()<8){
-            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para la Contraseña es de 8 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para la Contraseña es de 8 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if(Contrasenia.length()>15){
-            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para la Contraseña es de 15 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para la Contraseña es de 15 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if (!ValidacionContrasenia2(Contrasenia)){
-            //JOptionPane.showMessageDialog(null,"Formato de Contraseña invalido!\nDebe contener mínimo una letra Mayúscula,mínimo una letra Minúsculas, un Número y un caracter Especial","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Formato de Contraseña invalido!\nDebe contener mínimo una letra Mayúscula,mínimo una letra Minúsculas, un Número y un caracter Especial","Error!", JOptionPane.ERROR_MESSAGE);
             txtContraseña.requestFocus();
             return false;
         }else{
         }
         if("".equals(ConfirmarContrasenia)){
-            //JOptionPane.showMessageDialog(null, "El campo de Confirmar Contraseña esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo de Confirmar Contraseña esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
            return false;
         }
         else{
 
         }
         if(ConfirmarContrasenia.length()<8){
-            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el campo Confirmar la Contraseña es de 8 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el campo Confirmar la Contraseña es de 8 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if(ConfirmarContrasenia.length()>15){
-            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el campo Confirmar Contraseña es de 15 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el campo Confirmar Contraseña es de 15 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -2237,7 +2437,7 @@ public boolean AgregarUsuario(){
                 String U3 = temp3.getApellido();
                 String U4 = ((String.valueOf(U1))+". "+U2+" "+U3);
                 if(cmbIDEmpleado.getSelectedItem().equals(U4)){
-                    //JOptionPane.showMessageDialog(null, "Este empleado ya tiene un Usuario registrado en el sistema","Error!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Este empleado ya tiene un Usuario registrado en el sistema","Error!", JOptionPane.ERROR_MESSAGE);
                     luces=true;
                     return false;
                 } else {
@@ -2255,15 +2455,15 @@ public boolean AgregarUsuario(){
             usu.setContraseña(NuevaContraseña);
 
             usu.setEstado(true);
-            /*try {
+            try {
                 UsuariosDao.create(usu);
             } catch (Exception ex) {
                 Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
+            }
 
             //NUEVO
             Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
-            //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE,icono);
+            JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE,icono);
             createTableUsuario();
             limpiar();
             btnAgregar.setEnabled(true);
@@ -2271,7 +2471,7 @@ public boolean AgregarUsuario(){
             //FIN NUEVO
 
         } else {
-            //JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
 
         }
@@ -2373,18 +2573,18 @@ public boolean DesactivarCargo(){
         if(temp.isEstado()){
             temp.setEstado(false);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
-            //JOptionPane.showMessageDialog(null,"Tipo de Cargo Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            JOptionPane.showMessageDialog(null,"Tipo de Cargo Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
         else{
             temp.setEstado(true);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
-            //JOptionPane.showMessageDialog(null,"Tipo de Cargo Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            JOptionPane.showMessageDialog(null,"Tipo de Cargo Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        /*try {
+        try {
             CargoDao.edit(temp);
         } catch (Exception ex) {
             Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
         createTableNuevoCargo();
         btnActivarDesactivarCargo();
         createComboCargoEmpleado();
@@ -2404,26 +2604,26 @@ public boolean DesactivarCargo(){
     }//GEN-LAST:event_btnModificar2ActionPerformed
 public boolean ModificarCargo(){
     if(cmbIDNuevoCargo.getSelectedIndex()==0){
-            //JOptionPane.showMessageDialog(null, "Cargo no encontrado");
+            JOptionPane.showMessageDialog(null, "Cargo no encontrado");
             return false;
         }
         else{
             if("".equals(txtNuevoCargo.getText().trim())){
-                //JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Cargo","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Cargo","Error!", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
             else{
 
             }
             if(txtNuevoCargo.getText().length()<3){
-                //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el cargo es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el cargo es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
             else{
 
             }
             if(txtNuevoCargo.getText().length()>25){
-                //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el cargo es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el cargo es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
             else{
@@ -2431,20 +2631,20 @@ public boolean ModificarCargo(){
             }
 
             if (!ValidacionNombreMayusculaYDemasMinus(txtNuevoCargo.getText())){
-                //JOptionPane.showMessageDialog(null,"El Cargo debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El Cargo debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
                 txtNuevoCargo.requestFocus();
                 return false;
             }else{
 
             }
             if (ValidacionTresletras(txtNuevoCargo.getText())){
-                //JOptionPane.showMessageDialog(null,"No se Admite en el Cargo la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"No se Admite en el Cargo la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
                 txtNuevoCargo.requestFocus();
                 return false;
             }else{
             }
             if("".equals(txtNuevoCargo.getText())){
-                //JOptionPane.showMessageDialog(null, "Ingrese la cantidad de caracteres necesarios para el cargo");
+                JOptionPane.showMessageDialog(null, "Ingrese la cantidad de caracteres necesarios para el cargo");
                 return false;
             }
             else{
@@ -2452,13 +2652,13 @@ public boolean ModificarCargo(){
                 Cargo_empleado tp;
                 tp=CargoDao.findCargo_empleado(cmbIDNuevoCargo.getSelectedIndex());
                 tp.setCargo(txtNuevoCargo.getText());
-                /*try {
+                try {
                     CargoDao.edit(tp);
                 } catch (Exception ex) {
                     Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
-                //Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
-                //JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
+                }
+                Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
+                JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
                 cmbIDNuevoCargo.setSelectedIndex(1);
                 cmbIDNuevoCargo.setSelectedIndex(0);
                 createTableNuevoCargo();
@@ -2509,7 +2709,7 @@ AgregarCargo();
     }//GEN-LAST:event_btnAgregar2ActionPerformed
 public boolean AgregarCargo(){
     if(cmbIDNuevoCargo.getSelectedIndex()!=0){
-            //JOptionPane.showMessageDialog(null, "El ID Tipo de documento siempre debe estar en el ITEM de Nuevo para agregar un nuevo Cargo","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El ID Tipo de documento siempre debe estar en el ITEM de Nuevo para agregar un nuevo Cargo","Error!", JOptionPane.ERROR_MESSAGE);
             cmbIDNuevoCargo.setSelectedIndex(0);
             return false;
         }
@@ -2517,7 +2717,7 @@ public boolean AgregarCargo(){
 
         }
         if("".equals(txtNuevoCargo.getText().trim())){
-            //JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Cargo","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Cargo","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -2530,7 +2730,7 @@ public boolean AgregarCargo(){
 
         }
         if(txtNuevoCargo.getText().length()>25){
-            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el cargo es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el cargo es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -2538,20 +2738,20 @@ public boolean AgregarCargo(){
         }
 
         if (!ValidacionNombreMayusculaYDemasMinus(txtNuevoCargo.getText())){
-            //JOptionPane.showMessageDialog(null,"El Cargo debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El Cargo debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtNuevoCargo.requestFocus();
             return false;
         }else{
 
         }
         if (ValidacionTresletras(txtNuevoCargo.getText())){
-            //JOptionPane.showMessageDialog(null,"No se Admite en el Cargo la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"No se Admite en el Cargo la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
             txtNuevoCargo.requestFocus();
             return false;
         }else{
         }
         if("".equals(txtNuevoCargo.getText())){
-            //JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Cargo","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Ingrese la cantidad necesaria de caracteres para el Cargo","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -2559,7 +2759,7 @@ public boolean AgregarCargo(){
             boolean flag=false;
             for(i=0;i<CargoDao.findCargo_empleadoEntities().size();i++){
                 if(txtNuevoCargo.getText().toLowerCase().equals(CargoDao.findCargo_empleado(i+1).getCargo().toLowerCase())){
-                    //JOptionPane.showMessageDialog(null, "Ya existe este cargo registrado en el sistema","Error!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ya existe este cargo registrado en el sistema","Error!", JOptionPane.ERROR_MESSAGE);
                     flag=true;
                     return false;
                 } else {
@@ -2571,15 +2771,16 @@ public boolean AgregarCargo(){
             else{
                 Cargo_empleado tp = new Cargo_empleado();
                 tp.setEstado(true);
+                tp.setId_cargo(CargoDao.getCargo_empleadoCount()+1);
                 tp.setCargo(txtNuevoCargo.getText());
-                /*try {
+                try {
                     CargoDao.create(tp);
                 } catch (Exception ex) {
                     Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                }
 
                 Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
-                //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+                JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
                 cmbIDNuevoCargo.setSelectedIndex(0);
                 createTableNuevoCargo();
                 createComboBoxNuevoCargo();
@@ -2681,20 +2882,20 @@ public void RegresarEmpleado(){
         if(temp.isEstado()){
             temp.setEstado(false);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Desactivar.png"));
-            //JOptionPane.showMessageDialog(null,"Empleado Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            JOptionPane.showMessageDialog(null,"Empleado Desactivado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
 
         }
         else{
             temp.setEstado(true);
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
-            //JOptionPane.showMessageDialog(null,"Empleado Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE,  icono);
+            JOptionPane.showMessageDialog(null,"Empleado Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE,  icono);
 
         }
-        /*try {
+        try {
             Empleadodao.edit(temp);
         } catch (Exception ex) {
             Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
         createTableEmpleado();
         btnActivarDesactivarEmpleado();
         btnDesactivar1.setEnabled(false);
@@ -2712,28 +2913,28 @@ public void RegresarEmpleado(){
     }//GEN-LAST:event_btnModificar1ActionPerformed
 public boolean ModificarEmpleado(){
     if("".equals(txtNombre1.getText().trim())){
-            //JOptionPane.showMessageDialog(null, "El campo del nombre del empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo del nombre del empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if("".equals(txtNombre1.getText().trim())){
-            //JOptionPane.showMessageDialog(null, "El campo del nombre del empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo del nombre del empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if (ValidacionTresletras(txtNombre1.getText())){
-            //JOptionPane.showMessageDialog(null,"No se Admite en el nombre del Empleado la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"No se Admite en el nombre del Empleado la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
             txtNombre1.requestFocus();
             return false;
         }else{
 
         }
         if(txtNombre1.getText().length()<3){
-            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el nombre del empleado es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el nombre del empleado es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -2741,139 +2942,139 @@ public boolean ModificarEmpleado(){
         }
         
         if(txtNombre1.getText().length()>25){
-            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el nombre del empleado es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el nombre del empleado es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if (!ValidacionNombreMayuscula(txtNombre1.getText())){
-            //JOptionPane.showMessageDialog(null,"El nombre del Empleado debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El nombre del Empleado debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtNombre1.requestFocus();
             return false;
         }else{
 
         }
         if("".equals(txtApellidos.getText().trim())) {
-            //JOptionPane.showMessageDialog(null, "El campo del apellido del empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo del apellido del empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if (ValidacionTresletras(txtApellidos.getText())){
-            //JOptionPane.showMessageDialog(null,"No se Admite en el apellido del Empleado la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"No se Admite en el apellido del Empleado la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
             txtApellidos.requestFocus();
             return false;
         }else{
 
         }
         if(txtApellidos.getText().length()<3) {
-            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Apellido del empleado es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Apellido del empleado es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if(txtApellidos.getText().length()>25) {
-            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Apellido del empleado es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Apellido del empleado es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if (!ValidacionNombreMayuscula(txtApellidos.getText())){
-            //JOptionPane.showMessageDialog(null,"El apellido del Empleado debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El apellido del Empleado debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtApellidos.requestFocus();
             return false;
         }else{
 
         }
         if("".equals(txtTel.getText().trim())) {
-            //JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de caracteres para el teléfono del Empleado","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de caracteres para el teléfono del Empleado","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if(txtTel.getText().length()!=8) {
-            //JOptionPane.showMessageDialog(null, "El teléfono del Empleado solo puede tener 8 Digítos","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El teléfono del Empleado solo puede tener 8 Digítos","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if (!telefono(txtTel.getText())){
-            //JOptionPane.showMessageDialog(null,"Formato de teléfono incorrecto debe comenzar con 2, 3, 7, 8 o 9","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Formato de teléfono incorrecto debe comenzar con 2, 3, 7, 8 o 9","Error!", JOptionPane.ERROR_MESSAGE);
             txtTel.requestFocus();
             return false;
         }else{
 
         }
         if("".equals(txtCorreo.getText().trim())){
-            //JOptionPane.showMessageDialog(null, "El campo de  correo electrónico del Empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo de  correo electrónico del Empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }if (!correo(txtCorreo.getText())){
-            //JOptionPane.showMessageDialog(null,"Formato de correo electrónico incorrecto","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Formato de correo electrónico incorrecto","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }else{
         }
         if(txtCorreo.getText().length()<7){
-            //JOptionPane.showMessageDialog(null, "El correo electrónico del Empleado solo puede tener 7 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El correo electrónico del Empleado solo puede tener 7 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if(txtCorreo.getText().length()>40){
-            //JOptionPane.showMessageDialog(null, "El correo electrónico del Empleado solo puede tener 40 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El correo electrónico del Empleado solo puede tener 40 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
 
         if("".equals(txtaDirec.getText().trim())){
-            //JOptionPane.showMessageDialog(null,"El campo de dirección del Empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El campo de dirección del Empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if(txtaDirec.getText().length()<3){
-            //JOptionPane.showMessageDialog(null, "La dirección del Empleado solo puede tener 3 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La dirección del Empleado solo puede tener 3 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if(txtaDirec.getText().length()>50){
-            //JOptionPane.showMessageDialog(null, "La dirección del Empleado solo puede tener 50 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La dirección del Empleado solo puede tener 50 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if (ValidacionTresletras(txtaDirec.getText())){
-            //JOptionPane.showMessageDialog(null,"No se Admite en la dirección del Empleado la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"No se Admite en la dirección del Empleado la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
             txtaDirec.requestFocus();
             return false;
         }else{
 
         }
         if (!ValidacionDireccion(txtaDirec.getText())){
-            //JOptionPane.showMessageDialog(null,"La dirección solo puede contener números, letras y los siguiente signos(&:|#\";.,-)","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"La dirección solo puede contener números, letras y los siguiente signos(&:|#\";.,-)","Error!", JOptionPane.ERROR_MESSAGE);
             txtaDirec.requestFocus();
             return false;
         }else{
 
         }
         if(cmbTipoDocumentoEmpleado.getSelectedIndex()==0){
-            //JOptionPane.showMessageDialog(null,"No ha seleccionado ningún tipo de documento","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"No ha seleccionado ningún tipo de documento","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if("".equals(txtDocumento.getText().trim())){
-            //JOptionPane.showMessageDialog(null,"El campo de documento del Empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El campo de documento del Empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if(cmbTipoDocumentoEmpleado.getSelectedIndex()==0){
-            //JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Tipo de documento","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Tipo de documento","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -2883,14 +3084,14 @@ public boolean ModificarEmpleado(){
         Tipo_Documento tempop;
         tempop = TipoDocumentodao.findTipo_Documento(cmbTipoDocumentoEmpleado.getSelectedIndex());
         if(tempop.isEstado()!=true){
-            //JOptionPane.showMessageDialog(null,"Este tipo de documento esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Este tipo de documento esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if("".equals(txtDocumento.getText().trim())){
-            //JOptionPane.showMessageDialog(null, "El campo para el documento del empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo para el documento del empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -2900,14 +3101,14 @@ public boolean ModificarEmpleado(){
             case "1. visa":
             aux=8;
             if(txtDocumento.getText().length()>aux || txtDocumento.getText().length()<aux){
-                //JOptionPane.showMessageDialog(null, "La Visa debe contener 8 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "La Visa debe contener 8 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
             else{
             }
 
             if (!ValidacionVISA(txtDocumento.getText())){
-                //JOptionPane.showMessageDialog(null,"Formato de Visa inválido! Solo debe contener solo Letras Mayúsculas y Números\nEjemplo de número Visa: E0392984","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Formato de Visa inválido! Solo debe contener solo Letras Mayúsculas y Números\nEjemplo de número Visa: E0392984","Error!", JOptionPane.ERROR_MESSAGE);
                 txtDocumento.requestFocus();
                 return false;
             }else{
@@ -2917,14 +3118,14 @@ public boolean ModificarEmpleado(){
             case "2. identidad":
             aux=13;
             if(txtDocumento.getText().length()>aux || txtDocumento.getText().length()<aux){
-                //JOptionPane.showMessageDialog(null, "La Identidad debe de contener 13 dígitos","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "La Identidad debe de contener 13 dígitos","Error!", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
             else{
 
             }
             if (!ValidacionIdentidad3(txtDocumento.getText())){
-                //JOptionPane.showMessageDialog(null,"Formato de Identidad inválido! El primer Digito solo puede ser uno o cero","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Formato de Identidad inválido! El primer Digito solo puede ser uno o cero","Error!", JOptionPane.ERROR_MESSAGE);
                 txtDocumento.requestFocus();
                 return false;
             }else{
@@ -2934,14 +3135,14 @@ public boolean ModificarEmpleado(){
             case "3. pasaporte":
             aux=9;
             if(txtDocumento.getText().length()>aux || txtDocumento.getText().length()<aux){
-                //JOptionPane.showMessageDialog(null, "El Pasaporte debe de contener 9 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "El Pasaporte debe de contener 9 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
             else{
                     
             }
             if (!ValidacionPasaporte(txtDocumento.getText())){
-                //JOptionPane.showMessageDialog(null,"Formato de Pasaporte inválido! Solo puede contener solo Letras Mayúsculas y Números\nEjemplo de número de pasaporte: XR1001R58","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Formato de Pasaporte inválido! Solo puede contener solo Letras Mayúsculas y Números\nEjemplo de número de pasaporte: XR1001R58","Error!", JOptionPane.ERROR_MESSAGE);
                 txtDocumento.requestFocus();
                 return false;
             }else{
@@ -2951,14 +3152,14 @@ public boolean ModificarEmpleado(){
             case "4. rtn":
             aux=14;
             if(txtDocumento.getText().length()>aux || txtDocumento.getText().length()<aux){
-                //JOptionPane.showMessageDialog(null, "El Rtn debe de contener 14 dígitos","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "El Rtn debe de contener 14 dígitos","Error!", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
             else{
 
             }
             if (!ValidacionRTN3(txtDocumento.getText())){
-                //JOptionPane.showMessageDialog(null,"Formato de Rtn inválido! El primer Digito solo puede ser uno o cero","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Formato de Rtn inválido! El primer Digito solo puede ser uno o cero","Error!", JOptionPane.ERROR_MESSAGE);
                 txtDocumento.requestFocus();
                 return false;
             }else{
@@ -2970,7 +3171,7 @@ public boolean ModificarEmpleado(){
         }
 
         if(cmbCargoEmpleado.getSelectedIndex()==0){
-            //JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Cargo","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Cargo","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -2979,7 +3180,7 @@ public boolean ModificarEmpleado(){
         Cargo_empleado tempopp;
         tempopp = CargoDao.findCargo_empleado(cmbCargoEmpleado.getSelectedIndex());
         if(tempopp.isEstado()!=true){
-            //JOptionPane.showMessageDialog(null,"El cargo seleccionado esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El cargo seleccionado esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -2987,14 +3188,14 @@ public boolean ModificarEmpleado(){
         }
 
         if("".equals(txtSueldo.getText().trim())){
-            //JOptionPane.showMessageDialog(null, "El campo para el Sueldo esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo para el Sueldo esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
 
         if (!ValidacionRangoSueldo(txtSueldo.getText())){
-            //JOptionPane.showMessageDialog(null,"El rango de Sueldo solo puede estar entre 9,300.00-30,999.99","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El rango de Sueldo solo puede estar entre 9,300.00-30,999.99","Error!", JOptionPane.ERROR_MESSAGE);
             txtSueldo.requestFocus();
             return false;
         }else{
@@ -3002,7 +3203,7 @@ public boolean ModificarEmpleado(){
         }
 
         if("".equals(txtDocumento.getText())){
-            //JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de dígitos del Documento del empleado","Error!", JOptionPane.ERROR_MESSAGE);
+           //JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de dígitos del Documento del empleado","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
@@ -3028,11 +3229,11 @@ public boolean ModificarEmpleado(){
             temp.setID_tipo_documento(cmbTipoDocumentoEmpleado.getSelectedIndex());
             temp.setDocumento_id(txtDocumento.getText());
             //JOptionPane.showMessageDialog(null,temp.getId_persona());
-            /*try {
+            try {
                 Personadao.edit(temp);
             } catch (Exception ex) {
                 Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
+            }
 
             Empleado tempp = new Empleado();
             //tempp.setEstado(true);
@@ -3041,11 +3242,11 @@ public boolean ModificarEmpleado(){
 
             // JOptionPane.showMessageDialog(null,tempp.getId_Empleado());
             //JOptionPane.showMessageDialog(null,temp.getId_persona());
-            /*try {
+            try {
                 Empleadodao.edit(tempp);
             } catch (Exception ex) {
                 Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
+            }
             List<HistoricoCargo_empleado> t1 = HistoricoCargoDao.findHistoricoCargo_empleadoEntities();
             HistoricoCargo_empleado temphc2 = new HistoricoCargo_empleado();
             for(HistoricoCargo_empleado  t : t1){
@@ -3138,11 +3339,11 @@ public boolean ModificarEmpleado(){
                 temphc2.setFecha_final((fecha1));
                 //temphc2.setId_cargo((cmbCargoEmpleado.getSelectedIndex()));
                 temphc2.setId_cargo(temphc2.getId_cargo());//=HistoricoCargoDao.findHistoricoCargo_empleado(temphc2.getId_cargo());
-                /*try {
+                try {
                     HistoricoCargoDao.edit(temphc2);
                 } catch (Exception ex) {
                     Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                }
                 HistoricoCargo_empleado temphc3 = new HistoricoCargo_empleado();
                 temphc3.setEstado(true);
                 temphc3.setId_cargo_historico(HistoricoCargoDao.getHistoricoCargo_empleadoCount()+1);
@@ -3190,11 +3391,11 @@ public boolean ModificarEmpleado(){
                 temphc3.setId_cargo(cmbCargoEmpleado.getSelectedIndex());
                 temphc3.setId_empleado(auxCmb);
 
-                /*try {
+                try {
                     HistoricoCargoDao.create(temphc3);
                 } catch (Exception ex) {
                     Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                }
             }
 
             HistoricoSueldo_empleado temphs2 = new HistoricoSueldo_empleado();
@@ -3291,11 +3492,11 @@ public boolean ModificarEmpleado(){
                 //double auxsueldo11=(Double.parseDouble(txtSueldo.getText().replace(",", "").replace(",", "").trim()));
                 //temphs2=HistoricoSueldoDao.findHistoricoSueldo_empleado(Integer.parseInt(String.valueOf(temphs2.getSueldo())));
                 //temphs2.setSueldo(auxsueldo11);
-                /*try {
+                try {
                     HistoricoSueldoDao.edit(temphs2);
                 }catch  (Exception ex){
                     Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                }
 
                 HistoricoSueldo_empleado temphs3 = new HistoricoSueldo_empleado();
                 Calendar fecha222 = new GregorianCalendar();
@@ -3345,14 +3546,15 @@ public boolean ModificarEmpleado(){
                 double auxsueldo111=(Double.parseDouble(txtSueldo.getText().replace(",", "").replace(",", "").trim()));
                 temphs3.setSueldo(auxsueldo111);
                 temphs3.setId_empleado(cmbIDEmpleado1.getSelectedIndex());
-                /*try {
+                try {
                     HistoricoSueldoDao.create(temphs3);
                 } catch (Exception ex) {
                     Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                }
             }
             Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
-            //JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
+            JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
+
             createTableEmpleado();
             
             crearTbHistorialSueldo();
@@ -3377,26 +3579,26 @@ public boolean AgregarEmpleado(){
 
         }
         else{
-            //JOptionPane.showMessageDialog(null, "El ID Empleado siempre debe estar en el ITEM de Nuevo para agregar un nuevo Cliente","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El ID Empleado siempre debe estar en el ITEM de Nuevo para agregar un nuevo Cliente","Error!", JOptionPane.ERROR_MESSAGE);
             cmbIDEmpleado1.setSelectedIndex(0);
             return false;
         }
         if("".equals(txtNombre1.getText().trim())){
-            //JOptionPane.showMessageDialog(null, "El campo del nombre del empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo del nombre del empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if (ValidacionTresletras(txtNombre1.getText())){
-            //JOptionPane.showMessageDialog(null,"No se Admite en el nombre del Empleado la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"No se Admite en el nombre del Empleado la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
             txtNombre1.requestFocus();
             return false;
         }else{
 
         }
         if(txtNombre1.getText().length()<3){
-            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el nombre del empleado es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el nombre del empleado es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -3404,139 +3606,139 @@ public boolean AgregarEmpleado(){
         }
         
         if(txtNombre1.getText().length()>25){
-            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el nombre del empleado es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el nombre del empleado es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if (!ValidacionNombreMayuscula(txtNombre1.getText())){
-            //JOptionPane.showMessageDialog(null,"El nombre del Empleado debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El nombre del Empleado debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtNombre1.requestFocus();
             return false;
         }else{
 
         }
         if("".equals(txtApellidos.getText().trim())) {
-            //JOptionPane.showMessageDialog(null, "El campo del apellido del empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo del apellido del empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if (ValidacionTresletras(txtApellidos.getText())){
-            //JOptionPane.showMessageDialog(null,"No se Admite en el apellido del Empleado la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"No se Admite en el apellido del Empleado la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
             txtApellidos.requestFocus();
             return false;
         }else{
 
         }
         if(txtApellidos.getText().length()<3) {
-            //JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Apellido del empleado es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad mínima de caracteres para el Apellido del empleado es de 3 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if(txtApellidos.getText().length()>25) {
-            //JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Apellido del empleado es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad máxima de caracteres para el Apellido del empleado es de 25 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if (!ValidacionNombreMayuscula(txtApellidos.getText())){
-            //JOptionPane.showMessageDialog(null,"El apellido del Empleado debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El apellido del Empleado debe contener la primera letra mayúscula y luego minúsculas","Error!", JOptionPane.ERROR_MESSAGE);
             txtApellidos.requestFocus();
             return false;
         }else{
 
         }
         if("".equals(txtTel.getText().trim())) {
-            //JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de caracteres para el teléfono del Empleado","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de caracteres para el teléfono del Empleado","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if(txtTel.getText().length()!=8) {
-            //JOptionPane.showMessageDialog(null, "El teléfono del Empleado solo puede tener 8 Digítos","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El teléfono del Empleado solo puede tener 8 Digítos","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if (!telefono(txtTel.getText())){
-            //JOptionPane.showMessageDialog(null,"Formato de teléfono incorrecto debe comenzar con 2, 3, 7, 8 o 9","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Formato de teléfono incorrecto debe comenzar con 2, 3, 7, 8 o 9","Error!", JOptionPane.ERROR_MESSAGE);
             txtTel.requestFocus();
             return false;
         }else{
 
         }
         if("".equals(txtCorreo.getText().trim())){
-            //JOptionPane.showMessageDialog(null, "El campo de  correo electrónico del Empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo de  correo electrónico del Empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }if (!correo(txtCorreo.getText())){
-            //JOptionPane.showMessageDialog(null,"Formato de correo electrónico incorrecto","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Formato de correo electrónico incorrecto","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }else{
         }
         if(txtCorreo.getText().length()<7){
-            //JOptionPane.showMessageDialog(null, "El correo electrónico del Empleado solo puede tener 7 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El correo electrónico del Empleado solo puede tener 7 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if(txtCorreo.getText().length()>40){
-            //JOptionPane.showMessageDialog(null, "El correo electrónico del Empleado solo puede tener 40 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El correo electrónico del Empleado solo puede tener 40 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
 
         if("".equals(txtaDirec.getText().trim())){
-            //JOptionPane.showMessageDialog(null,"El campo de dirección del Empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El campo de dirección del Empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if(txtaDirec.getText().length()<3){
-            //JOptionPane.showMessageDialog(null, "La dirección del Empleado solo puede tener 3 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La dirección del Empleado solo puede tener 3 caracteres como mínimo","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if(txtaDirec.getText().length()>50){
-            //JOptionPane.showMessageDialog(null, "La dirección del Empleado solo puede tener 50 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La dirección del Empleado solo puede tener 50 caracteres como máximo","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if (ValidacionTresletras(txtaDirec.getText())){
-            //JOptionPane.showMessageDialog(null,"No se Admite en la dirección del Empleado la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"No se Admite en la dirección del Empleado la misma letra 3 veces en forma consecutiva","Error!", JOptionPane.ERROR_MESSAGE);
             txtaDirec.requestFocus();
             return false;
         }else{
 
         }
         if (!ValidacionDireccion(txtaDirec.getText())){
-            //JOptionPane.showMessageDialog(null,"La dirección solo puede contener números, letras y los siguiente signos(&:|#\";.,-)","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"La dirección solo puede contener números, letras y los siguiente signos(&:|#\";.,-)","Error!", JOptionPane.ERROR_MESSAGE);
             txtaDirec.requestFocus();
             return false;
         }else{
 
         }
         if(cmbTipoDocumentoEmpleado.getSelectedIndex()==0){
-            //JOptionPane.showMessageDialog(null,"No ha seleccionado ningún tipo de documento","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"No ha seleccionado ningún tipo de documento","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if("".equals(txtDocumento.getText().trim())){
-            //JOptionPane.showMessageDialog(null,"El campo de documento del Empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El campo de documento del Empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
         if(cmbTipoDocumentoEmpleado.getSelectedIndex()==0){
-            //JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Tipo de documento","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Tipo de documento","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -3546,14 +3748,14 @@ public boolean AgregarEmpleado(){
         Tipo_Documento tempop;
         tempop = TipoDocumentodao.findTipo_Documento(cmbTipoDocumentoEmpleado.getSelectedIndex());
         if(tempop.isEstado()!=true){
-            //JOptionPane.showMessageDialog(null,"Este tipo de documento esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Este tipo de documento esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
 
         }
         if("".equals(txtDocumento.getText().trim())){
-            //JOptionPane.showMessageDialog(null, "El campo para el documento del empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo para el documento del empleado esta vacío","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -3563,14 +3765,14 @@ public boolean AgregarEmpleado(){
             case "1. visa":
             aux=8;
             if(txtDocumento.getText().length()>aux || txtDocumento.getText().length()<aux){
-                //JOptionPane.showMessageDialog(null, "La Visa debe contener 8 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "La Visa debe contener 8 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
             else{
             }
 
             if (!ValidacionVISA(txtDocumento.getText())){
-                //JOptionPane.showMessageDialog(null,"Formato de Visa inválido! Solo debe contener solo Letras Mayúsculas y Números\nEjemplo de número Visa: E0392984","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Formato de Visa inválido! Solo debe contener solo Letras Mayúsculas y Números\nEjemplo de número Visa: E0392984","Error!", JOptionPane.ERROR_MESSAGE);
                 txtDocumento.requestFocus();
                 return false;
             }else{
@@ -3580,14 +3782,14 @@ public boolean AgregarEmpleado(){
             case "2. identidad":
             aux=13;
             if(txtDocumento.getText().length()>aux || txtDocumento.getText().length()<aux){
-                //JOptionPane.showMessageDialog(null, "La Identidad debe de contener 13 dígitos","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "La Identidad debe de contener 13 dígitos","Error!", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
             else{
 
             }
             if (!ValidacionIdentidad3(txtDocumento.getText())){
-                //JOptionPane.showMessageDialog(null,"Formato de Identidad inválido! El primer Digito solo puede ser uno o cero","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Formato de Identidad inválido! El primer Digito solo puede ser uno o cero","Error!", JOptionPane.ERROR_MESSAGE);
                 txtDocumento.requestFocus();
                 return false;
             }else{
@@ -3597,14 +3799,14 @@ public boolean AgregarEmpleado(){
             case "3. pasaporte":
             aux=9;
             if(txtDocumento.getText().length()>aux || txtDocumento.getText().length()<aux){
-                //JOptionPane.showMessageDialog(null, "El Pasaporte debe de contener 9 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "El Pasaporte debe de contener 9 caracteres","Error!", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
             else{
                     
             }
             if (!ValidacionPasaporte(txtDocumento.getText())){
-                //JOptionPane.showMessageDialog(null,"Formato de Pasaporte inválido! Solo puede contener solo Letras Mayúsculas y Números\nEjemplo de número de pasaporte: XR1001R58","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Formato de Pasaporte inválido! Solo puede contener solo Letras Mayúsculas y Números\nEjemplo de número de pasaporte: XR1001R58","Error!", JOptionPane.ERROR_MESSAGE);
                 txtDocumento.requestFocus();
                 return false;
             }else{
@@ -3614,14 +3816,14 @@ public boolean AgregarEmpleado(){
             case "4. rtn":
             aux=14;
             if(txtDocumento.getText().length()>aux || txtDocumento.getText().length()<aux){
-                //JOptionPane.showMessageDialog(null, "El Rtn debe de contener 14 dígitos","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "El Rtn debe de contener 14 dígitos","Error!", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
             else{
 
             }
             if (!ValidacionRTN3(txtDocumento.getText())){
-                //JOptionPane.showMessageDialog(null,"Formato de Rtn inválido! El primer Digito solo puede ser uno o cero","Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Formato de Rtn inválido! El primer Digito solo puede ser uno o cero","Error!", JOptionPane.ERROR_MESSAGE);
                 txtDocumento.requestFocus();
                 return false;
             }else{
@@ -3633,7 +3835,7 @@ public boolean AgregarEmpleado(){
         }
 
         if(cmbCargoEmpleado.getSelectedIndex()==0){
-            //JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Cargo","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Cargo","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -3642,7 +3844,7 @@ public boolean AgregarEmpleado(){
         Cargo_empleado tempopp;
         tempopp = CargoDao.findCargo_empleado(cmbCargoEmpleado.getSelectedIndex());
         if(tempopp.isEstado()!=true){
-            //JOptionPane.showMessageDialog(null,"El cargo seleccionado esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El cargo seleccionado esta Desactivado","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
@@ -3650,14 +3852,14 @@ public boolean AgregarEmpleado(){
         }
 
         if("".equals(txtSueldo.getText().trim())){
-            //JOptionPane.showMessageDialog(null, "El campo para el Sueldo esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo para el Sueldo esta vacio","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         else{
         }
 
         if (!ValidacionRangoSueldo(txtSueldo.getText())){
-            //JOptionPane.showMessageDialog(null,"El rango de Sueldo solo puede estar entre 9,300.00-30,999.99","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El rango de Sueldo solo puede estar entre 9,300.00-30,999.99","Error!", JOptionPane.ERROR_MESSAGE);
             txtSueldo.requestFocus();
             return false;
         }else{
@@ -3666,16 +3868,16 @@ public boolean AgregarEmpleado(){
         
 
         if("".equals(txtDocumento.getText())){
-            //JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de dígitos del Documento del empleado","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ingrese la cantidad necesaria de dígitos del Documento del empleado","Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        else{
-             int i;
+                else{
+                 int i;
                 boolean flag=false;
                 for(i=0;i<Personadao.findPersonaEntities().size();i++){
                     //System.out.println(i);
                 if(txtDocumento.getText().equals(Personadao.findPersona(i+1).getDocumento_id())){
-                    //JOptionPane.showMessageDialog(null, "Ya existe este Documento registrado en el sistema","Error!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ya existe este Documento registrado en el sistema","Error!", JOptionPane.ERROR_MESSAGE);
                     flag=true;
                     return false;
                 } else {
@@ -3695,11 +3897,11 @@ public boolean AgregarEmpleado(){
                 temp.setCorreo_electroncio(txtCorreo.getText());
                 temp.setID_tipo_documento(cmbTipoDocumentoEmpleado.getSelectedIndex());
                 temp.setDocumento_id(txtDocumento.getText());
-                /*try {
+                try {
                     Personadao.create(temp);
                 } catch (Exception ex) {
                     Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                }
                 Empleado tempp = new Empleado();
                 tempp.setEstado(true);
                 Calendar fecha = new GregorianCalendar();
@@ -3747,11 +3949,11 @@ public boolean AgregarEmpleado(){
                 fecha1 = aux1+aux2+aux3;
                 tempp.setFecha_ingreso(fecha1);
 
-                /*try {
+                try {
                     Empleadodao.create(tempp);
                 } catch (Exception ex) {
                     Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                }
 
                 HistoricoCargo_empleado temphc2 = new HistoricoCargo_empleado();
                 temphc2.setEstado(true);
@@ -3800,11 +4002,11 @@ public boolean AgregarEmpleado(){
                 temphc2.setFecha_inicial(fechace1);
                 temphc2.setId_empleado(Empleadodao.getEmpleadoCount());
                 temphc2.setId_cargo(cmbCargoEmpleado.getSelectedIndex());
-                /*try {
+                try {
                     HistoricoCargoDao.create(temphc2);
                 }catch  (Exception ex){
                     Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                }
                 HistoricoSueldo_empleado temphs2 = new HistoricoSueldo_empleado();
                 temphs2.setEstado(true);
                 temphs2.setId_sueldo(HistoricoSueldoDao.getHistoricoSueldo_empleadoCount()+1);
@@ -3853,23 +4055,23 @@ public boolean AgregarEmpleado(){
                 temphs2.setId_empleado(Empleadodao.getEmpleadoCount());
                 double auxsueldo=(Double.parseDouble(txtSueldo.getText().replace(",", "").replace(",", "").trim()));
 
-                /*temphs2.setSueldo(auxsueldo);
+                temphs2.setSueldo(auxsueldo);
                 try {
                     HistoricoSueldoDao.create(temphs2);
                 }catch  (Exception ex){
                     Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                }
             }
 
             Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
-            //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
+            JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
             createTableEmpleado();
             crearTbHistorialSueldo();
             crearTbHistorialCargo();
             //Tab_Empleado.setSelectedIndex(2);
             createCmbIDEmpleado();
             //Tab_Empleado.setSelectedIndex(0);
-            LimpiarEmpleado();;
+            LimpiarEmpleado();
             createComboBoxEmpleado();
             btnAgregar1.setEnabled(true);
             btnModificar1.setEnabled(false);
@@ -3877,6 +4079,12 @@ public boolean AgregarEmpleado(){
         }
         return true;
 }
+
+public void setlabelEmpleado(String valor){
+        //IniciodeSesion i = new IniciodeSesion();
+        //String valor = i.labelEmple1.getText();
+        labelempleado.setText(valor);
+    }
     private void txtDocumentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDocumentoKeyTyped
 char c = evt.getKeyChar();
         if((c < '0' || c > '9')&&(c < 'A' || c > 'Z')){
@@ -4072,6 +4280,204 @@ char c = evt.getKeyChar();
         }
     }//GEN-LAST:event_txtConfirmarContraseñaKeyTyped
 
+    private void btnGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarActionPerformed
+        try {
+            GenerarReporteCargo();
+        } catch (JRException | ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnGenerarActionPerformed
+
+    private void btnGenerar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar2ActionPerformed
+        
+    }//GEN-LAST:event_btnGenerar2ActionPerformed
+
+    private void btnGenerar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGenerar3ActionPerformed
+
+    private void btnGenerar4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar4ActionPerformed
+             HashMap param = new HashMap();
+            param.put("Empleado",labelempleado.getText());
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperDesign reporteEmpleados = null;
+        try {
+            reporteEmpleados = JRXmlLoader.load("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteUsuarios.jrxml");
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            String query = "select SYSDATE() as 'HoraSistema' as 'HoraSistema', usuario_empleado.id_usuario as 'ID Usuario', concat_ws(' ', persona.Nombre,persona.Apellido) as 'Nombre',usuario_empleado.usuario as 'Usuario', If(usuario_empleado.estado=true, 'Activo', 'Inactivo') as 'Estado' from empleado, persona, usuario_empleado where usuario_empleado.Id_empleado=empleado.Id_empleado and empleado.Id_persona=persona.Id_persona order by usuario_empleado.id_usuario;";
+            JRDesignQuery updateQuery = new JRDesignQuery();
+            updateQuery.setText(query);
+            JasperReport jreport = null;
+        try {
+            jreport = JasperCompileManager.compileReport(reporteEmpleados);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperPrint print = null;
+        try {
+            print = JasperFillManager.fillReport(jreport,param,con);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperViewer.viewReport(print);
+    }//GEN-LAST:event_btnGenerar4ActionPerformed
+
+    private void btnGenerar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGenerar5ActionPerformed
+
+    private void btnGenerar6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar6ActionPerformed
+             HashMap param = new HashMap();
+            param.put("Empleado",labelempleado.getText());
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperDesign reporteEmpleados = null;
+        try {
+            reporteEmpleados = JRXmlLoader.load("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteHistoricoSueldos.jrxml");
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            String query = "select SYSDATE() as 'HoraSistema', historico_sueldo_empleado.id_sueldo as 'ID Sueldo Histórico', concat_ws(' ', persona.Nombre,persona.Apellido) as'Empleado',FORMAT(historico_sueldo_empleado.sueldo,2,'en_US')  as 'Sueldo', concat_ws('/', substring(historico_sueldo_empleado.fecha_inicial from 9 for 10),substring(historico_sueldo_empleado.fecha_inicial from 6 for 2), substring(historico_sueldo_empleado.fecha_inicial from 1 for 4)) as 'Fecha Inicial', If(historico_sueldo_empleado.fecha_final=null, '', concat_ws('/', substring(historico_sueldo_empleado.fecha_final from 9 for 10),substring(historico_sueldo_empleado.fecha_final from 6 for 2), substring(historico_sueldo_empleado.fecha_final from 1 for 4))) as 'Fecha Final' , If(historico_sueldo_empleado.estado=true, 'Activo', 'Inactivo') as 'Estado'\n" +
+"from empleado, persona, historico_sueldo_empleado where historico_sueldo_empleado.Id_empleado=empleado.Id_empleado and empleado.Id_persona=persona.Id_persona order by historico_sueldo_empleado.id_sueldo;";
+            JRDesignQuery updateQuery = new JRDesignQuery();
+            updateQuery.setText(query);
+            JasperReport jreport = null;
+        try {
+            jreport = JasperCompileManager.compileReport(reporteEmpleados);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperPrint print = null;
+        try {
+            print = JasperFillManager.fillReport(jreport,param,con);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperViewer.viewReport(print);
+    }//GEN-LAST:event_btnGenerar6ActionPerformed
+
+    private void btnGenerar7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGenerar7ActionPerformed
+
+    private void btnGenerar8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar8ActionPerformed
+            HashMap param = new HashMap();
+            param.put("Empleado",labelempleado.getText());
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperDesign reporteEmpleados = null;
+        try {
+            reporteEmpleados = JRXmlLoader.load("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteHistorialCargos.jrxml");
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            String query = "select SYSDATE() as 'HoraSistema', historico_cargo_empleado.id_cargo_historico as 'ID Cargo Histórico', concat_ws(' ', persona.Nombre,persona.Apellido) as'Empleado',cargo_empleado.cargo as 'Cargo', concat_ws('/', substring(historico_cargo_empleado.fecha_inicial from 9 for 10),substring(historico_cargo_empleado.fecha_inicial from 6 for 2), substring(historico_cargo_empleado.fecha_inicial from 1 for 4)) as 'Fecha Inicial', If(historico_cargo_empleado.fecha_final=null, '', concat_ws('/', substring(historico_cargo_empleado.fecha_final from 9 for 10),substring(historico_cargo_empleado.fecha_final from 6 for 2), substring(historico_cargo_empleado.fecha_final from 1 for 4))) as 'Fecha Final' , If(historico_cargo_empleado.estado=true, 'Activo', 'Inactivo') as 'Estado'\n" +
+"from empleado, persona, historico_cargo_empleado, cargo_empleado where historico_cargo_empleado.Id_empleado=empleado.Id_empleado and empleado.Id_persona=persona.Id_persona and historico_cargo_empleado.id_cargo=cargo_empleado.id_cargo order by historico_cargo_empleado.id_cargo_historico;";
+            JRDesignQuery updateQuery = new JRDesignQuery();
+            updateQuery.setText(query);
+            JasperReport jreport = null;
+        try {
+            jreport = JasperCompileManager.compileReport(reporteEmpleados);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperPrint print = null;
+        try {
+            print = JasperFillManager.fillReport(jreport,param,con);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperViewer.viewReport(print);
+    }//GEN-LAST:event_btnGenerar8ActionPerformed
+
+    private void btnGenerar9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGenerar9ActionPerformed
+
+    private void btnGenerar10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar10ActionPerformed
+            HashMap param = new HashMap();
+            param.put("Empleado",labelempleado.getText());
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperDesign reporteEmpleados = null;
+        try {
+            reporteEmpleados = JRXmlLoader.load("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reportEmpleados.jrxml");
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            String query = "select SYSDATE() as 'HoraSistema', empleado.Id_empleado as 'ID Empleado', "
+                    + "concat_ws(' ', persona.Nombre,persona.Apellido) as 'Nombre',persona.telefono as 'Teléfono', persona.correo_electroncio as 'Correo electrónico', persona.direccion as 'Dirección',concat_ws('/', substring(empleado.fcha_ingreso from 9 for 10),substring(empleado.fcha_ingreso from 6 for 2), substring(empleado.fcha_ingreso from 1 for 4)) as 'Fecha Registro' ,"
+                    + "tipo_documento.Documento as 'Tipo de Documento', persona.documento_id as 'Documento', cargo_empleado.cargo as 'Cargo', FORMAT(historico_sueldo_empleado.sueldo,2,'en_US')  as 'Sueldo', If(empleado.estado=true, 'Activo', 'Inactivo') as 'Estado'\n"
+                    + "from empleado, persona, tipo_documento, cargo_empleado, historico_cargo_empleado, historico_sueldo_empleado "
+                    + "where empleado.Id_persona=persona.Id_persona and persona.ID_tipo_documento=tipo_documento.ID_tipo_documento and empleado.Id_empleado=historico_cargo_empleado.Id_empleado and historico_cargo_empleado.id_cargo=cargo_empleado.id_cargo and empleado.Id_empleado=historico_sueldo_empleado.Id_empleado order by empleado.Id_empleado;";
+            JRDesignQuery updateQuery = new JRDesignQuery();
+            updateQuery.setText(query);
+            JasperReport jreport = null;
+        try {
+            jreport = JasperCompileManager.compileReport(reporteEmpleados);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperPrint print = null;
+        try {
+            print = JasperFillManager.fillReport(jreport,param,con);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JasperViewer.viewReport(print);
+    }//GEN-LAST:event_btnGenerar10ActionPerformed
+public boolean GenerarReporteCargo() throws JRException, ClassNotFoundException, SQLException{
+            HashMap param = new HashMap();
+            param.put("Empleado",labelempleado.getText());
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+            JasperDesign reporteCargo = JRXmlLoader.load("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteCargo.jrxml");
+            String query = "select SYSDATE() as 'HoraSistema', cargo_empleado.id_cargo as 'ID Cargo', cargo_empleado.cargo as 'Cargo', If(cargo_empleado.estado=true, 'Activo', 'Inactivo') as 'Estado' from cargo_empleado order by cargo_empleado.id_cargo;";
+            JRDesignQuery updateQuery = new JRDesignQuery();
+            updateQuery.setText(query);
+            JasperReport jreport = JasperCompileManager.compileReport(reporteCargo);
+            JasperPrint print = JasperFillManager.fillReport(jreport,param,con);
+            JasperViewer.viewReport(print);
+            //JasperViewer view = new JasperViewer(print, false);
+            //view.setVisible(true);
+            //view.setTitle("Cargos" + Integer.parseInt("1"));
+    return true;
+}
       private  void limpiar(){
         txtIDUsuario.setText("");
         txtNombre.setText("");
@@ -4463,6 +4869,16 @@ public boolean ValidacionPasaporte(String num){
     private javax.swing.JButton btnDesactivar;
     private javax.swing.JButton btnDesactivar1;
     private javax.swing.JButton btnDesactivar2;
+    private javax.swing.JButton btnGenerar;
+    private javax.swing.JButton btnGenerar10;
+    public javax.swing.JButton btnGenerar2;
+    private javax.swing.JButton btnGenerar3;
+    private javax.swing.JButton btnGenerar4;
+    private javax.swing.JButton btnGenerar5;
+    private javax.swing.JButton btnGenerar6;
+    private javax.swing.JButton btnGenerar7;
+    private javax.swing.JButton btnGenerar8;
+    private javax.swing.JButton btnGenerar9;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnLimpiar1;
     private javax.swing.JButton btnLimpiar2;
@@ -4520,9 +4936,10 @@ public boolean ValidacionPasaporte(String num){
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTable jTbHistorialCargo;
+    public javax.swing.JLabel labelempleado;
     public javax.swing.JTable tblEmpleados;
     private javax.swing.JTable tblHistorialSueldo;
-    private javax.swing.JTable tblNuevoCargo;
+    public javax.swing.JTable tblNuevoCargo;
     public javax.swing.JTextField txtApellidos;
     public javax.swing.JPasswordField txtConfirmarContraseña;
     public javax.swing.JPasswordField txtContraseña;

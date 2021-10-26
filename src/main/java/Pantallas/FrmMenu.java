@@ -32,6 +32,7 @@ public class FrmMenu extends javax.swing.JFrame {
         this.btnVentas.setBackground( new Color(14, 209, 69));
         this.btnCerrar.setBackground( new Color(14, 209, 69));
         this.btnSalir.setBackground( new Color(236, 28, 36));
+        labelEmple1.setVisible(false);
         
         //jLabel5.setForeground(Color.WHITE);
         //jFrame.setForeground(Color.CYAN);
@@ -64,6 +65,7 @@ public class FrmMenu extends javax.swing.JFrame {
         btnPedidos = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        labelEmple1 = new javax.swing.JLabel();
         btnCerrar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
@@ -181,6 +183,10 @@ public class FrmMenu extends javax.swing.JFrame {
         getContentPane().add(jLabel2);
         jLabel2.setBounds(1031, 340, 72, 29);
 
+        labelEmple1.setText("root");
+        getContentPane().add(labelEmple1);
+        labelEmple1.setBounds(80, 220, 240, 16);
+
         btnCerrar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Cerrar sesion.png"))); // NOI18N
         btnCerrar.setText("Cerrar Sesión");
@@ -248,11 +254,11 @@ public class FrmMenu extends javax.swing.JFrame {
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Fondo.jpg"))); // NOI18N
         jLabel4.setText("jLabel4");
         getContentPane().add(jLabel4);
-        jLabel4.setBounds(0, 0, 1958, 1080);
+        jLabel4.setBounds(0, 0, 1965, 1080);
 
         lIDEmpleado.setText("0");
         getContentPane().add(lIDEmpleado);
-        lIDEmpleado.setBounds(170, 120, 6, 14);
+        lIDEmpleado.setBounds(170, 120, 7, 16);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -260,7 +266,9 @@ public class FrmMenu extends javax.swing.JFrame {
     private void btnVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVentasActionPerformed
         Ventas v = new Ventas();
         v.setCmbEmpleado(Integer.parseInt(lIDEmpleado.getText()));
+        v.setEmpNomb(labelEmple1.getText());
         v.setVisible(true);
+        
         
 
         // TODO add your handling code here:
@@ -298,6 +306,7 @@ public class FrmMenu extends javax.swing.JFrame {
     private void btnEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpleadosActionPerformed
         FrmEmpleados m = new FrmEmpleados();
         m.setVisible(true);
+        //m.setlabelEmpleado(String.valueOf(labelEmple1.getText()));
         //FrmMenu me = new FrmMenu();
         //me.setVisible(false);
         //this.setVisible(false);
@@ -313,7 +322,9 @@ public class FrmMenu extends javax.swing.JFrame {
 
     private void btnBancosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBancosActionPerformed
         FrmBanco b = new FrmBanco();
+        b.setEmpNomb(labelEmple1.getText());
         b.setVisible(true);
+        b.setEmpNomb(labelEmple1.getText());
         //b.setAuxiliarBienvenida(txtBienvenido.getText());
        // b.setAux(lIDEmpleado.getText());
         
@@ -356,6 +367,7 @@ public class FrmMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     public static javax.swing.JLabel lIDEmpleado;
+    public static javax.swing.JLabel labelEmple1;
     public static javax.swing.JLabel txtBienvenido;
     // End of variables declaration//GEN-END:variables
 }

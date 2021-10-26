@@ -8,9 +8,18 @@ package Pantallas;
 import Clases.Banco;
 import Clases.Cliente;
 import Clases.Detalle_Banco_Cliente;
+import Clases.Empleado;
+import Clases.FacturaJRADATASOURCE;
+import Clases.HistoricoPrecioPieza;
+import Clases.HistoricoPrecioVehiculos;
 import Clases.Marca;
 import Clases.Persona;
+import Clases.PiezaFactura;
+import Clases.PrestamoJRDataSource;
+import Clases.RazonSocial;
 import Clases.Tipo_Documento;
+import Clases.VehiculoFactura;
+import Clases.informacionFiscal;
 import FormModales.ModalBanco;
 import FormModales.ModalCliente;
 import JPAController.BancoJpaController;
@@ -21,12 +30,20 @@ import JPAController.Tipo_DocumentoJpaController;
 import com.sun.glass.events.KeyEvent;
 import java.awt.Color;
 import java.awt.event.KeyAdapter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
@@ -45,6 +62,17 @@ import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -61,6 +89,18 @@ public final class FrmBanco extends javax.swing.JFrame {
     PersonaJpaController PersonaDao = new PersonaJpaController(emf);
     Detalle_Banco_ClienteJpaController DetalleBancoClienteDao = new Detalle_Banco_ClienteJpaController(emf);
     Tipo_DocumentoJpaController TipoDocumentodao = new Tipo_DocumentoJpaController(emf);
+    
+    String empNomb;
+
+    public String getEmpNomb() {
+        return empNomb;
+    }
+
+    public void setEmpNomb(String empNomb) {
+        this.empNomb = empNomb;
+    }
+    
+    
     public FrmBanco() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
@@ -508,6 +548,8 @@ public boolean createTablePrestamoTest(){
         btnRegresar = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         btnBuscar = new javax.swing.JButton();
+        btnAgregar2 = new javax.swing.JButton();
+        btnAgregar3 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         btnAgregar1 = new javax.swing.JButton();
@@ -534,6 +576,8 @@ public boolean createTablePrestamoTest(){
         btnBuscar1 = new javax.swing.JButton();
         btnBuscar2 = new javax.swing.JButton();
         btnDesactivar1 = new javax.swing.JButton();
+        btnAgregar4 = new javax.swing.JButton();
+        btnAgregar5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -704,61 +748,83 @@ public boolean createTablePrestamoTest(){
             }
         });
 
+        btnAgregar2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAgregar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/pdf (1).png"))); // NOI18N
+        btnAgregar2.setText("Generar Reporte/PDF");
+        btnAgregar2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnAgregar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregar2ActionPerformed(evt);
+            }
+        });
+
+        btnAgregar3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAgregar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/excel (1).png"))); // NOI18N
+        btnAgregar3.setText("Generar Reporte/Excel");
+        btnAgregar3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnAgregar3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregar3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(1187, Short.MAX_VALUE)
+                        .addGap(5, 5, 5)
+                        .addComponent(btnAgregar2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAgregar3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnRegresar))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(640, 640, 640)
+                                .addComponent(jLabel11))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(640, 640, 640)
-                                        .addComponent(jLabel11))
+                                        .addGap(14, 14, 14)
+                                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(16, 16, 16)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtNombreContacto, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(cmbIDBanco, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(14, 14, 14)
-                                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(16, 16, 16)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtNombreContacto, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(cmbIDBanco, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                                        .addComponent(txtNombreBanco, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                        .addComponent(btnBuscar)))
-                                                .addGap(52, 52, 52)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
-                                                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                                .addGap(18, 18, 18)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                    .addComponent(txtCorreoBanco)
-                                                    .addComponent(txtTelContacto, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(btnAgregar)
+                                                .addComponent(txtNombreBanco, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(btnBuscar)))
+                                        .addGap(52, 52, 52)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGap(18, 18, 18)
-                                        .addComponent(btnModificar)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnLimpiar)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnDesactivar)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 338, Short.MAX_VALUE)
-                                .addComponent(btnSalir))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(txtCorreoBanco)
+                                            .addComponent(txtTelContacto, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addComponent(btnAgregar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnModificar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnLimpiar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnDesactivar)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 338, Short.MAX_VALUE)
+                        .addComponent(btnSalir))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 148, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -799,7 +865,10 @@ public boolean createTablePrestamoTest(){
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(63, 63, 63)
-                .addComponent(btnRegresar)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRegresar)
+                    .addComponent(btnAgregar2)
+                    .addComponent(btnAgregar3))
                 .addGap(94, 94, 94))
         );
 
@@ -1018,6 +1087,26 @@ public boolean createTablePrestamoTest(){
             }
         });
 
+        btnAgregar4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAgregar4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/pdf (1).png"))); // NOI18N
+        btnAgregar4.setText("Generar Reporte/PDF");
+        btnAgregar4.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnAgregar4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregar4ActionPerformed(evt);
+            }
+        });
+
+        btnAgregar5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAgregar5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/excel (1).png"))); // NOI18N
+        btnAgregar5.setText("Generar Reporte/Excel");
+        btnAgregar5.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnAgregar5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregar5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -1063,15 +1152,21 @@ public boolean createTablePrestamoTest(){
                                         .addGap(18, 18, 18)
                                         .addComponent(txtFechaFinalPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addComponent(btnDesactivar1))
-                        .addGap(0, 157, Short.MAX_VALUE))
+                        .addGap(0, 159, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jLabel12)
                                 .addGap(452, 452, 452)
                                 .addComponent(btnSalir1))
-                            .addComponent(btnRegresar1, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(btnAgregar4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnAgregar5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnRegresar1)))))
                 .addContainerGap())
             .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
         );
@@ -1113,7 +1208,11 @@ public boolean createTablePrestamoTest(){
                 .addGap(37, 37, 37)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
-                .addComponent(btnRegresar1)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnAgregar4)
+                        .addComponent(btnAgregar5))
+                    .addComponent(btnRegresar1))
                 .addGap(72, 72, 72))
         );
 
@@ -3143,6 +3242,220 @@ public boolean DesactivarPrestamo(){
         }
     }//GEN-LAST:event_txtFechaFinalPrestamoKeyTyped
 
+    private void generarReporteBanco() throws JRException, SQLException, ClassNotFoundException, IOException, ClassNotFoundException, SQLException{
+        
+            Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporteFactura = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteBanco.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", this.empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporteFactura, param,con);
+        //JasperViewer.viewReport(print);
+        
+        File pdf = File.createTempFile("Reporte de Bancos"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+        JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
+        //JOptionPane.showMessageDialog(null,pdf.getPath());
+        ProcessBuilder p = new ProcessBuilder();
+        p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
+        p.start();
+    }
+    
+    private void btnAgregar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar2ActionPerformed
+
+        try {
+            generarReporteBanco();
+            // TODO add your handling code here:
+        } catch (JRException | SQLException | ClassNotFoundException | IOException ex) {
+            Logger.getLogger(FrmBanco.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAgregar2ActionPerformed
+
+    private void generarReporteBancoExcel() throws ClassNotFoundException, SQLException, JRException, IOException{
+        Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporteFactura = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteBanco.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporteFactura, param,con);
+        //JasperViewer.viewReport(print);
+        
+       // File excel = File.createTempFile("Reporte de Bancos"+"-"+".", ".xls",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\Reportes\\reporteBanco.xlsx");
+
+            exporter.exportReport();
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\Reportes\\reporteBanco.xlsx");
+        p.start();
+            
+    }
+    
+    private void btnAgregar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar3ActionPerformed
+
+        try {
+            generarReporteBancoExcel();
+            // TODO add your handling code here:
+        } catch (ClassNotFoundException | SQLException | JRException | IOException ex) {
+            Logger.getLogger(FrmBanco.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAgregar3ActionPerformed
+
+    public void generarReportePrestamo() throws JRException, IOException{
+        Object [][] arrayDetallesFactura;
+        int contador = 0;
+        List<Detalle_Banco_Cliente> arregloPrestamo = DetalleBancoClienteDao.findDetalle_Banco_ClienteEntities();
+        //List<PiezaFactura> arregloPiezas = new ArrayList<>();
+        contador=arregloPrestamo.size();
+        /*List<PiezaFactura> piezaFTemp = piezaFacturaDao.findPiezaFacturaEntities();
+        for(PiezaFactura pf : piezaFTemp){
+            if(pf.getIdFactura()==f.getIDFactura()){
+                arregloPiezas.add(pf);
+                contador++;
+            }*/
+        
+        
+        
+        
+        
+        
+        arrayDetallesFactura = new Object[contador][8];
+        
+        
+        for(int i = 0;i<arregloPrestamo.size();i++){
+            arrayDetallesFactura[i][0]=String.valueOf(i+1);
+            arrayDetallesFactura[i][1]= BancoDao.findBanco(DetalleBancoClienteDao.findDetalle_Banco_Cliente(i+1).getId_banco()).getNombre_banco();
+            arrayDetallesFactura[i][2]= PersonaDao.findPersona(ClienteDao.findCliente(DetalleBancoClienteDao.findDetalle_Banco_Cliente(i+1).getId_cliente()).getId_Persona()).getNombre()+" "+PersonaDao.findPersona(ClienteDao.findCliente(DetalleBancoClienteDao.findDetalle_Banco_Cliente(i+1).getId_cliente()).getId_Persona()).getApellido();
+            arrayDetallesFactura[i][3]= String.valueOf(DetalleBancoClienteDao.findDetalle_Banco_Cliente(i+1).getMonto_prestamo());
+            arrayDetallesFactura[i][4]= String.valueOf(DetalleBancoClienteDao.findDetalle_Banco_Cliente(i+1).getCuota());
+            arrayDetallesFactura[i][5]= String.valueOf(DetalleBancoClienteDao.findDetalle_Banco_Cliente(i+1).getTasa_interes());
+            arrayDetallesFactura[i][6]= DetalleBancoClienteDao.findDetalle_Banco_Cliente(i+1).getFecha_inicio();
+            arrayDetallesFactura[i][7]= (DetalleBancoClienteDao.findDetalle_Banco_Cliente(i+1).getFecha_final()==null)? " ": DetalleBancoClienteDao.findDetalle_Banco_Cliente(i+1).getFecha_final();
+        }
+
+          
+        
+        HashMap param = new HashMap();
+        param.put("Empleado", this.empNomb);
+               
+        
+        
+        //Persona pp = PersonaDao.findPersona(c.getId_Persona()); // En caso de que no salga declara una persona distinta
+        
+        /*param.put("cliente", pp.getNombre()+" "+pp.getApellido());
+        param.put("documento",pp.getDocumento_id());*/
+        
+        
+        
+            JasperReport reporteFactura = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reportPrestamo.jrxml");
+            JasperPrint print = JasperFillManager.fillReport(reporteFactura, param,PrestamoJRDataSource.getDataSource(arrayDetallesFactura));
+            
+            //JasperRunManager.runReportToPdf(reporteFactura, param);
+            
+//            JasperViewer view = new JasperViewer(print, false);
+//            view.setVisible(true);
+//            view.setTitle("Factura" + Integer.parseInt("1"));
+            File pdf = File.createTempFile("Reporte de Prestamos"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+            JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
+        //JOptionPane.showMessageDialog(null,pdf.getPath());
+            ProcessBuilder p = new ProcessBuilder();
+            p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
+            p.start();
+    }
+        
+    
+    
+    private void btnAgregar4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar4ActionPerformed
+        
+        try {
+            generarReportePrestamo();
+        } catch (JRException | IOException ex) {
+            Logger.getLogger(FrmBanco.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+
+    }//GEN-LAST:event_btnAgregar4ActionPerformed
+
+    private void generarReportePrestamoExcel() throws IOException, JRException{
+        Object [][] arrayDetallesFactura;
+        int contador = 0;
+        List<Detalle_Banco_Cliente> arregloPrestamo = DetalleBancoClienteDao.findDetalle_Banco_ClienteEntities();
+        //List<PiezaFactura> arregloPiezas = new ArrayList<>();
+        contador=arregloPrestamo.size();
+        /*List<PiezaFactura> piezaFTemp = piezaFacturaDao.findPiezaFacturaEntities();
+        for(PiezaFactura pf : piezaFTemp){
+            if(pf.getIdFactura()==f.getIDFactura()){
+                arregloPiezas.add(pf);
+                contador++;
+            }*/
+        
+        
+        
+        
+        
+        
+        arrayDetallesFactura = new Object[contador][8];
+        
+        
+        for(int i = 0;i<arregloPrestamo.size();i++){
+            arrayDetallesFactura[i][0]=String.valueOf(i+1);
+            arrayDetallesFactura[i][1]= BancoDao.findBanco(DetalleBancoClienteDao.findDetalle_Banco_Cliente(i+1).getId_banco()).getNombre_banco();
+            arrayDetallesFactura[i][2]= PersonaDao.findPersona(ClienteDao.findCliente(DetalleBancoClienteDao.findDetalle_Banco_Cliente(i+1).getId_cliente()).getId_Persona()).getNombre()+" "+PersonaDao.findPersona(ClienteDao.findCliente(DetalleBancoClienteDao.findDetalle_Banco_Cliente(i+1).getId_cliente()).getId_Persona()).getApellido();
+            arrayDetallesFactura[i][3]= String.valueOf(DetalleBancoClienteDao.findDetalle_Banco_Cliente(i+1).getMonto_prestamo());
+            arrayDetallesFactura[i][4]= String.valueOf(DetalleBancoClienteDao.findDetalle_Banco_Cliente(i+1).getCuota());
+            arrayDetallesFactura[i][5]= String.valueOf(DetalleBancoClienteDao.findDetalle_Banco_Cliente(i+1).getTasa_interes());
+            arrayDetallesFactura[i][6]= DetalleBancoClienteDao.findDetalle_Banco_Cliente(i+1).getFecha_inicio();
+            arrayDetallesFactura[i][7]= (DetalleBancoClienteDao.findDetalle_Banco_Cliente(i+1).getFecha_final()==null)? " ": DetalleBancoClienteDao.findDetalle_Banco_Cliente(i+1).getFecha_final();
+        }
+
+          
+        
+        HashMap param = new HashMap();
+        param.put("Empleado", this.empNomb);
+               
+        
+        
+        //Persona pp = PersonaDao.findPersona(c.getId_Persona()); // En caso de que no salga declara una persona distinta
+        
+        /*param.put("cliente", pp.getNombre()+" "+pp.getApellido());
+        param.put("documento",pp.getDocumento_id());*/
+        
+        
+        
+            JasperReport reporteFactura = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reportPrestamo.jrxml");
+            JasperPrint print = JasperFillManager.fillReport(reporteFactura, param,PrestamoJRDataSource.getDataSource(arrayDetallesFactura));
+            
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\Reportes\\reportePrestamo.xlsx");
+
+            exporter.exportReport();
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\Reportes\\reportePrestamo.xlsx");
+        p.start();
+            
+            
+    }
+    
+    private void btnAgregar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar5ActionPerformed
+
+        try {
+            generarReportePrestamoExcel();
+            // TODO add your handling code here:
+        } catch (IOException | JRException ex) {
+            Logger.getLogger(FrmBanco.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAgregar5ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -3151,6 +3464,10 @@ public boolean DesactivarPrestamo(){
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;
+    private javax.swing.JButton btnAgregar2;
+    private javax.swing.JButton btnAgregar3;
+    private javax.swing.JButton btnAgregar4;
+    private javax.swing.JButton btnAgregar5;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnBuscar1;
     private javax.swing.JButton btnBuscar2;

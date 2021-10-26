@@ -46,6 +46,7 @@ public class IniciodeSesion extends javax.swing.JFrame {
         this.setExtendedState(MAXIMIZED_BOTH);
         this.btnIngresar.setBackground( new Color(14, 209, 69));
         this.btnSalir.setBackground( new Color(236, 28, 36));
+        labelEmple1.setVisible(false);
     }
     
 
@@ -60,6 +61,7 @@ public class IniciodeSesion extends javax.swing.JFrame {
 
         btn_password = new javax.swing.JPasswordField();
         txt_usuario = new javax.swing.JTextField();
+        labelEmple1 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -91,6 +93,10 @@ public class IniciodeSesion extends javax.swing.JFrame {
         });
         getContentPane().add(txt_usuario);
         txt_usuario.setBounds(670, 380, 130, 30);
+
+        labelEmple1.setText("jLabel5");
+        getContentPane().add(labelEmple1);
+        labelEmple1.setBounds(140, 130, 340, 14);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("Usuario:");
@@ -157,7 +163,7 @@ public class IniciodeSesion extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIngresarActionPerformed
 public boolean InicioSesion(){
      if (txt_usuario.getText().equals("") && btn_password.getText().equals("")){
-            //JOptionPane.showMessageDialog(this,"Usuario y contraseña estan vacios\nIngrese su usuario y contraseña","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,"Usuario y contraseña estan vacios\nIngrese su usuario y contraseña","Error!", JOptionPane.ERROR_MESSAGE);
             //txt_usuario.setFocusable(true);
             return false;
        }
@@ -165,7 +171,7 @@ public boolean InicioSesion(){
            
        }
        if (txt_usuario.getText().equals("")){
-            //JOptionPane.showMessageDialog(this, "Usuario esta vacio\nIngrese su usuario","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Usuario esta vacio\nIngrese su usuario","Error!", JOptionPane.ERROR_MESSAGE);
             //txt_usuario.setFocusable(true);
             return false;
        }
@@ -173,7 +179,7 @@ public boolean InicioSesion(){
            
        }
        if (btn_password.getText().equals("")){
-            //JOptionPane.showMessageDialog(this, "Contraseña esta vacio\nIngrese su contraseña","Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Contraseña esta vacio\nIngrese su contraseña","Error!", JOptionPane.ERROR_MESSAGE);
             btn_password.setFocusable(true);
             return false;
         }
@@ -183,7 +189,7 @@ public boolean InicioSesion(){
        if(u.getId_Nombre().equals(txt_usuario.getText())){
             u= usuarioDao.findUsuarios(u.getId_Usuario());
             if(u.isEstado()!=true){
-            //JOptionPane.showMessageDialog(null,"Este usuario esta bloqueado, por favor comunicarse con el Gerente","Información", JOptionPane.INFORMATION_MESSAGE); 
+            JOptionPane.showMessageDialog(null,"Este usuario esta bloqueado, por favor comunicarse con el Gerente","Información", JOptionPane.INFORMATION_MESSAGE); 
             return false;
         }
        }
@@ -222,6 +228,7 @@ public boolean InicioSesion(){
             }   
             FrmMenu.txtBienvenido.setText("Bienvenido "+temp3.getNombre()+" "+temp3.getApellido());
             FrmMenu.lIDEmpleado.setText(String.valueOf(temp2.getId_Empleado()));
+            FrmMenu.labelEmple1.setText(temp3.getNombre()+" "+temp3.getApellido());
             this.dispose();
             
         }
@@ -319,6 +326,7 @@ public boolean InicioSesion(){
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
+    public javax.swing.JLabel labelEmple1;
     public javax.swing.JTextField txt_usuario;
     // End of variables declaration//GEN-END:variables
 }

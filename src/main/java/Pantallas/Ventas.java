@@ -50,6 +50,12 @@ import JPAController.transmisionJpaController;
 import com.sun.glass.events.KeyEvent;
 import java.awt.Color;
 import static java.awt.Frame.MAXIMIZED_BOTH;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
@@ -72,11 +78,14 @@ import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import org.exolab.castor.types.Date;
@@ -116,6 +125,17 @@ public class Ventas extends javax.swing.JFrame {
     
     TipoPagoJpaController tipoPagoDao = new TipoPagoJpaController(emf);
     RazonSocialJpaController razonSocialDao = new RazonSocialJpaController(emf);
+    
+    String empNomb;
+
+    public String getEmpNomb() {
+        return empNomb;
+    }
+
+    public void setEmpNomb(String empNomb) {
+        this.empNomb = empNomb;
+    }
+    
     /**
      * Creates new form Empleados
      */
@@ -323,6 +343,8 @@ public class Ventas extends javax.swing.JFrame {
         btnLimpiar2 = new javax.swing.JButton();
         btnDesactivar3 = new javax.swing.JButton();
         jLabel29 = new javax.swing.JLabel();
+        btnAgregar3 = new javax.swing.JButton();
+        btnAgregar4 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         txtDe = new javax.swing.JFormattedTextField();
         txtHasta = new javax.swing.JFormattedTextField();
@@ -344,6 +366,8 @@ public class Ventas extends javax.swing.JFrame {
         jButton20 = new javax.swing.JButton();
         jButton21 = new javax.swing.JButton();
         ltrampa = new javax.swing.JLabel();
+        btnAgregar5 = new javax.swing.JButton();
+        btnAgregar6 = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jLabel30 = new javax.swing.JLabel();
         cmbIDTipoPagoAgregar = new javax.swing.JComboBox<>();
@@ -358,6 +382,8 @@ public class Ventas extends javax.swing.JFrame {
         jLabel34 = new javax.swing.JLabel();
         jButton22 = new javax.swing.JButton();
         jButton23 = new javax.swing.JButton();
+        btnAgregar7 = new javax.swing.JButton();
+        btnAgregar8 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
         txtNumFacturaRechazo = new javax.swing.JFormattedTextField();
@@ -1090,12 +1116,32 @@ public class Ventas extends javax.swing.JFrame {
         jLabel29.setForeground(new java.awt.Color(255, 255, 255));
         jLabel29.setText("Ingresar Nuevo Tipo de Factura");
 
+        btnAgregar3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAgregar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/excel (1).png"))); // NOI18N
+        btnAgregar3.setText("Generar Reporte/Excel");
+        btnAgregar3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnAgregar3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregar3ActionPerformed(evt);
+            }
+        });
+
+        btnAgregar4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAgregar4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/pdf (1).png"))); // NOI18N
+        btnAgregar4.setText("Generar Reporte/PDF");
+        btnAgregar4.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnAgregar4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregar4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(554, Short.MAX_VALUE)
+                .addContainerGap(575, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnRegresar2)
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -1106,6 +1152,10 @@ public class Ventas extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(btnAgregar4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAgregar3))
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1156,7 +1206,11 @@ public class Ventas extends javax.swing.JFrame {
                             .addComponent(btnDesactivar3))))
                 .addGap(38, 38, 38)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
+                .addGap(45, 45, 45)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAgregar4)
+                    .addComponent(btnAgregar3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                 .addComponent(btnRegresar2)
                 .addGap(407, 407, 407))
         );
@@ -1320,60 +1374,81 @@ public class Ventas extends javax.swing.JFrame {
 
         ltrampa.setText("00");
 
+        btnAgregar5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAgregar5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/pdf (1).png"))); // NOI18N
+        btnAgregar5.setText("Generar Reporte/PDF");
+        btnAgregar5.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnAgregar5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregar5ActionPerformed(evt);
+            }
+        });
+
+        btnAgregar6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAgregar6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/excel (1).png"))); // NOI18N
+        btnAgregar6.setText("Generar Reporte/Excel");
+        btnAgregar6.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnAgregar6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregar6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(btnAgregar5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAgregar6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton21))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 88, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addComponent(jButton1)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnModificar3)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnLimpiar3)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnDesactivar4))
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 116, Short.MAX_VALUE)
+                                            .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGap(18, 18, 18)
                                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                                .addComponent(jButton1)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(btnModificar3)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(btnLimpiar3)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(btnDesactivar4))
-                                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                    .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
-                                                    .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                                .addGap(18, 18, 18)
-                                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(txtCAI, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(txtFechaFinalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(36, 36, 36)
-                                                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(txtDe, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                                .addGap(418, 418, 418)
-                                                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(txtHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(ltrampa)))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 471, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(jLabel33)
-                                        .addGap(327, 327, 327)))
-                                .addComponent(jButton20)))))
+                                            .addComponent(txtCAI, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtFechaFinalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(36, 36, 36)
+                                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtDe, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addGap(418, 418, 418)
+                                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(ltrampa)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 471, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel33)
+                                .addGap(327, 327, 327)))
+                        .addComponent(jButton20)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -1423,8 +1498,12 @@ public class Ventas extends javax.swing.JFrame {
                             .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(41, 41, 41)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
-                .addComponent(jButton21)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 192, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton21)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnAgregar5)
+                        .addComponent(btnAgregar6)))
                 .addGap(417, 417, 417))
         );
 
@@ -1545,6 +1624,26 @@ public class Ventas extends javax.swing.JFrame {
             }
         });
 
+        btnAgregar7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAgregar7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/pdf (1).png"))); // NOI18N
+        btnAgregar7.setText("Generar Reporte/PDF");
+        btnAgregar7.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnAgregar7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregar7ActionPerformed(evt);
+            }
+        });
+
+        btnAgregar8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAgregar8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/excel (1).png"))); // NOI18N
+        btnAgregar8.setText("Generar Reporte/Excel");
+        btnAgregar8.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnAgregar8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregar8ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -1577,8 +1676,12 @@ public class Ventas extends javax.swing.JFrame {
                                                     .addComponent(cmbIDTipoPagoAgregar, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                     .addComponent(txtTipoPago, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                         .addGap(18, 18, 18)
-                                        .addComponent(btnDesactivarTipoPago)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 513, Short.MAX_VALUE))
+                                        .addComponent(btnDesactivarTipoPago))
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addComponent(btnAgregar7)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnAgregar8)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 528, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel34)
@@ -1613,8 +1716,12 @@ public class Ventas extends javax.swing.JFrame {
                             .addComponent(btnDesactivarTipoPago))))
                 .addGap(38, 38, 38)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
-                .addComponent(jButton23)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 200, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton23)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnAgregar7)
+                        .addComponent(btnAgregar8)))
                 .addGap(397, 397, 397))
         );
 
@@ -5163,6 +5270,200 @@ char c = evt.getKeyChar();
         }
     }//GEN-LAST:event_txtNumFacturaRechazoKeyTyped
 
+    private void generarReporteTipoFacturaExcel() throws ClassNotFoundException, SQLException, JRException, IOException{
+        Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporteFactura = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteTipoFactura.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporteFactura, param,con);
+        //JasperViewer.viewReport(print);
+        
+       // File excel = File.createTempFile("Reporte de Bancos"+"-"+".", ".xls",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\Reportes\\reporteTipoFactura.xlsx");
+
+            exporter.exportReport();
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\Reportes\\reporteTipoFactura.xlsx");
+        p.start();
+    }
+    
+    private void btnAgregar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar3ActionPerformed
+
+        try {
+            generarReporteTipoFacturaExcel();
+            // TODO add your handling code here:
+        } catch (ClassNotFoundException | SQLException | JRException | IOException ex) {
+            Logger.getLogger(FrmBanco.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAgregar3ActionPerformed
+
+    private void generarReporteTipoFactura() throws ClassNotFoundException, SQLException, JRException, IOException{
+        
+        Class.forName("com.mysql.jdbc.Driver");
+        
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporteFactura = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteTipoFactura.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", this.empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporteFactura, param,con);
+        //JasperViewer.viewReport(print);
+        
+        File pdf = File.createTempFile("Reporte de Tipos de Facturas"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+        JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
+        //JOptionPane.showMessageDialog(null,pdf.getPath());
+        ProcessBuilder p = new ProcessBuilder();
+        p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
+        p.start();
+    }
+    
+    private void btnAgregar4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar4ActionPerformed
+
+        try {
+            generarReporteTipoFactura();
+            // TODO add your handling code here:
+        } catch (JRException | SQLException | ClassNotFoundException | IOException ex) {
+            Logger.getLogger(FrmBanco.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAgregar4ActionPerformed
+
+    private void generarReporteCAI()throws ClassNotFoundException, SQLException, JRException, IOException{
+        Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporteFactura = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteCAI.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", this.empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporteFactura, param,con);
+        //JasperViewer.viewReport(print);
+        
+        File pdf = File.createTempFile("Reporte de CAI"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+        JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
+        //JOptionPane.showMessageDialog(null,pdf.getPath());
+        ProcessBuilder p = new ProcessBuilder();
+        p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
+        p.start();
+        
+    }
+    
+    private void btnAgregar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar5ActionPerformed
+
+        try {
+            generarReporteCAI();
+            // TODO add your handling code here:
+        } catch (JRException | SQLException | ClassNotFoundException | IOException ex) {
+            Logger.getLogger(FrmBanco.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAgregar5ActionPerformed
+
+    private void generarReporteCAIExcel()throws ClassNotFoundException, SQLException, JRException, IOException{
+        Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporteFactura = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteCAI.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporteFactura, param,con);
+        //JasperViewer.viewReport(print);
+        
+       // File excel = File.createTempFile("Reporte de Bancos"+"-"+".", ".xls",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\Reportes\\reporteCAI.xlsx");
+
+            exporter.exportReport();
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\Reportes\\reporteCAI.xlsx");
+        p.start();
+    }
+    
+    private void btnAgregar6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar6ActionPerformed
+
+        try {
+            generarReporteCAIExcel();
+            // TODO add your handling code here:
+        } catch (ClassNotFoundException | SQLException | JRException | IOException ex) {
+            Logger.getLogger(FrmBanco.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAgregar6ActionPerformed
+
+    private void generarReportePago() throws ClassNotFoundException, SQLException, JRException, IOException{
+        Class.forName("com.mysql.jdbc.Driver");
+        
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporteFactura = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteTipoPago.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", this.empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporteFactura, param,con);
+        //JasperViewer.viewReport(print);
+        
+        File pdf = File.createTempFile("Reporte de Tipo de Pagos"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+        JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
+        //JOptionPane.showMessageDialog(null,pdf.getPath());
+        ProcessBuilder p = new ProcessBuilder();
+        p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
+        p.start();
+    }
+    
+    private void btnAgregar7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar7ActionPerformed
+
+        try {
+            generarReportePago();
+            // TODO add your handling code here:
+        } catch (JRException | SQLException | ClassNotFoundException | IOException ex) {
+            Logger.getLogger(FrmBanco.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAgregar7ActionPerformed
+
+    private void generarReporteBancoExcel() throws ClassNotFoundException, SQLException, JRException, IOException{
+        Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporteFactura = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteTipoPago.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporteFactura, param,con);
+        //JasperViewer.viewReport(print);
+        
+       // File excel = File.createTempFile("Reporte de Bancos"+"-"+".", ".xls",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\Reportes\\reporteTipoPago.xlsx");
+
+            exporter.exportReport();
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\Reportes\\reporteTipoPago.xlsx");
+        p.start();
+    }
+    
+    private void btnAgregar8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar8ActionPerformed
+
+        try {
+            generarReporteBancoExcel();
+            // TODO add your handling code here:
+        } catch (ClassNotFoundException | SQLException | JRException | IOException ex) {
+            Logger.getLogger(FrmBanco.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAgregar8ActionPerformed
+
     private void crearTbFacturasRechazado(){
         DefaultTableModel modelo = (DefaultTableModel) tbFacturaRechazada.getModel();
         
@@ -5543,6 +5844,12 @@ char c = evt.getKeyChar();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar2;
+    private javax.swing.JButton btnAgregar3;
+    private javax.swing.JButton btnAgregar4;
+    private javax.swing.JButton btnAgregar5;
+    private javax.swing.JButton btnAgregar6;
+    private javax.swing.JButton btnAgregar7;
+    private javax.swing.JButton btnAgregar8;
     private javax.swing.JButton btnAgregarPieza;
     private javax.swing.JButton btnAgregarTipoPago;
     private javax.swing.JButton btnAgregarVehiculo;

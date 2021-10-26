@@ -12,7 +12,7 @@ import Pantallas.IniciodeSesion;
  */
 public class RUN {
     public static void main(String args[]) {
-        FrmMenu a = new FrmMenu();
+        IniciodeSesion a = new IniciodeSesion();
         a.show();
     }
     
