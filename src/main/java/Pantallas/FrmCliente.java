@@ -15,8 +15,15 @@ import com.sun.glass.events.KeyEvent;
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.awt.Image;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +38,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 
 /**
  *
@@ -45,6 +60,17 @@ public class FrmCliente extends javax.swing.JFrame {
     Tipo_DocumentoJpaController TipoDocumentodao = new Tipo_DocumentoJpaController(emf);
     ClienteJpaController Clientedao = new ClienteJpaController(emf);
     PersonaJpaController Personadao = new PersonaJpaController(emf);
+    String empNomb;
+
+    public String getEmpNomb() {
+        return empNomb;
+    }
+
+    public void setEmpNomb(String empNomb) {
+        this.empNomb = empNomb;
+    }
+    
+    
 
     public FrmCliente() {
         initComponents();
@@ -212,28 +238,6 @@ public void btnActivarDesactivarCliente(){
                         (tp.isEstado())?"Activo":"Inactivo"
             });  
     }
-        public boolean createTableTipoDocumentoTest(){
-        DefaultTableModel modelo = (DefaultTableModel) tblNuevoDoc.getModel();
-        tblNuevoDoc.setModel(modelo);
-        int i;
-        for(i=modelo.getRowCount()-1;i>=0;i--){
-            modelo.removeRow(i);
-        }
-        /*modelo.addColumn("ID Tipo Documento");
-        modelo.addColumn("Tipo Documento");
-        modelo.addColumn("Estado");*/
-        
-        List<Tipo_Documento> temp = TipoDocumentodao.findTipo_DocumentoEntities();
-        
-        for(Tipo_Documento tp : temp)
-            modelo.addRow(
-                    new Object[]{
-                        tp.getId_Tipo_Documento(),
-                        tp.getDocumento(),
-                        (tp.isEstado())?"Activo":"Inactivo"
-            });  
-        return true;
-    }
         
         public void createTableCliente(){
         DefaultTableModel modelo = (DefaultTableModel) tblClientes.getModel();
@@ -301,73 +305,7 @@ public void btnActivarDesactivarCliente(){
             });  
             }
         }
-public boolean createTableClienteTest(){
-        DefaultTableModel modelo = (DefaultTableModel) tblClientes.getModel();
-        tblClientes.setModel(modelo);
-        int i;
-        for(i=modelo.getRowCount()-1;i>=0;i--){
-            modelo.removeRow(i);
-        }
-        /*modelo.addColumn("ID Cliente");
-        modelo.addColumn("Nombre");
-        modelo.addColumn("Apellidos");
-        modelo.addColumn("Teléfono");
-        modelo.addColumn("Dirección");
-        modelo.addColumn("Correo electrónico");
-        modelo.addColumn("Fecha Registro");
-        modelo.addColumn("Tipo Documento");
-        modelo.addColumn("Documento");
-        modelo.addColumn("Estado");*/
-        
-        List<Persona> tempo = Personadao.findPersonaEntities();
-        List<Cliente> temp = Clientedao.findClienteEntities();
-        String aux1="";
-        Boolean auxestado=true;
-        String auxNombre="";
-        String auxApellido="";
-        String auxDireccion="";
-        String auxCorreo="";
-        String auxTelefono="";
-        String auxDocumento="";
-        List<Tipo_Documento> temp2 = TipoDocumentodao.findTipo_DocumentoEntities();
-        int aux=0;
-        String auxfecha="";
-            for(Cliente cc : temp){
-                for(Persona p : tempo){
-                if(p.getId_persona()==cc.getId_Persona()){
-                       auxNombre=(p.getNombre());
-                       auxApellido=(p.getApellido());
-                       auxDireccion=(p.getDireccion());
-                       auxCorreo=(p.getCorreo_electroncio());
-                       auxTelefono=(p.getTelefono());
-                       auxDocumento=(p.getDocumento_id());
-                       auxfecha=(cc.getFecha_ingreso_sistema().substring(8, 10)+"/"+cc.getFecha_ingreso_sistema().substring(5, 7)+"/"+cc.getFecha_ingreso_sistema().substring(0, 4));
-                       for(Tipo_Documento tp : temp2){
-                if(tp.getId_Tipo_Documento() == p.getID_tipo_documento()){
-                    aux1=tp.getDocumento();
-                }
-        }
-            }
-            
-                }
-            modelo.addRow(
-                    new Object[]{
-                        cc.getId_cliente(),
-                        auxNombre,
-                        auxApellido,
-                        auxTelefono,
-                        auxDireccion,
-                        auxCorreo,
-                        auxfecha,
-                        aux1,
-                        auxDocumento,
-                        cc.isEstado()? "Activo" : "Inactivo",
-                        //(cc.isEstado())?"Activo":"Inactivo"
-                      
-            });  
-            }
-            return true;
-        }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -406,6 +344,8 @@ public boolean createTableClienteTest(){
         jScrollPane1 = new javax.swing.JScrollPane();
         txtaDirec = new javax.swing.JTextArea();
         txtNombre = new javax.swing.JTextField();
+        btnImprimirReporteExcel = new javax.swing.JButton();
+        btnImprimirReportePdf = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
@@ -420,6 +360,8 @@ public boolean createTableClienteTest(){
         btnSalir1 = new javax.swing.JButton();
         btnRegresar1 = new javax.swing.JButton();
         cmbIDTipoDocumento = new javax.swing.JComboBox<>();
+        btnImprimirReportePdf1 = new javax.swing.JButton();
+        btnImprimirReporteExcel1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -654,6 +596,26 @@ public boolean createTableClienteTest(){
             }
         });
 
+        btnImprimirReporteExcel.setBackground(new java.awt.Color(14, 209, 69));
+        btnImprimirReporteExcel.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        btnImprimirReporteExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/excel (1).png"))); // NOI18N
+        btnImprimirReporteExcel.setText("Imprimir Reporte Excel");
+        btnImprimirReporteExcel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImprimirReporteExcelActionPerformed(evt);
+            }
+        });
+
+        btnImprimirReportePdf.setBackground(new java.awt.Color(14, 209, 69));
+        btnImprimirReportePdf.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        btnImprimirReportePdf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/pdf (1).png"))); // NOI18N
+        btnImprimirReportePdf.setText("Imprimir Reporte Pdf");
+        btnImprimirReportePdf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImprimirReportePdfActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -662,7 +624,7 @@ public boolean createTableClienteTest(){
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1346, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(43, 43, 43)
@@ -716,6 +678,9 @@ public boolean createTableClienteTest(){
                                 .addGap(18, 18, 18)
                                 .addComponent(btnDesactivar))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(289, 289, 289)
+                                .addComponent(btnImprimirReporteExcel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnRegresar)
                                 .addGap(31, 31, 31)))
                         .addContainerGap(65, Short.MAX_VALUE))
@@ -725,6 +690,11 @@ public boolean createTableClienteTest(){
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnSalir)
                         .addGap(90, 90, 90))))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(25, 25, 25)
+                    .addComponent(btnImprimirReportePdf)
+                    .addContainerGap(1158, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -733,51 +703,62 @@ public boolean createTableClienteTest(){
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSalir))
-                .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(cmbIDCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel12))
-                        .addGap(11, 11, 11)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(txtTel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(36, 36, 36)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel8)
+                                    .addComponent(cmbIDCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel12))
+                                .addGap(11, 11, 11)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel2)
+                                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel3)
+                                    .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel5)
+                                    .addComponent(txtTel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel6)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(cmbTipoDocumentoCli, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel9)
+                                    .addComponent(btnBuscar2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(33, 33, 33)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmbTipoDocumentoCli, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9)
-                            .addComponent(btnBuscar2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(33, 33, 33)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAgregar)
-                    .addComponent(btnModificar)
-                    .addComponent(btnDesactivar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(42, 42, 42)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
-                .addComponent(btnRegresar)
-                .addGap(358, 358, 358))
+                            .addComponent(btnAgregar)
+                            .addComponent(btnModificar)
+                            .addComponent(btnDesactivar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(42, 42, 42)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34)
+                        .addComponent(btnRegresar)
+                        .addGap(358, 358, 358))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnImprimirReporteExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(349, 349, 349))))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addContainerGap(636, Short.MAX_VALUE)
+                    .addComponent(btnImprimirReportePdf, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(350, 350, 350)))
         );
 
         tpnNuevoDoc.addTab("Clientes", jPanel1);
@@ -898,6 +879,26 @@ public boolean createTableClienteTest(){
             }
         });
 
+        btnImprimirReportePdf1.setBackground(new java.awt.Color(14, 209, 69));
+        btnImprimirReportePdf1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        btnImprimirReportePdf1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/pdf (1).png"))); // NOI18N
+        btnImprimirReportePdf1.setText("Imprimir Reporte Pdf");
+        btnImprimirReportePdf1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImprimirReportePdf1ActionPerformed(evt);
+            }
+        });
+
+        btnImprimirReporteExcel1.setBackground(new java.awt.Color(14, 209, 69));
+        btnImprimirReporteExcel1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        btnImprimirReporteExcel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/excel (1).png"))); // NOI18N
+        btnImprimirReporteExcel1.setText("Imprimir Reporte Excel");
+        btnImprimirReporteExcel1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImprimirReporteExcel1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -933,7 +934,11 @@ public boolean createTableClienteTest(){
                                                     .addComponent(txtTipoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                         .addGap(18, 18, 18)
                                         .addComponent(btnDesactivar1))
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 811, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 811, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(btnImprimirReportePdf1)
+                                        .addGap(42, 42, 42)
+                                        .addComponent(btnImprimirReporteExcel1)))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 347, Short.MAX_VALUE)
                         .addComponent(btnSalir1)))
                 .addGap(126, 126, 126))
@@ -967,8 +972,14 @@ public boolean createTableClienteTest(){
                 .addGap(33, 33, 33)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49)
-                .addComponent(btnRegresar1)
-                .addGap(406, 406, 406))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnRegresar1)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnImprimirReportePdf1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnImprimirReporteExcel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(398, 398, 398))
         );
 
         tpnNuevoDoc.addTab("Nuevo Tipo de Documento", jPanel2);
@@ -2437,6 +2448,154 @@ public boolean BuscarClienteDocumento(){
         }
     }//GEN-LAST:event_txtNombreKeyTyped
 
+    private void a() throws ClassNotFoundException, SQLException, JRException, IOException{
+      
+            // TODO add your handling code here:
+            Class.forName("com.mysql.jdbc.Driver");
+       
+        
+            Connection con;
+      
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        
+        JasperReport reporteCliente;
+       
+            reporteCliente = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Report_Cliente.jrxml");
+        
+        HashMap param = new HashMap();
+        param.put("Empleado", empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporteCliente, param,con);
+        //JasperViewer.viewReport(print);
+        
+       // File excel = File.createTempFile("Reporte de Bancos"+"-"+".", ".xls",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\Reportes\\reporteCliente.xlsx");
+
+            exporter.exportReport();
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\Reportes\\reporteCliente.xlsx");
+        p.start();
+    }
+    
+    private void btnImprimirReporteExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirReporteExcelActionPerformed
+        try {
+            a();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_btnImprimirReporteExcelActionPerformed
+
+    private void imprimirCliente() throws JRException, IOException, SQLException, ClassNotFoundException{
+        Class.forName("com.mysql.jdbc.Driver");
+        
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporteCliente = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Report_Cliente.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", this.empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporteCliente, param,con);
+        //JasperViewer.viewReport(print);
+        
+        File pdf = File.createTempFile("Reporte de Clientes"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+        JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
+        //JOptionPane.showMessageDialog(null,pdf.getPath());
+        ProcessBuilder p = new ProcessBuilder();
+        p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
+        p.start();
+    }
+    
+    private void btnImprimirReportePdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirReportePdfActionPerformed
+        try {
+            // TODO add your handling code here:
+            imprimirCliente();
+        } catch (JRException | IOException | SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnImprimirReportePdfActionPerformed
+
+    private void chingaatumadre() throws JRException, IOException, SQLException, ClassNotFoundException{
+         Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporteTipoDocumento = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Report_Tipo_Documento.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", this.empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporteTipoDocumento, param,con);
+        //JasperViewer.viewReport(print);
+        
+        File pdf = File.createTempFile("Reporte de Tipo Documento"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+        JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
+        //JOptionPane.showMessageDialog(null,pdf.getPath());
+        ProcessBuilder p = new ProcessBuilder();
+        p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
+        p.start();
+    }
+    
+    private void btnImprimirReportePdf1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirReportePdf1ActionPerformed
+        // TODO add your handling code here:
+       try {
+            // TODO add your handling code here:
+            chingaatumadre();
+        } catch (JRException ex) {
+            Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnImprimirReportePdf1ActionPerformed
+
+    private void b() throws ClassNotFoundException, SQLException, JRException, IOException{
+        Class.forName("com.mysql.jdbc.Driver");
+        
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporteFactura = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Report_Tipo_Documento.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporteFactura, param,con);
+        //JasperViewer.viewReport(print);
+        
+       // File excel = File.createTempFile("Reporte de Bancos"+"-"+".", ".xls",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\Reportes\\reporteBanco.xlsx");
+
+            exporter.exportReport();
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\Reportes\\reporteBanco.xlsx");
+        p.start();
+    }
+    
+    private void btnImprimirReporteExcel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirReporteExcel1ActionPerformed
+        try {
+            b();
+        } catch (ClassNotFoundException | SQLException | JRException | IOException ex) {
+            Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnImprimirReporteExcel1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2448,6 +2607,10 @@ public boolean BuscarClienteDocumento(){
     private javax.swing.JButton btnBuscar2;
     private javax.swing.JButton btnDesactivar;
     private javax.swing.JButton btnDesactivar1;
+    private javax.swing.JButton btnImprimirReporteExcel;
+    private javax.swing.JButton btnImprimirReporteExcel1;
+    private javax.swing.JButton btnImprimirReportePdf;
+    private javax.swing.JButton btnImprimirReportePdf1;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnLimpiar1;
     private javax.swing.JButton btnModificar;

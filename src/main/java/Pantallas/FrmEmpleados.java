@@ -31,9 +31,15 @@ import java.awt.Component;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.event.KeyAdapter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -51,6 +57,7 @@ import javax.persistence.Persistence;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -59,6 +66,7 @@ import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
@@ -71,13 +79,29 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.design.JRDesignQuery;
 import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Picture;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.util.IOUtils;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -1118,44 +1142,44 @@ private void btnActivarDesactivarEmpleado(){
                         .addGap(522, 522, 522))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnRegresar1)
-                                .addGap(9, 9, 9))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(btnAgregar1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(btnModificar1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btnLimpiar1)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(btnDesactivar1))
-                                .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1346, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnAgregar1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnModificar1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnLimpiar1)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnDesactivar1))
+                            .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1346, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(630, 630, 630)
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnSalir1)
-                        .addGap(162, 162, 162))))
+                        .addGap(203, 203, 203))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelempleado)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(labelempleado)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnGenerar10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnGenerar9)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(btnGenerar9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRegresar1)
+                        .addGap(194, 194, 194))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(17, 17, 17)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSalir1))
-                .addGap(36, 36, 36)
+                .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1392,9 +1416,9 @@ private void btnActivarDesactivarEmpleado(){
                     .addComponent(btnRegresar2)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel29)
-                        .addGap(379, 379, 379)
+                        .addGap(319, 319, 319)
                         .addComponent(btnSalir2)))
-                .addGap(177, 177, 177))
+                .addGap(237, 237, 237))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1686,7 +1710,7 @@ private void btnActivarDesactivarEmpleado(){
                         .addComponent(jLabel13)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnSalir)))
-                .addGap(176, 176, 176))
+                .addGap(236, 236, 236))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1844,9 +1868,9 @@ private void btnActivarDesactivarEmpleado(){
                     .addComponent(btnRegresar3)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel16)
-                        .addGap(326, 326, 326)
+                        .addGap(266, 266, 266)
                         .addComponent(btnSalir3)))
-                .addGap(161, 161, 161))
+                .addGap(221, 221, 221))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1865,9 +1889,9 @@ private void btnActivarDesactivarEmpleado(){
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGenerar6)
                     .addComponent(btnGenerar5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 163, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 165, Short.MAX_VALUE)
                 .addComponent(btnRegresar3)
-                .addGap(290, 290, 290))
+                .addGap(288, 288, 288))
         );
 
         Tab_Empleado.addTab("Historial de Sueldos", jPanel2);
@@ -1973,16 +1997,15 @@ private void btnActivarDesactivarEmpleado(){
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 1267, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(198, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnRegresar4))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(470, 470, 470)
-                        .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSalirCargoHistorico)))
-                .addGap(160, 160, 160))
+                .addGap(470, 470, 470)
+                .addComponent(jLabel17)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSalirCargoHistorico)
+                .addGap(242, 242, 242))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnRegresar4)
+                .addGap(233, 233, 233))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2001,9 +2024,9 @@ private void btnActivarDesactivarEmpleado(){
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGenerar8)
                     .addComponent(btnGenerar7))
-                .addGap(171, 171, 171)
+                .addGap(170, 170, 170)
                 .addComponent(btnRegresar4)
-                .addContainerGap(293, Short.MAX_VALUE))
+                .addContainerGap(294, Short.MAX_VALUE))
         );
 
         Tab_Empleado.addTab("Historial de Cargos", jPanel5);
@@ -4289,13 +4312,242 @@ char c = evt.getKeyChar();
     }//GEN-LAST:event_btnGenerarActionPerformed
 
     private void btnGenerar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar2ActionPerformed
-        
+        reporteCargos();
     }//GEN-LAST:event_btnGenerar2ActionPerformed
+public void reporteCargos(){
+        try{
+   Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        JasperReport reporte = null;
+        try {
+            reporte = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteCargo.jrxml");
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        HashMap param = new HashMap();
+        param.put("Empleado", labelempleado.getText());
+        JasperPrint print = null;
+        try {
+            print = JasperFillManager.fillReport(reporte, param,con);
+            //JasperViewer.viewReport(print);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteCargos.xlsx");
 
+        try {
+            exporter.exportReport();
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteCargos.xlsx");
+        
+        try {
+            p.start();
+        }catch (IOException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
+public void reporteEmpleados(){
+    try{
+   Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        JasperReport reporte = null;
+        try {
+            reporte = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reportEmpleados.jrxml");
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        HashMap param = new HashMap();
+        param.put("Empleado", labelempleado.getText());
+        JasperPrint print = null;
+        try {
+            print = JasperFillManager.fillReport(reporte, param,con);
+            //JasperViewer.viewReport(print);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteEmpleados.xlsx");
+
+        try {
+            exporter.exportReport();
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteEmpleados.xlsx");
+        
+        try {
+            p.start();
+        }catch (IOException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
+ 
     private void btnGenerar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar3ActionPerformed
-        // TODO add your handling code here:
+        reporteUsuarios();
     }//GEN-LAST:event_btnGenerar3ActionPerformed
+public void reporteUsuarios(){
+     try{
+   Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        JasperReport reporte = null;
+        try {
+            reporte = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteUsuarios.jrxml");
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        HashMap param = new HashMap();
+        param.put("Empleado", labelempleado.getText());
+        JasperPrint print = null;
+        try {
+            print = JasperFillManager.fillReport(reporte, param,con);
+            //JasperViewer.viewReport(print);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteUsuarios.xlsx");
 
+        try {
+            exporter.exportReport();
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteUsuarios.xlsx");
+        
+        try {
+            p.start();
+        }catch (IOException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
+    public void reporteHistorialSueldo(){
+     try{
+   Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        JasperReport reporte = null;
+        try {
+            reporte = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteHistoricoSueldos.jrxml");
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        HashMap param = new HashMap();
+        param.put("Empleado", labelempleado.getText());
+        JasperPrint print = null;
+        try {
+            print = JasperFillManager.fillReport(reporte, param,con);
+            //JasperViewer.viewReport(print);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteHistorialSueldos.xlsx");
+
+        try {
+            exporter.exportReport();
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteHistorialSueldos.xlsx");
+        
+        try {
+            p.start();
+        }catch (IOException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
+public void reporteHistorialCargos(){
+     try{
+   Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        JasperReport reporte = null;
+        try {
+            reporte = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteHistorialCargos.jrxml");
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        HashMap param = new HashMap();
+        param.put("Empleado", labelempleado.getText());
+        JasperPrint print = null;
+        try {
+            print = JasperFillManager.fillReport(reporte, param,con);
+            //JasperViewer.viewReport(print);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteHistorialCargos.xlsx");
+
+        try {
+            exporter.exportReport();
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteHistorialCargos.xlsx");
+        
+        try {
+            p.start();
+        }catch (IOException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
     private void btnGenerar4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar4ActionPerformed
              HashMap param = new HashMap();
             param.put("Empleado",labelempleado.getText());
@@ -4334,7 +4586,7 @@ char c = evt.getKeyChar();
     }//GEN-LAST:event_btnGenerar4ActionPerformed
 
     private void btnGenerar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar5ActionPerformed
-        // TODO add your handling code here:
+        reporteHistorialSueldo();
     }//GEN-LAST:event_btnGenerar5ActionPerformed
 
     private void btnGenerar6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar6ActionPerformed
@@ -4376,7 +4628,7 @@ char c = evt.getKeyChar();
     }//GEN-LAST:event_btnGenerar6ActionPerformed
 
     private void btnGenerar7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar7ActionPerformed
-        // TODO add your handling code here:
+        reporteHistorialCargos();
     }//GEN-LAST:event_btnGenerar7ActionPerformed
 
     private void btnGenerar8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar8ActionPerformed
@@ -4418,7 +4670,7 @@ char c = evt.getKeyChar();
     }//GEN-LAST:event_btnGenerar8ActionPerformed
 
     private void btnGenerar9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar9ActionPerformed
-        // TODO add your handling code here:
+        reporteEmpleados();
     }//GEN-LAST:event_btnGenerar9ActionPerformed
 
     private void btnGenerar10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar10ActionPerformed

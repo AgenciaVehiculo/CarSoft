@@ -15,6 +15,7 @@ import JPAController.TipoPiezaJpaController;
 import static Pantallas.FrmMenu.labelEmple1;
 import com.sun.glass.events.KeyEvent;
 import java.awt.Color;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -43,6 +44,8 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.design.JRDesignQuery;
 import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
@@ -323,7 +326,7 @@ public class FrmPieza extends javax.swing.JFrame {
                 aux1,
                 p.getNombre(),
                 p.getCarateristica_Pieza(),
-                formato1.format(auxPrecio),
+                String.format("%,.2f",auxPrecio),
                 p.getStock(),
                 p.getStock_Maximo(),
                 p.getStock_Minimo(),
@@ -2372,9 +2375,54 @@ public boolean ModificarPieza(){
     }//GEN-LAST:event_btnGenerarActionPerformed
 
     private void btnGenerar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar2ActionPerformed
-        // TODO add your handling code here:
+        reportePiezas();
     }//GEN-LAST:event_btnGenerar2ActionPerformed
+public void reportePiezas(){
+     try{
+   Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        JasperReport reporte = null;
+        try {
+            reporte = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reportePiezas.jrxml");
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        HashMap param = new HashMap();
+        param.put("Empleado", labelempleado.getText());
+        JasperPrint print = null;
+        try {
+            print = JasperFillManager.fillReport(reporte, param,con);
+            //JasperViewer.viewReport(print);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reportePiezas.xlsx");
 
+        try {
+            exporter.exportReport();
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reportePiezas.xlsx");
+        
+        try {
+            p.start();
+        }catch (IOException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
     private void btnGenerar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar3ActionPerformed
                             HashMap param = new HashMap();
             param.put("Empleado",labelempleado.getText());
@@ -2415,9 +2463,54 @@ public boolean ModificarPieza(){
     }//GEN-LAST:event_btnGenerar3ActionPerformed
 
     private void btnGenerar4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar4ActionPerformed
-        // TODO add your handling code here:
+        reporteHistorialPrecioPieza();
     }//GEN-LAST:event_btnGenerar4ActionPerformed
+public void reporteHistorialPrecioPieza(){
+     try{
+   Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        JasperReport reporte = null;
+        try {
+            reporte = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteHistorialPiezas.jrxml");
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        HashMap param = new HashMap();
+        param.put("Empleado", labelempleado.getText());
+        JasperPrint print = null;
+        try {
+            print = JasperFillManager.fillReport(reporte, param,con);
+            //JasperViewer.viewReport(print);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteHistorialPiezas.xlsx");
 
+        try {
+            exporter.exportReport();
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteHistorialPiezas.xlsx");
+        
+        try {
+            p.start();
+        }catch (IOException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
     private void btnGenerar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar5ActionPerformed
                                     HashMap param = new HashMap();
             param.put("Empleado",labelempleado.getText());
@@ -2456,9 +2549,55 @@ public boolean ModificarPieza(){
     }//GEN-LAST:event_btnGenerar5ActionPerformed
 
     private void btnGenerar6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar6ActionPerformed
-        // TODO add your handling code here:
+        reporteTipoPieza();
     }//GEN-LAST:event_btnGenerar6ActionPerformed
-public boolean ValidacionNombreMayusculaYDemasMinus(String num){
+public void reporteTipoPieza(){
+     try{
+   Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        JasperReport reporte = null;
+        try {
+            reporte = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reportTipoPieza.jrxml");
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        HashMap param = new HashMap();
+        param.put("Empleado", labelempleado.getText());
+        JasperPrint print = null;
+        try {
+            print = JasperFillManager.fillReport(reporte, param,con);
+            //JasperViewer.viewReport(print);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteTipoPieza.xlsx");
+
+        try {
+            exporter.exportReport();
+        } catch (JRException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteTipoPieza.xlsx");
+        
+        try {
+            p.start();
+        }catch (IOException ex) {
+            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
+    public boolean ValidacionNombreMayusculaYDemasMinus(String num){
         Pattern pat = null;
         Matcher mat = null;
         pat = Pattern.compile("^(?=.{3,40}$)[A-ZÑÁÉÍÓÚ][a-zñáéíóú]+(?: [a-zñáéíóúA-ZÑÁÉÍÓÚ]+)?+(?: [a-zñáéíóúA-ZÑÁÉÍÓÚ]+)?$");

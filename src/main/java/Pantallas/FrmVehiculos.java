@@ -6,8 +6,6 @@
 package Pantallas;
 
 
-import Clases.Banco;
-import Clases.Cliente;
 import Clases.Detalle_Banco_Cliente;
 import Clases.HistoricoPrecioVehiculos;
 import Clases.Marca;
@@ -32,10 +30,17 @@ import JPAController.transmisionJpaController;
 import com.sun.glass.events.KeyEvent;
 import java.awt.Color;
 import static java.awt.Frame.MAXIMIZED_BOTH;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,10 +54,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.view.JasperViewer;
 
 /**
@@ -75,6 +85,15 @@ public class FrmVehiculos extends javax.swing.JFrame {
     Numero_AsientosJpaController NumeroAsientosdao = new Numero_AsientosJpaController(emf);
     VehiculoJpaController vehiculoDao = new VehiculoJpaController(emf);
     HistoricoPrecioVehiculosJpaController historicoPrecioVehiculoDao = new HistoricoPrecioVehiculosJpaController(emf);
+    
+    String empNomb;
+    public String getEmpNomb(){
+        return empNomb;
+    }
+    
+    public void setEmpNomb(String empNomb){
+        this.empNomb = empNomb;
+    }
     
     public FrmVehiculos() {
         initComponents();
@@ -865,6 +884,8 @@ public class FrmVehiculos extends javax.swing.JFrame {
         btnSalir1 = new javax.swing.JButton();
         jLabel36 = new javax.swing.JLabel();
         btnAgregar9 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         cmbIDColor = new javax.swing.JComboBox<>();
         jLabel27 = new javax.swing.JLabel();
@@ -879,6 +900,8 @@ public class FrmVehiculos extends javax.swing.JFrame {
         btnRegresar2 = new javax.swing.JButton();
         btnSalir2 = new javax.swing.JButton();
         jLabel29 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         cmbIDTipoVehiculo = new javax.swing.JComboBox<>();
         jLabel32 = new javax.swing.JLabel();
@@ -893,6 +916,8 @@ public class FrmVehiculos extends javax.swing.JFrame {
         btnRegresar3 = new javax.swing.JButton();
         btnSalir3 = new javax.swing.JButton();
         jLabel34 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jLabel35 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
@@ -907,6 +932,8 @@ public class FrmVehiculos extends javax.swing.JFrame {
         btnSalir4 = new javax.swing.JButton();
         jLabel38 = new javax.swing.JLabel();
         cmbPiezaClave = new javax.swing.JComboBox<>();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         cmbIDTipoGasolina = new javax.swing.JComboBox<>();
         jLabel39 = new javax.swing.JLabel();
@@ -921,6 +948,8 @@ public class FrmVehiculos extends javax.swing.JFrame {
         btnRegresar5 = new javax.swing.JButton();
         btnSalir5 = new javax.swing.JButton();
         jLabel41 = new javax.swing.JLabel();
+        jButton9 = new javax.swing.JButton();
+        jButton10 = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         jLabel47 = new javax.swing.JLabel();
         cmbIDNumeroAsientos = new javax.swing.JComboBox<>();
@@ -935,6 +964,8 @@ public class FrmVehiculos extends javax.swing.JFrame {
         btnSalir9 = new javax.swing.JButton();
         jLabel49 = new javax.swing.JLabel();
         btnRegresar9 = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
+        jButton12 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         cmbIDTipoTransmision = new javax.swing.JComboBox<>();
         jLabel42 = new javax.swing.JLabel();
@@ -949,6 +980,8 @@ public class FrmVehiculos extends javax.swing.JFrame {
         btnRegresar6 = new javax.swing.JButton();
         btnSalir6 = new javax.swing.JButton();
         jLabel44 = new javax.swing.JLabel();
+        jButton13 = new javax.swing.JButton();
+        jButton14 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -988,6 +1021,8 @@ public class FrmVehiculos extends javax.swing.JFrame {
         ftxtStockMinimo = new javax.swing.JFormattedTextField();
         ftxtStockMaximo = new javax.swing.JFormattedTextField();
         txtPrecio = new javax.swing.JTextField();
+        jButton15 = new javax.swing.JButton();
+        jButton16 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -1321,6 +1356,20 @@ public class FrmVehiculos extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Reporte PDF");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Reporte Excel");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -1349,9 +1398,14 @@ public class FrmVehiculos extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(46, 46, 46)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnAgregar9)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(btnAgregar9)
+                                .addGap(28, 28, 28)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(44, 44, 44)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 842, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(937, 937, Short.MAX_VALUE))
+                .addGap(1051, 1051, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -1394,7 +1448,11 @@ public class FrmVehiculos extends javax.swing.JFrame {
                 .addGap(38, 38, 38)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
-                .addComponent(btnAgregar9)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnAgregar9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addComponent(btnRegresar1)
                 .addGap(145, 145, 145))
@@ -1512,16 +1570,36 @@ public class FrmVehiculos extends javax.swing.JFrame {
         jLabel29.setForeground(new java.awt.Color(255, 255, 255));
         jLabel29.setText("Nuevo Color");
 
+        jButton3.setText("Reporte PDF");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("Reporte Excel");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(726, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnRegresar2)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel29)
+                        .addGap(489, 489, 489)
+                        .addComponent(btnSalir2)))
+                .addGap(488, 488, 488))
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(53, 53, 53)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 767, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
@@ -1540,16 +1618,15 @@ public class FrmVehiculos extends javax.swing.JFrame {
                                     .addComponent(txtColor, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(18, 18, 18)
                         .addComponent(btnDesactivar2)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(612, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnRegresar2)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel29)
-                        .addGap(489, 489, 489)
-                        .addComponent(btnSalir2)))
-                .addGap(488, 488, 488))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(68, 68, 68)
+                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 767, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1577,7 +1654,11 @@ public class FrmVehiculos extends javax.swing.JFrame {
                         .addComponent(btnDesactivar2)))
                 .addGap(42, 42, 42)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(53, 53, 53)
                 .addComponent(btnRegresar2)
                 .addGap(146, 146, 146))
         );
@@ -1694,6 +1775,20 @@ public class FrmVehiculos extends javax.swing.JFrame {
         jLabel34.setForeground(new java.awt.Color(255, 255, 255));
         jLabel34.setText("Nuevo de Tipo de Vehículo");
 
+        jButton5.setText("Reporte PDF");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setText("Reporte Excel");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -1721,7 +1816,11 @@ public class FrmVehiculos extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(btnLimpiar3)))
                                 .addGap(18, 18, 18)
-                                .addComponent(btnDesactivar3))))
+                                .addComponent(btnDesactivar3))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(74, 74, 74)
+                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(551, 551, 551)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -1730,7 +1829,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
                                 .addComponent(jLabel34)
                                 .addGap(396, 396, 396)
                                 .addComponent(btnSalir3)))))
-                .addContainerGap(475, Short.MAX_VALUE))
+                .addContainerGap(589, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1758,7 +1857,11 @@ public class FrmVehiculos extends javax.swing.JFrame {
                         .addComponent(btnDesactivar3)))
                 .addGap(38, 38, 38)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
+                .addGap(42, 42, 42)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(46, 46, 46)
                 .addComponent(btnRegresar3)
                 .addGap(151, 151, 151))
         );
@@ -1871,13 +1974,40 @@ public class FrmVehiculos extends javax.swing.JFrame {
 
         cmbPiezaClave.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jButton7.setText("Reporte PDF");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        jButton8.setText("Reporte Excel");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap(635, Short.MAX_VALUE)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnRegresar4)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel38)
+                        .addGap(476, 476, 476)
+                        .addComponent(btnSalir4)))
+                .addGap(481, 481, 481))
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(49, 49, 49)
+                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel7Layout.createSequentialGroup()
@@ -1898,15 +2028,6 @@ public class FrmVehiculos extends javax.swing.JFrame {
                         .addComponent(btnDesactivar4))
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 840, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(521, Short.MAX_VALUE)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnRegresar4)
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel38)
-                        .addGap(476, 476, 476)
-                        .addComponent(btnSalir4)))
-                .addGap(481, 481, 481))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1935,7 +2056,11 @@ public class FrmVehiculos extends javax.swing.JFrame {
                             .addComponent(btnDesactivar4))))
                 .addGap(38, 38, 38)
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
+                .addGap(39, 39, 39)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(66, 66, 66)
                 .addComponent(btnRegresar4)
                 .addGap(141, 141, 141))
         );
@@ -2052,14 +2177,32 @@ public class FrmVehiculos extends javax.swing.JFrame {
         jLabel41.setForeground(new java.awt.Color(255, 255, 255));
         jLabel41.setText("Nuevo Tipo de Combustible");
 
+        jButton9.setText("Reporte PDF");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
+        jButton10.setText("Reporte Excel");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(52, 52, 52)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel8Layout.createSequentialGroup()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(59, 59, 59)
+                        .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel8Layout.createSequentialGroup()
                                 .addComponent(btnAgregar5)
@@ -2077,8 +2220,8 @@ public class FrmVehiculos extends javax.swing.JFrame {
                                     .addComponent(txtTipoGasolina, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(18, 18, 18)
                         .addComponent(btnDesactivar5))
-                    .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 864, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel8Layout.createSequentialGroup()
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 864, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGap(513, 513, 513)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnRegresar5)
@@ -2086,7 +2229,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
                                 .addComponent(jLabel41)
                                 .addGap(407, 407, 407)
                                 .addComponent(btnSalir5)))))
-                .addContainerGap(440, Short.MAX_VALUE))
+                .addContainerGap(554, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2116,7 +2259,11 @@ public class FrmVehiculos extends javax.swing.JFrame {
                         .addComponent(btnDesactivar5)))
                 .addGap(33, 33, 33)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
+                .addGap(41, 41, 41)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(55, 55, 55)
                 .addComponent(btnRegresar5)
                 .addGap(150, 150, 150))
         );
@@ -2233,6 +2380,20 @@ public class FrmVehiculos extends javax.swing.JFrame {
             }
         });
 
+        jButton11.setText("Reporte PDF");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
+
+        jButton12.setText("Reporte Excel");
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
@@ -2258,7 +2419,11 @@ public class FrmVehiculos extends javax.swing.JFrame {
                                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cmbIDNumeroAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtNumeroAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 828, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 828, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(70, 70, 70)
+                                .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addGap(536, 536, 536)
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -2267,7 +2432,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
                                 .addComponent(jLabel49)
                                 .addGap(402, 402, 402)
                                 .addComponent(btnSalir9)))))
-                .addContainerGap(481, Short.MAX_VALUE))
+                .addContainerGap(595, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2292,7 +2457,11 @@ public class FrmVehiculos extends javax.swing.JFrame {
                     .addComponent(btnDesactivar8))
                 .addGap(38, 38, 38)
                 .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
+                .addGap(41, 41, 41)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(57, 57, 57)
                 .addComponent(btnRegresar9)
                 .addGap(144, 144, 144))
         );
@@ -2409,6 +2578,20 @@ public class FrmVehiculos extends javax.swing.JFrame {
         jLabel44.setForeground(new java.awt.Color(255, 255, 255));
         jLabel44.setText("Nuevo Tipo de Transmisión");
 
+        jButton13.setText("Reporte PDF");
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
+            }
+        });
+
+        jButton14.setText("Reporte Excel");
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -2441,7 +2624,11 @@ public class FrmVehiculos extends javax.swing.JFrame {
                                 .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                                     .addComponent(jLabel44)
-                                    .addGap(50, 50, 50)))
+                                    .addGap(50, 50, 50))
+                                .addGroup(jPanel5Layout.createSequentialGroup()
+                                    .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(79, 79, 79)
+                                    .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGap(412, 412, 412)
                             .addComponent(btnSalir6)))))
         );
@@ -2475,7 +2662,11 @@ public class FrmVehiculos extends javax.swing.JFrame {
                             .addComponent(btnDesactivar6))))
                 .addGap(38, 38, 38)
                 .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 136, Short.MAX_VALUE)
+                .addGap(26, 26, 26)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(86, 86, 86)
                 .addComponent(btnRegresar6)
                 .addGap(153, 153, 153))
         );
@@ -2701,6 +2892,20 @@ public class FrmVehiculos extends javax.swing.JFrame {
             }
         });
 
+        jButton15.setText("Reporte PDF");
+        jButton15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton15ActionPerformed(evt);
+            }
+        });
+
+        jButton16.setText("Reporte Excel");
+        jButton16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton16ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -2790,13 +2995,19 @@ public class FrmVehiculos extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(btnLimpiar7)
                                         .addGap(18, 18, 18)
-                                        .addComponent(btnDesactivar7))))))
+                                        .addComponent(btnDesactivar7))))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1295, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(48, 48, 48)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1295, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnRegresar7))))
-                .addGap(472, 472, 472))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton15, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(69, 69, 69)
+                                .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(1142, 1142, 1142)
+                                .addComponent(btnRegresar7)))))
+                .addGap(586, 586, 586))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2873,9 +3084,13 @@ public class FrmVehiculos extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addComponent(btnDesactivar7)))
-                .addGap(21, 21, 21)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(70, 70, 70)
+                .addGap(31, 31, 31)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton15, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
+                    .addComponent(jButton16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(17, 17, 17)
                 .addComponent(btnRegresar7))
         );
 
@@ -5823,6 +6038,549 @@ char c = evt.getKeyChar();
 //}
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAgregar9ActionPerformed
+ public void Reporte_Marcapdf() throws ClassNotFoundException, IOException, SQLException, JRException{
+        Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporte_Marcapdf = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteMarca_1.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", this.empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporte_Marcapdf, param,con);
+        //JasperViewer.viewReport(print);
+        
+        File pdf = File.createTempFile("Reporte de Marca"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+        JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
+        //JOptionPane.showMessageDialog(null,pdf.getPath());
+        ProcessBuilder p = new ProcessBuilder();
+        p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
+        p.start();
+      }
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            Reporte_Marcapdf();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+public void Reporte_Marcaexcel() throws ClassNotFoundException, SQLException, JRException, IOException{
+    Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporte_marcaexcel = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteMarca_1.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporte_marcaexcel, param,con);
+        //JasperViewer.viewReport(print);
+        
+       // File excel = File.createTempFile("Reporte de Bancos"+"-"+".", ".xls",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+            net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter exporter = new net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter();
+            exporter.setParameter(net.sf.jasperreports.engine.export.JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(net.sf.jasperreports.engine.export.JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\Reportes\\reporteMarca.xlsx");
+       
+
+            exporter.exportReport();
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\Reportes\\reporteMarca.xlsx");
+        p.start();
+}
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            Reporte_Marcaexcel();
+        } catch (ClassNotFoundException | SQLException | JRException | IOException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+public void Reporte_Colorpdf() throws ClassNotFoundException, IOException, SQLException, JRException{
+        Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporte_Colorpdf = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Reporte_Tipo_Color.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", this.empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporte_Colorpdf, param,con);
+        //JasperViewer.viewReport(print);
+        
+        File pdf = File.createTempFile("Reporte de Color"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+        JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
+        //JOptionPane.showMessageDialog(null,pdf.getPath());
+        ProcessBuilder p = new ProcessBuilder();
+        p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
+        p.start();
+      }
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            Reporte_Colorpdf();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+public void Reporte_Colorexcel() throws ClassNotFoundException, SQLException, JRException, IOException{
+    Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporte_Colorexcel = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Reporte_Tipo_Color.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporte_Colorexcel, param,con);
+        //JasperViewer.viewReport(print);
+        
+       // File excel = File.createTempFile("Reporte de Bancos"+"-"+".", ".xls",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+            net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter exporter = new net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter();
+            exporter.setParameter(net.sf.jasperreports.engine.export.JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(net.sf.jasperreports.engine.export.JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\Reportes\\reporteColor.xlsx");
+
+            exporter.exportReport();
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\Reportes\\reporteColor.xlsx");
+        p.start();
+}
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        try {
+            Reporte_Colorexcel();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+public void Reporte_Tipo_Vehiculopdf() throws ClassNotFoundException, IOException, JRException, SQLException{
+        Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporte_Tipo_Vehiculopdf = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Reporte_Tipo_Vehiculo.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", this.empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporte_Tipo_Vehiculopdf, param,con);
+        //JasperViewer.viewReport(print);
+        
+        File pdf = File.createTempFile("Reporte de Tipo de Vehiculo"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+        JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
+        //JOptionPane.showMessageDialog(null,pdf.getPath());
+        ProcessBuilder p = new ProcessBuilder();
+        p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
+        p.start();
+      }
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        try {
+            Reporte_Tipo_Vehiculopdf();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+public void Reporte_Tipo_Vehiculoexcel() throws ClassNotFoundException, SQLException, JRException, IOException{
+    Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporte_Tipo_Vehiculoexcel = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Reporte_Tipo_Vehiculo.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporte_Tipo_Vehiculoexcel, param,con);
+        //JasperViewer.viewReport(print);
+        
+       // File excel = File.createTempFile("Reporte de Bancos"+"-"+".", ".xls",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+            net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter exporter = new net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter();
+            exporter.setParameter(net.sf.jasperreports.engine.export.JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(net.sf.jasperreports.engine.export.JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\Reportes\\reportetipovehiculo.xlsx");
+
+            exporter.exportReport();
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\Reportes\\reportetipovehiculo.xlsx");
+        p.start();
+}
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        try {
+            Reporte_Tipo_Vehiculoexcel();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+public void Reporte_Tipo_Cabinapdf() throws ClassNotFoundException, IOException, SQLException, JRException{
+        Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporte_Tipo_Cabinapdf = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Reporte_Tipo_Cabina.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", this.empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporte_Tipo_Cabinapdf, param,con);
+        //JasperViewer.viewReport(print);
+        
+        File pdf = File.createTempFile("Reporte de Tipo de Cabina"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+        JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
+        //JOptionPane.showMessageDialog(null,pdf.getPath());
+        ProcessBuilder p = new ProcessBuilder();
+        p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
+        p.start();
+      }
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        try {
+            Reporte_Tipo_Cabinapdf();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+public void Reporte_Tipo_Cabinaexcel() throws ClassNotFoundException, SQLException, JRException, IOException{
+    Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporte_Tipo_Cabinaexcel = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Reporte_Tipo_Cabina.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporte_Tipo_Cabinaexcel, param,con);
+        //JasperViewer.viewReport(print);
+        
+       // File excel = File.createTempFile("Reporte de Bancos"+"-"+".", ".xls",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+            net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter exporter = new net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter();
+            exporter.setParameter(net.sf.jasperreports.engine.export.JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(net.sf.jasperreports.engine.export.JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\Reportes\\reporteCabina.xlsx");
+            
+
+            exporter.exportReport();
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\Reportes\\reporteCabina.xlsx");
+        p.start();
+}
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        try {
+            Reporte_Tipo_Cabinaexcel();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton8ActionPerformed
+public void Reporte_Tipo_Gasolinapdf() throws ClassNotFoundException, IOException, JRException, SQLException{
+        Class.forName("com.mysql.jdbc.Driver");
+        
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporte_Tipo_Gasolinapdf = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Reporte_Tipo_Gasolina.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", this.empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporte_Tipo_Gasolinapdf, param,con);
+        //JasperViewer.viewReport(print);
+        
+        File pdf = File.createTempFile("Reporte de Tipo de Gasolina"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+        JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
+        //JOptionPane.showMessageDialog(null,pdf.getPath());
+        ProcessBuilder p = new ProcessBuilder();
+        p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
+        p.start();
+      }
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        try {
+            Reporte_Tipo_Gasolinapdf();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton9ActionPerformed
+public void Reporte_Tipo_Gasolinaexcel() throws ClassNotFoundException, SQLException, JRException, IOException{
+    Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporte_Tipo_Gasolinaexcel = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Reporte_Tipo_Gasolina.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporte_Tipo_Gasolinaexcel, param,con);
+        //JasperViewer.viewReport(print);
+        
+       // File excel = File.createTempFile("Reporte de Bancos"+"-"+".", ".xls",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+            net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter exporter = new net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter();
+            exporter.setParameter(net.sf.jasperreports.engine.export.JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(net.sf.jasperreports.engine.export.JRXlsExporterParameter.OUTPUT_FILE_NAME,"C:\\CarSoft-Version-2.1\\Reportes\\reporteGasolina.xlsx");
+            
+
+            exporter.exportReport();
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\Reportes\\reporteGasolina.xlsx");
+        p.start();
+}
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        try {
+            Reporte_Tipo_Gasolinaexcel();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton10ActionPerformed
+public void Reporte_Numero_Asientospdf() throws ClassNotFoundException, IOException, SQLException, JRException{
+        Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporte_Numero_Asientospdf = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Reporte_Numero_Asientos.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", this.empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporte_Numero_Asientospdf, param,con);
+        //JasperViewer.viewReport(print);
+        
+        File pdf = File.createTempFile("Reporte de Tipo de Numero de Asientos"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+        JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
+        //JOptionPane.showMessageDialog(null,pdf.getPath());
+        ProcessBuilder p = new ProcessBuilder();
+        p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
+        p.start();
+      }
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        try {
+            Reporte_Numero_Asientospdf();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton11ActionPerformed
+public void Reporte_Numero_Asientosexcel() throws ClassNotFoundException, SQLException, JRException, IOException{
+    Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporte_Numero_Asientosexcel = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Reporte_Numero_Asientos.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporte_Numero_Asientosexcel, param,con);
+        //JasperViewer.viewReport(print);
+        
+       // File excel = File.createTempFile("Reporte de Bancos"+"-"+".", ".xls",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+            net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter exporter = new net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter();
+            exporter.setParameter(net.sf.jasperreports.engine.export.JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(net.sf.jasperreports.engine.export.JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\Reportes\\reporteAsientos.xlsx");
+          
+
+            exporter.exportReport();
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\Reportes\\reporteAsientos.xlsx");
+        p.start();
+}
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+        try {
+            Reporte_Numero_Asientosexcel();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+    }//GEN-LAST:event_jButton12ActionPerformed
+public void Reporte_Tipo_Transmisionpdf() throws ClassNotFoundException, IOException, SQLException, JRException{
+        Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporte_Tipo_Transmisionpdf = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Reporte_Transmision.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", this.empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporte_Tipo_Transmisionpdf, param,con);
+        //JasperViewer.viewReport(print);
+        
+        File pdf = File.createTempFile("Reporte de Tipo de Transmision"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+        JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
+        //JOptionPane.showMessageDialog(null,pdf.getPath());
+        ProcessBuilder p = new ProcessBuilder();
+        p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
+        p.start();
+      }
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        try {
+            Reporte_Tipo_Transmisionpdf();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton13ActionPerformed
+public void Reporte_Tipo_Transmisionexcel() throws ClassNotFoundException, SQLException, JRException, IOException{
+    Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporte_Tipo_Transmisionexcel = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Reporte_Transmision.jrxml.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporte_Tipo_Transmisionexcel, param,con);
+        //JasperViewer.viewReport(print);
+        
+       // File excel = File.createTempFile("Reporte de Bancos"+"-"+".", ".xls",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+            JRXlsExporter exporter = new JRXlsExporter();
+            exporter.setParameter(net.sf.jasperreports.engine.export.JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(net.sf.jasperreports.engine.export.JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\Reportes\\reporteTransmision.xlsx");
+
+            exporter.exportReport();
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\Reportes\\reporteTransmision.xlsx");
+        p.start();
+}
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        try {
+            Reporte_Tipo_Transmisionexcel();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton14ActionPerformed
+public void Reporte_Vehiculopdf() throws ClassNotFoundException, IOException, SQLException, JRException{
+        Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporte_Vehiculopdf = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Reporte_Vehiculos.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", this.empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporte_Vehiculopdf, param,con);
+        //JasperViewer.viewReport(print);
+        
+        File pdf = File.createTempFile("Reporte de Vehiculo"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+        JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
+        //JOptionPane.showMessageDialog(null,pdf.getPath());
+        ProcessBuilder p = new ProcessBuilder();
+        p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
+        p.start();
+      }
+    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
+        try {
+            Reporte_Vehiculopdf();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton15ActionPerformed
+public void Reporte_Vehiculoexcel() throws ClassNotFoundException, SQLException, JRException, IOException{
+    Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+        
+        JasperReport reporte_Vehiculoexcel = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Reporte_Vehiculos.jrxml");
+        HashMap param = new HashMap();
+        param.put("Empleado", empNomb);
+        JasperPrint print = JasperFillManager.fillReport(reporte_Vehiculoexcel, param,con);
+        //JasperViewer.viewReport(print);
+        
+       // File excel = File.createTempFile("Reporte de Bancos"+"-"+".", ".xls",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+            net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter exporter = new net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter();
+            exporter.setParameter(net.sf.jasperreports.engine.export.JRXlsExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(net.sf.jasperreports.engine.export.JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\Reportes\\reporteVehiculos.xlsx");
+
+            exporter.exportReport();
+            
+            ProcessBuilder p = new ProcessBuilder();
+        p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\Reportes\\reporteVehiculos.xlsx");
+        p.start();
+}
+    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+        try {
+            Reporte_Vehiculoexcel();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton16ActionPerformed
 
     private void createTableBusqueda(){
         if(!chkMarca.isSelected()&& !chkTipoGasolina.isSelected() && !chkTipoVehiculo.isSelected() && !chkColor.isSelected()){
@@ -6805,6 +7563,22 @@ public boolean BuscarVehiculosTest(){
     public javax.swing.JFormattedTextField ftxtStock;
     public javax.swing.JFormattedTextField ftxtStockMaximo;
     public javax.swing.JFormattedTextField ftxtStockMinimo;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
+    private javax.swing.JButton jButton13;
+    private javax.swing.JButton jButton14;
+    private javax.swing.JButton jButton15;
+    private javax.swing.JButton jButton16;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -6886,4 +7660,20 @@ public boolean BuscarVehiculosTest(){
     public javax.swing.JTextField txtTipoVehiculo;
     public javax.swing.JTextField txtVin;
     // End of variables declaration//GEN-END:variables
+
+    private static class JRXlsxExporter {
+
+        public JRXlsxExporter() {
+        }
+
+        private void exportReport() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+    }
+
+    private static class JRXlsExporterParameter {
+
+        public JRXlsExporterParameter() {
+        }
+    }
 }

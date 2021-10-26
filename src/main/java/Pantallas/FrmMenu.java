@@ -290,6 +290,7 @@ public class FrmMenu extends javax.swing.JFrame {
 
     private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
         FrmCliente m = new FrmCliente();
+        m.setEmpNomb(labelEmple1.getText());
         m.setVisible(true);
         //FrmMenu me = new FrmMenu();
        // me.setVisible(false);
@@ -298,6 +299,7 @@ public class FrmMenu extends javax.swing.JFrame {
 
     private void btnPiezasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPiezasActionPerformed
         FrmPieza m = new FrmPieza();
+        m.labelempleado.setText(labelEmple1.getText());
         m.setVisible(true);
         //FrmMenu me = new FrmMenu();
         //this.setVisible(false);
@@ -314,6 +316,7 @@ public class FrmMenu extends javax.swing.JFrame {
 
     private void btnVehículosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVehículosActionPerformed
         FrmVehiculos v= new FrmVehiculos();
+        v.setEmpNomb(labelEmple1.getText());
         v.setVisible(true);
         //this.setVisible(false);
 
