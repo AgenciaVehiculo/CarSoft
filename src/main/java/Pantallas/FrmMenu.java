@@ -307,6 +307,7 @@ public class FrmMenu extends javax.swing.JFrame {
 
     private void btnEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpleadosActionPerformed
         FrmEmpleados m = new FrmEmpleados();
+        m.labelempleado.setText(labelEmple1.getText());
         m.setVisible(true);
         //m.setlabelEmpleado(String.valueOf(labelEmple1.getText()));
         //FrmMenu me = new FrmMenu();
@@ -337,6 +338,7 @@ public class FrmMenu extends javax.swing.JFrame {
 
     private void btnPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPedidosActionPerformed
         FrmPedidos p = new FrmPedidos();
+        p.setEmpNomb(labelEmple1.getText());
         p.setVisible(true);
         //this.setVisible(false);
 
