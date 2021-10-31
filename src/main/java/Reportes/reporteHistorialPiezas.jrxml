@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Empleado" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select SYSDATE() as 'HoraSistema', historico_precio_pieza.id_precio_historico as 'ID Pieza Histórico', tipo_pieza.Tipo_pieza as 'Tipo Pieza' ,pieza.nombre as 'Nombre', pieza.Caracteristicas_pieza as 'Características', FORMAT(historico_precio_pieza.precio,2,'en_US') as 'Precio', concat_ws('/', substring(historico_precio_pieza.fecha_inicial from 9 for 10),substring(historico_precio_pieza.fecha_inicial from 6 for 2), substring(historico_precio_pieza.fecha_inicial from 1 for 4)) as 'Fecha Inicial', 
+If(historico_precio_pieza.fecha_final=null, '', concat_ws('/', substring(historico_precio_pieza.fecha_final from 9 for 10),substring(historico_precio_pieza.fecha_final from 6 for 2), substring(historico_precio_pieza.fecha_final from 1 for 4))) as 'Fecha Final' , If(historico_precio_pieza.estado=true, 'Activo', 'Inactivo') as 'Estado'
+from historico_precio_pieza, pieza, tipo_pieza where historico_precio_pieza.ID_pieza=pieza.ID_pieza and pieza.ID_tipo_pieza=tipo_pieza.ID_tipo_pieza order by historico_precio_pieza.id_precio_historico;]]>
+	</queryString>
+	<field name="HoraSistema" class="java.sql.Timestamp"/>
+	<field name="ID Pieza Histórico" class="java.lang.Integer"/>
+	<field name="Tipo Pieza" class="java.lang.String"/>
+	<field name="Nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Características" class="java.lang.String"/>
+	<field name="Precio" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Fecha Inicial" class="java.lang.String"/>
+	<field name="Fecha Final" class="java.lang.String"/>
+	<field name="Estado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="120" splitType="Stretch">
+			<staticText>
+				<reportElement x="489" y="19" width="100" height="20"/>
+				<text><![CDATA[2272-0000]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="386" y="39" width="90" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="386" y="19" width="90" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Teléfono:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="362" y="59" width="114" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Correo Eléctronico:]]></text>
+			</staticText>
+			<image>
+				<reportElement x="182" y="0" width="129" height="97"/>
+				<imageExpression><![CDATA["C:\\CarSoft-Version-2.1\\src\\main\\resources\\Img\\CarSoft-removebg-preview.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="489" y="39" width="162" height="20"/>
+				<text><![CDATA[Comayagua, Comayagua]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="489" y="59" width="173" height="20"/>
+				<text><![CDATA[Exampleujcv.edu.hn]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="109" width="802" height="11" forecolor="#FF6666" backcolor="#FF6666"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="363" y="77" width="114" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Empleado:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="489" y="77" width="248" height="20"/>
+				<textFieldExpression><![CDATA[$P{Empleado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="802" height="35"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="22" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de Historial de Precios de las Piezas]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="57" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="802" height="11" forecolor="#FF6666" backcolor="#FF6666"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="26" width="56" height="20"/>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="75" y="26" width="107" height="20"/>
+				<text><![CDATA[Tipo de Piezas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="196" y="26" width="100" height="20"/>
+				<text><![CDATA[Nombre de la Pieza]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="309" y="26" width="131" height="20"/>
+				<text><![CDATA[Características]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="451" y="26" width="72" height="20"/>
+				<text><![CDATA[Precio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="536" y="26" width="87" height="20"/>
+				<text><![CDATA[Fecha Inicial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="639" y="26" width="87" height="20"/>
+				<text><![CDATA[Fecha Final]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="737" y="26" width="65" height="20"/>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="48" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="17" width="56" height="20"/>
+				<textFieldExpression><![CDATA[$F{ID Pieza Histórico}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="75" y="17" width="107" height="20"/>
+				<textFieldExpression><![CDATA[$F{Tipo Pieza}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="196" y="17" width="100" height="20"/>
+				<textFieldExpression><![CDATA[$F{Nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="309" y="17" width="131" height="20"/>
+				<textFieldExpression><![CDATA[$F{Características}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="451" y="17" width="72" height="20"/>
+				<textFieldExpression><![CDATA[$F{Precio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="536" y="17" width="87" height="20"/>
+				<textFieldExpression><![CDATA[$F{Fecha Inicial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="639" y="17" width="84" height="20"/>
+				<textFieldExpression><![CDATA[$F{Fecha Final}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="737" y="17" width="65" height="20"/>
+				<textFieldExpression><![CDATA[$F{Estado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="802" height="11" forecolor="#FF6666" backcolor="#FF6666"/>
+			</rectangle>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="229" y="0" width="345" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA["EN DIOS CONFIAMOS"]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="702" y="0" width="100" height="20"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20"/>
+				<textFieldExpression><![CDATA[$F{HoraSistema}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

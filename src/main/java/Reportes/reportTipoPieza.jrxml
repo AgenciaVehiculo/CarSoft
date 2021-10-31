@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b6f14b15-be08-4079-9e35-8a5affab6c7b">
+	<property name="ireport.zoom" value="1.0000000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Empleado" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select SYSDATE() as 'HoraSistema', tipo_pieza.ID_tipo_pieza as 'ID Tipo Pieza', tipo_pieza.Tipo_pieza as 'Tipo de Pieza', If(tipo_pieza.estado=true, 'Activo', 'Inactivo') as 'Estado' from tipo_pieza order by tipo_pieza.ID_tipo_pieza;]]>
+	</queryString>
+	<field name="HoraSistema" class="java.sql.Timestamp"/>
+	<field name="ID Tipo Pieza" class="java.lang.Integer"/>
+	<field name="Tipo de Pieza" class="java.lang.String"/>
+	<field name="Estado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="119" splitType="Stretch">
+			<staticText>
+				<reportElement x="320" y="18" width="100" height="20" uuid="23f55f50-b859-4429-af7e-9957a53d10ce"/>
+				<text><![CDATA[2272-0000]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="217" y="38" width="90" height="20" uuid="54468b19-9f09-4aef-88e3-5603c8ee6d09"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="217" y="18" width="90" height="20" uuid="69339a56-b032-4d9b-b09b-64e67c188902"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Teléfono:]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="129" height="97" uuid="ff4f108f-2577-4f38-8fee-edd1d85e17e7"/>
+				<imageExpression><![CDATA["C:\\CarSoft-Version-2.1\\src\\main\\resources\\Img\\CarSoft-removebg-preview.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="193" y="58" width="114" height="20" uuid="2f1267b9-1d6f-49aa-8c42-e61036340800"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Correo Eléctronico:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="38" width="162" height="20" uuid="c504a5d3-d5bc-4bda-8a20-2e7d416e201e"/>
+				<text><![CDATA[Comayagua, Comayagua]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="58" width="173" height="20" uuid="99e07209-763d-4827-8a44-80ebbb58aef2"/>
+				<text><![CDATA[Exampleujcv.edu.hn]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="107" width="555" height="11" forecolor="#FF6666" backcolor="#FF6666" uuid="a5dc6b73-761d-481e-b9b7-bc5dc8040b05"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="182" y="77" width="125" height="20" uuid="d659c78f-ca0c-4111-b89a-b26068d3a406"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Reporte generado por:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="320" y="77" width="213" height="20" uuid="b659e483-2aa0-4446-98fb-88b851367ce5"/>
+				<textFieldExpression><![CDATA[$P{Empleado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="35" uuid="d311a454-5634-4aa4-a0b4-5a86cc738ad1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="22" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de Tipo de Pieza]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="55" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="11" forecolor="#FF6666" backcolor="#FF6666" uuid="2c9084e0-0986-46a8-aad2-a035d0330f72"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="420" y="25" width="100" height="20" uuid="0fb1c348-66ba-4343-9527-cdcea1d67543"/>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="238" y="25" width="143" height="20" uuid="0d8df361-7c86-4adf-8be7-e9389343f88d"/>
+				<text><![CDATA[Tipo de Pieza]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="82" y="25" width="100" height="20" uuid="2722c675-f6dd-480b-9ec2-a9deeb010bcf"/>
+				<text><![CDATA[ID de la Pieza]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="49" splitType="Stretch">
+			<textField>
+				<reportElement x="82" y="16" width="100" height="20" uuid="07b01760-628e-4280-bfbe-9e5b9209c993"/>
+				<textFieldExpression><![CDATA[$F{ID Tipo Pieza}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="238" y="16" width="143" height="20" uuid="77837fbd-b4ae-40a7-a119-d036f8c9d16e"/>
+				<textFieldExpression><![CDATA[$F{Tipo de Pieza}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="420" y="16" width="100" height="20" uuid="c6daf582-c1a8-49e1-b411-467e515416ee"/>
+				<textFieldExpression><![CDATA[$F{Estado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="11" forecolor="#FF6666" backcolor="#FF6666" uuid="50688f99-e364-4de8-87a7-011154a25e57"/>
+			</rectangle>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="110" y="0" width="345" height="20" uuid="96522dd5-938b-415c-8fab-5c479c7d708a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA["EN DIOS CONFIAMOS"]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="455" y="0" width="100" height="20" uuid="acca07c6-a7c1-461b-aac8-7d816eb47c4d"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="4a2d60a3-5416-4409-b12c-d67b84d79028"/>
+				<textFieldExpression><![CDATA[$F{HoraSistema}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
