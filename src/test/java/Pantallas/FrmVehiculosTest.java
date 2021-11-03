@@ -264,7 +264,7 @@ public class FrmVehiculosTest {
     }
 
     @Test
-    public void testAgregarTransmision() {
+    public void testAgregarTransmision() throws Exception {
         System.out.println("AgregarTransmision");
         FrmVehiculos instance = new FrmVehiculos();
         boolean expResult = true;
@@ -280,7 +280,7 @@ public class FrmVehiculosTest {
     
 
     @Test
-    public void testModificarTransmision() {
+    public void testModificarTransmision() throws Exception {
         System.out.println("ModificarTransmision");
         FrmVehiculos instance = new FrmVehiculos();
                 boolean expResult = true;
@@ -296,7 +296,7 @@ public class FrmVehiculosTest {
 
 
     @Test
-    public void testDesactivarTransmision() {
+    public void testDesactivarTransmision() throws Exception {
         System.out.println("DesactivarTransmision");
         FrmVehiculos instance = new FrmVehiculos();
 
@@ -311,7 +311,7 @@ public class FrmVehiculosTest {
     }
 
     @Test
-    public void testDesactivarVehiculo() {
+    public void testDesactivarVehiculo() throws Exception {
         System.out.println("DesactivarVehiculo");
         FrmVehiculos instance = new FrmVehiculos();
         boolean expResult = true;
@@ -325,7 +325,7 @@ public class FrmVehiculosTest {
     }
 
     @Test
-    public void testModificarVehiculo() {
+    public void testModificarVehiculo() throws Exception {
         System.out.println("ModificarVehiculo");
         FrmVehiculos instance = new FrmVehiculos();
 
@@ -353,7 +353,7 @@ public class FrmVehiculosTest {
     }
 
     @Test
-    public void testAgregarVehiculos() {
+    public void testAgregarVehiculos() throws Exception {
         System.out.println("AgregarVehiculos");
         FrmVehiculos instance = new FrmVehiculos();
 

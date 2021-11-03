@@ -1,0 +1,2 @@
+nov 03, 2021 12:06:08 PM Pantallas.FrmCliente btnLimpiarActionPerformed
+GRAVE: org.hibernate.exception.JDBCConnectionException: could not prepare statement

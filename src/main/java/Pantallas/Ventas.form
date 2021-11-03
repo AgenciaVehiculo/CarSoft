@@ -1924,7 +1924,7 @@
                                               <Component id="btnAgregar8" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
-                                      <EmptySpace pref="534" max="32767" attributes="0"/>
+                                      <EmptySpace pref="540" max="32767" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
                                       <EmptySpace max="32767" attributes="0"/>
@@ -1978,7 +1978,7 @@
                           <Component id="btnAgregar7" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnAgregar8" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="124" max="32767" attributes="0"/>
+                      <EmptySpace pref="134" max="32767" attributes="0"/>
                       <Component id="jButton23" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="397" max="-2" attributes="0"/>
                   </Group>

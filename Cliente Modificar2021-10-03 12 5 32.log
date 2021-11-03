@@ -1,0 +1,2 @@
+nov 03, 2021 12:05:32 PM Pantallas.FrmCliente btnModificarActionPerformed
+GRAVE: org.hibernate.exception.JDBCConnectionException: could not extract ResultSet

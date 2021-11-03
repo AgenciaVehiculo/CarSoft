@@ -28,8 +28,10 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.persistence.EntityManagerFactory;
@@ -1341,7 +1343,62 @@ public class FrmPieza extends javax.swing.JFrame {
     }//GEN-LAST:event_jTabbedPane3FocusLost
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        try{
         crearTableBusquedaPieza();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmPieza.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"PiezaBuscarBuscar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -1387,9 +1444,64 @@ public class FrmPieza extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalir1ActionPerformed
 
     private void btnDesactivar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar2ActionPerformed
-
+        try{
+            DesactivarTipoPieza();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmPieza.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TipoPiezaDesactivar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnDesactivar2ActionPerformed
-public boolean DesactivarTipoPieza(){
+public boolean DesactivarTipoPieza() throws Exception{
             TipoPieza temp;
         temp = tipoPieza.findTipoPieza(txtIDTipoPieza.getSelectedIndex());
         if(temp.getEstado()){
@@ -1402,11 +1514,9 @@ public boolean DesactivarTipoPieza(){
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
             JOptionPane.showMessageDialog(null,"Tipo de pieza Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        try {
+        
             tipoPieza.edit(temp);
-        } catch (Exception ex) {
-            Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         createTableTipoPieza();
         btnActivarDesactivar();
         LimpiarNuevoTipoPieza();
@@ -1417,18 +1527,128 @@ public boolean DesactivarTipoPieza(){
 return true;
 }
     private void btnLimpiar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar2ActionPerformed
+        try{
         LimpiarNuevoTipoPieza();
+        }catch(Exception e){
+            
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmPieza.class.getName());
+                FileHandler fh;
+                fh = new FileHandler("./"+"TipoPiezaLimpiar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         // txtTipoPiezaNuevo.setText("");
 
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLimpiar2ActionPerformed
 
     private void btnModificar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar2ActionPerformed
+        try{
         ModificarTipoPieza();
-
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmPieza.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TipoPiezaModificar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_btnModificar2ActionPerformed
-public boolean ModificarTipoPieza(){
+public boolean ModificarTipoPieza() throws Exception{
     if(txtIDTipoPieza.getSelectedIndex()==0){
             JOptionPane.showMessageDialog(null, "Tipo de pieza no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -1492,11 +1712,9 @@ public boolean ModificarTipoPieza(){
                     TipoPieza e1;
                     e1=tipoPieza.findTipoPieza(txtIDTipoPieza.getSelectedIndex());
                     e1.setTipopieza(txtTipoPiezaNuevo.getText());
-                    try {
+                  
                         tipoPieza.edit(e1);
-                    } catch (Exception ex) {
-                        Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    
                     Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
                     JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
                     txtIDTipoPieza.setSelectedIndex(1);
@@ -1515,12 +1733,65 @@ public boolean ModificarTipoPieza(){
     return true;
 }
     private void btnAgregar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar2ActionPerformed
-
+        try{
         AgregarTipoPieza();
-
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmPieza.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TipoPiezaAgregar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAgregar2ActionPerformed
-public boolean AgregarTipoPieza(){
+public boolean AgregarTipoPieza() throws Exception{
     if(txtIDTipoPieza.getSelectedIndex()!=0){
             JOptionPane.showMessageDialog(null, "El ID Tipo de Pieza siempre debe estar en el ITEM de Nuevo para agregar un nuevo Tipo de Pieza","Error!", JOptionPane.ERROR_MESSAGE);
             txtIDTipoPieza.setSelectedIndex(0);
@@ -1584,11 +1855,9 @@ public boolean AgregarTipoPieza(){
                 TipoPieza e1 = new TipoPieza();
                 e1.setEstado(true);
                 e1.setTipopieza(txtTipoPiezaNuevo.getText());
-                try {
-                    tipoPieza.create(e1);
-                } catch (Exception ex) {
-                    Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-                }
+               
+                  tipoPieza.create(e1);
+                
                 Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
                 JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
                 //           txtIDTipoPieza.setSelectedIndex(1);
@@ -1709,10 +1978,65 @@ public boolean AgregarTipoPieza(){
     }//GEN-LAST:event_txtIDPiezaItemStateChanged
 
     private void btnDesactivar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar3ActionPerformed
-
+        try{
+        DesactivarPieza();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmPieza.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"PiezaDesactivar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
     }//GEN-LAST:event_btnDesactivar3ActionPerformed
-public boolean DesactivarPieza(){
+public boolean DesactivarPieza() throws Exception{
             Pieza temp;
         temp = piezaDao.findPieza(txtIDPieza.getSelectedIndex());
         //temp = piezaDao.findPieza(txtIDPieza.getSelectedIndex()+1);
@@ -1727,11 +2051,9 @@ public boolean DesactivarPieza(){
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
             JOptionPane.showMessageDialog(null,"Pieza Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        try {
+        
             piezaDao.edit(temp);
-        } catch (Exception ex) {
-            Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         createTablaPieza();
         btnActivarDesactivarPieza();
         createCmbTipoPieza();
@@ -1741,15 +2063,124 @@ public boolean DesactivarPieza(){
         return true;
 }
     private void btnLimpiar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar3ActionPerformed
+        try{
         LimpiarPieza();
+        }catch(Exception e){
+                try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmPieza.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"PiezaLimpiar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            }
     }//GEN-LAST:event_btnLimpiar3ActionPerformed
 
     private void btnModificar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar3ActionPerformed
+        try{
         ModificarPieza();
-
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmPieza.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"PiezaModificar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_btnModificar3ActionPerformed
-public boolean ModificarPieza(){
+public boolean ModificarPieza()throws Exception{
     
         if(jCmbTipoPieza.getSelectedIndex()==0){
             JOptionPane.showMessageDialog(null, "No ha seleccionado ningún Tipo de pieza","Error!", JOptionPane.ERROR_MESSAGE);
@@ -1929,11 +2360,9 @@ public boolean ModificarPieza(){
         temp.setEstado(true);
         temp.setId_Pieza(piezaDao.getPiezaCount()+1);
 
-        try {
+      
             piezaDao.edit(temp);
-        } catch (Exception ex) {
-            Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
 
         List<HistoricoPrecioPieza> t1 = historicoPieza.findHistoricoPrecioPiezaEntities();
         HistoricoPrecioPieza temp2 = new HistoricoPrecioPieza();
@@ -2002,11 +2431,9 @@ public boolean ModificarPieza(){
             //double aux=Double.parseDouble(jFtxtPrecio.getText().trim());
             //temp2.setPrecio(auxsueldo);
             temp2.setIdPieza(txtIDPieza.getSelectedIndex());
-            try {
+          
                 historicoPieza.edit(temp2);
-            } catch (Exception ex) {
-                Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
             aux1 = Integer.toString(fecha.get(Calendar.YEAR));
             aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH)+1);
             aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
@@ -2052,12 +2479,10 @@ public boolean ModificarPieza(){
             temp3.setPrecio(auxsueldo1);
             temp3.setEstado(true);
             temp3.setIdPrecioHistorico( historicoPieza.getHistoricoPrecioPiezaCount());
-            try {
+          
                 historicoPieza.create(temp3);
                 //txtIDPieza.setSelectedIndex(1);
-            } catch (Exception ex) {
-                Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
 
         }
         txtIDPieza.setSelectedIndex(0);
@@ -2075,11 +2500,66 @@ public boolean ModificarPieza(){
         return true;
 }
     private void btnAgregar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar3ActionPerformed
-        AgregarPieza();
 
+        try{
+        AgregarPieza();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmPieza.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"PiezaAgregar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnAgregar3ActionPerformed
 
-    public boolean AgregarPieza(){
+    public boolean AgregarPieza() throws Exception{
         if(txtIDPieza.getSelectedIndex()==0){
 
         }
@@ -2259,11 +2739,9 @@ public boolean ModificarPieza(){
         temp.setStock_Maximo(Integer.parseInt(jFtxtStockMaximo.getText()));
         temp.setStock_Minimo(Integer.parseInt(jFtxtStockMinimo.getText()));
 
-        try {
+       
             piezaDao.create(temp);
-        } catch (Exception ex) {
-            Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
 
         HistoricoPrecioPieza temp2 = new HistoricoPrecioPieza();
         temp2.setEstado(true);
@@ -2313,11 +2791,9 @@ public boolean ModificarPieza(){
         temp2.setPrecio(auxsueldo);
         temp2.setIdPrecioHistorico( historicoPieza.getHistoricoPrecioPiezaCount());
         temp2.setIdPieza(piezaDao.getPiezaCount());
-        try {
+   
             historicoPieza.create(temp2);
-        } catch (Exception ex) {
-            Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
 
         //           txtIDPieza.setSelectedIndex(1);
         Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
@@ -2481,102 +2957,183 @@ public boolean ModificarPieza(){
   
             try {
             Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
-            try {
+           
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         
         JasperReport reporteFactura = null;
-        try {
+       
             reporteFactura = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reportePiezas.jrxml");
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         HashMap param = new HashMap();
          param.put("Empleado", labelempleado.getText());
          JasperPrint print= null;
-        try {
+       
                 print = JasperFillManager.fillReport(reporteFactura, param,con);
                 //JasperViewer.viewReport(print);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
         
         File pdf = null;
-        try {
+     
             pdf = File.createTempFile("Reporte Piezas"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
-        } catch (IOException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
-        try {
+        
+      
             JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
-        } catch (FileNotFoundException | JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+        
         //JOptionPane.showMessageDialog(null,pdf.getPath());
         ProcessBuilder p = new ProcessBuilder();
         p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
-        try {
+       
             p.start();
-        } catch (IOException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmPieza.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"PiezaPDF"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnGenerarActionPerformed
 
     private void btnGenerar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar2ActionPerformed
+        try{
         reportePiezas();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmPieza.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"PiezaExcel"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnGenerar2ActionPerformed
-public void reportePiezas(){
-     try{
+public void reportePiezas() throws JRException, IOException, SQLException, ClassNotFoundException{
+     
    Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
+        
+       
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         
         JasperReport reporte = null;
-        try {
+        
             reporte = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reportePiezas.jrxml");
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         HashMap param = new HashMap();
         param.put("Empleado", labelempleado.getText());
         JasperPrint print = null;
-        try {
+     
             print = JasperFillManager.fillReport(reporte, param,con);
             //JasperViewer.viewReport(print);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
             JRXlsxExporter exporter = new JRXlsxExporter();
             exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
             exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reportePiezas.xlsx");
 
-        try {
             exporter.exportReport();
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
             
             ProcessBuilder p = new ProcessBuilder();
         p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reportePiezas.xlsx");
         
-        try {
+        
             p.start();
-        }catch (IOException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
 }
     private void btnGenerar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar3ActionPerformed
      /*if(jTbHistorialPrecio.getRowCount()==0){
@@ -2589,22 +3146,16 @@ public void reportePiezas(){
 
             try {
             Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
-            try {
+        
+          
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
         
         JasperReport reporteFactura = null;
-        try {
+   
             reporteFactura = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteHistorialPiezas.jrxml");
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         HashMap param = new HashMap();
          param.put("Empleado", labelempleado.getText());
          
@@ -2648,138 +3199,321 @@ public void reportePiezas(){
         param.put("Estado2", tablaBusqueda.getModel().getValueAt(2, 6).toString());*/
         
          JasperPrint print= null;
-        try {
+        
                 print = JasperFillManager.fillReport(reporteFactura, param,con);
                 //JasperViewer.viewReport(print);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         
         File pdf = null;
-        try {
+         
+       
             pdf = File.createTempFile("Reporte Historico Precios Pieza"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
-        } catch (IOException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
         
-        try {
+        
             JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
-        } catch (FileNotFoundException | JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         //JOptionPane.showMessageDialog(null,pdf.getPath());
         ProcessBuilder p = new ProcessBuilder();
         p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
-        try {
+        
             p.start();
-        } catch (IOException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmPieza.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"HistorialPiezaPDF"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnGenerar3ActionPerformed
 
     private void btnGenerar4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar4ActionPerformed
+        try{
         reporteHistorialPrecioPieza();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmPieza.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"HistorialPiezaExcel"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnGenerar4ActionPerformed
-public void reporteHistorialPrecioPieza(){
-     try{
+public void reporteHistorialPrecioPieza() throws ClassNotFoundException, SQLException, JRException, IOException{
+    
    Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+        
+           con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
+       
         
         JasperReport reporte = null;
-        try {
-            reporte = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteHistorialPiezas.jrxml");
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+     
+          reporte = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteHistorialPiezas.jrxml");
+       
         HashMap param = new HashMap();
         param.put("Empleado", labelempleado.getText());
         JasperPrint print = null;
-        try {
+       
             print = JasperFillManager.fillReport(reporte, param,con);
             //JasperViewer.viewReport(print);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
             JRXlsxExporter exporter = new JRXlsxExporter();
             exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
             exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteHistorialPiezas.xlsx");
 
-        try {
+        
             exporter.exportReport();
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
             
             ProcessBuilder p = new ProcessBuilder();
         p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteHistorialPiezas.xlsx");
         
-        try {
+        
             p.start();
-        }catch (IOException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
 }
     private void btnGenerar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar5ActionPerformed
 
             try {
             Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
-            try {
+        
+       
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         
         JasperReport reporteFactura = null;
-        try {
+      
             reporteFactura = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reportTipoPieza.jrxml");
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
         HashMap param = new HashMap();
          param.put("Empleado", labelempleado.getText());
          JasperPrint print= null;
-        try {
+       
                 print = JasperFillManager.fillReport(reporteFactura, param,con);
                 //JasperViewer.viewReport(print);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         
         File pdf = null;
-        try {
-            pdf = File.createTempFile("Reporte Tipo de Pieza"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
-        } catch (IOException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
-        try {
+            pdf = File.createTempFile("Reporte Tipo de Pieza"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+        
+       
             JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
-        } catch (FileNotFoundException | JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
         //JOptionPane.showMessageDialog(null,pdf.getPath());
         ProcessBuilder p = new ProcessBuilder();
         p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
-        try {
+     
             p.start();
-        } catch (IOException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmPieza.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TipoPiezaPDF"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnGenerar5ActionPerformed
 
     private void btnGenerar6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar6ActionPerformed
+        try{
         reporteTipoPieza();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmPieza.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TipoPiezaExcel"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnGenerar6ActionPerformed
 
     private void btnGenerar7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar7ActionPerformed
@@ -2793,22 +3527,16 @@ public void reporteHistorialPrecioPieza(){
 
             try {
             Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
-            try {
+       
+            
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         
         JasperReport reporteFactura = null;
-        try {
+      
             reporteFactura = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reportePiezasBuscar.jrxml");
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         HashMap param = new HashMap();
          param.put("Empleado",labelempleado.getText());
         param.put("ID", tablaBusqueda.getModel().getValueAt(0, 0).toString());
@@ -2821,32 +3549,77 @@ public void reporteHistorialPrecioPieza(){
         param.put("StockMinimo", tablaBusqueda.getModel().getValueAt(0, 7).toString());
         param.put("Estado", tablaBusqueda.getModel().getValueAt(0, 8).toString());
          JasperPrint print= null;
-        try {
+       
                 print = JasperFillManager.fillReport(reporteFactura, param,con);
                 //JasperViewer.viewReport(print);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         
         File pdf = null;
-        try {
-            pdf = File.createTempFile("Reporte Piezas"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
-        } catch (IOException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
-        try {
+            pdf = File.createTempFile("Reporte Piezas"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+       
+        
+      
             JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
-        } catch (FileNotFoundException | JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         //JOptionPane.showMessageDialog(null,pdf.getPath());
         ProcessBuilder p = new ProcessBuilder();
         p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
-        try {
+       
             p.start();
-        } catch (IOException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmPieza.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"PiezaBuscarReporte"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnGenerar7ActionPerformed
 
@@ -2860,21 +3633,15 @@ public void reporteHistorialPrecioPieza(){
         }
         try{
    Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
+        
+      
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
         
         JasperReport reporte = null;
-        try {
+   
             reporte = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reportePiezasBuscar.jrxml");
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         HashMap param = new HashMap();
         param.put("Empleado", labelempleado.getText());
         param.put("ID", tablaBusqueda.getModel().getValueAt(0, 0).toString());
@@ -2887,76 +3654,109 @@ public void reporteHistorialPrecioPieza(){
         param.put("StockMinimo", tablaBusqueda.getModel().getValueAt(0, 7).toString());
         param.put("Estado", tablaBusqueda.getModel().getValueAt(0, 8).toString());
         JasperPrint print = null;
-        try {
+    
             print = JasperFillManager.fillReport(reporte, param,con);
             //JasperViewer.viewReport(print);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
             JRXlsxExporter exporter = new JRXlsxExporter();
             exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
             exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reportePiezasBuscar.xlsx");
 
-        try {
+      
             exporter.exportReport();
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
             
             ProcessBuilder p = new ProcessBuilder();
         p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reportePiezasBuscar.xlsx");
         
-        try {
+        
             p.start();
-        }catch (IOException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (Exception e) {
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmPieza.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"PiezaBuscarExcel"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnGenerar8ActionPerformed
-public void reporteTipoPieza(){
-     try{
+public void reporteTipoPieza() throws ClassNotFoundException, JRException, SQLException, IOException{
+     
    Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
+        
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         
         JasperReport reporte = null;
-        try {
+       
             reporte = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reportTipoPieza.jrxml");
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         HashMap param = new HashMap();
         param.put("Empleado", labelempleado.getText());
         JasperPrint print = null;
-        try {
+       
             print = JasperFillManager.fillReport(reporte, param,con);
             //JasperViewer.viewReport(print);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
             JRXlsxExporter exporter = new JRXlsxExporter();
             exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
             exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteTipoPieza.xlsx");
 
-        try {
             exporter.exportReport();
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
             
             ProcessBuilder p = new ProcessBuilder();
         p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteTipoPieza.xlsx");
         
-        try {
+        
             p.start();
-        }catch (IOException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
 }
     public boolean ValidacionNombreMayusculaYDemasMinus(String num){
         Pattern pat = null;
