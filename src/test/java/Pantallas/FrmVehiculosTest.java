@@ -38,7 +38,7 @@ public class FrmVehiculosTest {
     }
 
     @Test
-    public void testAgregarMarca() {
+    public void testAgregarMarca() throws Exception {
         System.out.println("AgregarMarca");
         FrmVehiculos instance = new FrmVehiculos();
         boolean expResult = true;
@@ -53,7 +53,7 @@ public class FrmVehiculosTest {
     }
 
     @Test
-    public void testModificarMarca() {
+    public void testModificarMarca() throws Exception {
         System.out.println("ModificarMarca");
         FrmVehiculos instance = new FrmVehiculos();
         boolean expResult = true;
@@ -67,7 +67,7 @@ public class FrmVehiculosTest {
         }
     }
     @Test
-    public void testDesactivarMarca() {
+    public void testDesactivarMarca() throws Exception {
         System.out.println("DesactivarMarca");
         FrmVehiculos instance = new FrmVehiculos();
         boolean expResult = true;
@@ -81,7 +81,7 @@ public class FrmVehiculosTest {
     }
 
     @Test
-    public void testAgregarColor() {
+    public void testAgregarColor() throws Exception {
         System.out.println("AgregarColor");
         FrmVehiculos instance = new FrmVehiculos();
         boolean expResult = true;
@@ -96,7 +96,7 @@ public class FrmVehiculosTest {
     }
 
     @Test
-    public void testModificarColor() {
+    public void testModificarColor() throws Exception {
         System.out.println("ModificarColor");
         FrmVehiculos instance = new FrmVehiculos();
         boolean expResult = true;
@@ -111,7 +111,7 @@ public class FrmVehiculosTest {
     }
 
     @Test
-    public void testDesactivarColor() {
+    public void testDesactivarColor() throws Exception {
         System.out.println("DesactivarColor");
         FrmVehiculos instance = new FrmVehiculos();
         boolean expResult = true;
@@ -125,7 +125,7 @@ public class FrmVehiculosTest {
     }
 
     @Test
-    public void testAgregarTipoVehiculo() {
+    public void testAgregarTipoVehiculo() throws Exception {
         System.out.println("AgregarTipoVehiculo");
         FrmVehiculos instance = new FrmVehiculos();
         boolean expResult = true;
@@ -140,7 +140,7 @@ public class FrmVehiculosTest {
     }
 
     @Test
-    public void testModificarTipoVehiculo() {
+    public void testModificarTipoVehiculo() throws Exception {
         System.out.println("ModificarTipoVehiculo");
         FrmVehiculos instance = new FrmVehiculos();
 
@@ -157,7 +157,7 @@ public class FrmVehiculosTest {
 
 
     @Test
-    public void testDesactivarTipoVehiculo() {
+    public void testDesactivarTipoVehiculo() throws Exception {
         System.out.println("DesactivarTipoVehiculo");
         FrmVehiculos instance = new FrmVehiculos();
         boolean expResult = true;
@@ -171,7 +171,7 @@ public class FrmVehiculosTest {
     }
 
     @Test
-    public void testAgregarTipoCabina() {
+    public void testAgregarTipoCabina() throws Exception {
         System.out.println("AgregarTipoCabina");
         FrmVehiculos instance = new FrmVehiculos();
         
@@ -187,7 +187,7 @@ public class FrmVehiculosTest {
     }
 
     @Test
-    public void testModificarTipoCabina() {
+    public void testModificarTipoCabina() throws Exception {
         System.out.println("ModificarTipoCabina");
         FrmVehiculos instance = new FrmVehiculos();
                 boolean expResult = true;
@@ -203,7 +203,7 @@ public class FrmVehiculosTest {
 
 
     @Test
-    public void testDesactivarTipoCabina() {
+    public void testDesactivarTipoCabina() throws Exception {
         System.out.println("DesactivarTipoCabina");
         FrmVehiculos instance = new FrmVehiculos();
                         boolean expResult = true;
@@ -218,7 +218,7 @@ public class FrmVehiculosTest {
     }
 
     @Test
-    public void testAgregarTipoCombustible() {
+    public void testAgregarTipoCombustible() throws Exception {
         System.out.println("AgregarTipoCombustible");
         FrmVehiculos instance = new FrmVehiculos();
                         boolean expResult = true;
@@ -233,7 +233,7 @@ public class FrmVehiculosTest {
     }
 
     @Test
-    public void testModificarTipoCombustible() {
+    public void testModificarTipoCombustible() throws Exception {
         System.out.println("ModificarTipoCombustible");
         FrmVehiculos instance = new FrmVehiculos();
         boolean expResult = true;
@@ -248,7 +248,7 @@ public class FrmVehiculosTest {
     }
 
     @Test
-    public void testDesactivarTipoCombustible() {
+    public void testDesactivarTipoCombustible() throws Exception {
         System.out.println("DesactivarTipoCombustible");
         FrmVehiculos instance = new FrmVehiculos();
         boolean expResult = true;
@@ -381,7 +381,7 @@ public class FrmVehiculosTest {
     }
 
     @Test
-    public void testAgregarNumeroAsientos() {
+    public void testAgregarNumeroAsientos() throws Exception {
         System.out.println("AgregarNumeroAsientos");
         FrmVehiculos instance = new FrmVehiculos();
         boolean expResult = true;
@@ -396,7 +396,7 @@ public class FrmVehiculosTest {
     }
 
     @Test
-    public void testModificarNumeroAsientos() {
+    public void testModificarNumeroAsientos() throws Exception {
         System.out.println("ModificarNumeroAsientos");
         FrmVehiculos instance = new FrmVehiculos();
         boolean expResult = true;
@@ -411,7 +411,7 @@ public class FrmVehiculosTest {
     }
 
     @Test
-    public void testDesactivarNumeroAsientos() {
+    public void testDesactivarNumeroAsientos() throws Exception {
         System.out.println("DesactivarNumeroAsientos");
         FrmVehiculos instance = new FrmVehiculos();
         boolean expResult = true;

@@ -46,8 +46,10 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.persistence.EntityManagerFactory;
@@ -1973,7 +1975,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel6Layout.createSequentialGroup()
                                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jLabel33, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                                            .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 131, Short.MAX_VALUE)
                                             .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGap(18, 18, 18)
                                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2407,9 +2409,8 @@ public class FrmVehiculos extends javax.swing.JFrame {
                             .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 864, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel8Layout.createSequentialGroup()
                                 .addGap(513, 513, 513)
-                                .addComponent(jLabel41)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(348, 348, 348)
+                                .addComponent(jLabel41)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnSalir5)))
                 .addGap(808, 808, 808))
         );
@@ -2600,7 +2601,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
                             .addGroup(jPanel9Layout.createSequentialGroup()
                                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel47, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel48, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE))
+                                    .addComponent(jLabel48, javax.swing.GroupLayout.PREFERRED_SIZE, 153, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cmbIDNumeroAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2801,7 +2802,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
                                     .addComponent(btnLimpiar6))
                                 .addGroup(jPanel5Layout.createSequentialGroup()
                                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jLabel42, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+                                        .addComponent(jLabel42, javax.swing.GroupLayout.PREFERRED_SIZE, 132, Short.MAX_VALUE)
                                         .addComponent(jLabel43, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3454,28 +3455,122 @@ public class FrmVehiculos extends javax.swing.JFrame {
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
         try {
             Reporte_Vehiculoexcel();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | SQLException | JRException | IOException e) {
+            
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"VehiculoReporteExcel"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
     }//GEN-LAST:event_jButton16ActionPerformed
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
         try {
             Reporte_Vehiculopdf();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | IOException | SQLException | JRException e) {
+            
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"VehiculoReportePDF"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
     }//GEN-LAST:event_jButton15ActionPerformed
 
@@ -3617,23 +3712,241 @@ public class FrmVehiculos extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbIDVehiculoItemStateChanged
 
     private void btnAgregar7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar7ActionPerformed
+        try{
         AgregarVehiculos();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"VehiculoAgregar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnAgregar7ActionPerformed
 
     private void btnModificar7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar7ActionPerformed
-
+        try{
+            ModificarVehiculo();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"VehiculoModificar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnModificar7ActionPerformed
 
     private void btnDesactivar7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar7ActionPerformed
-
+        try{
+            DesactivarVehiculo();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"VehiculoDesactivar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnDesactivar7ActionPerformed
 
     private void btnLimpiar7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar7ActionPerformed
-
+        try{
         limpiar();
         btnModificar7.setEnabled(false);
         btnAgregar7.setEnabled(true);
-
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"VehiculoLimpiar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnLimpiar7ActionPerformed
 
     private void txtVinKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtVinKeyTyped
@@ -3695,28 +4008,119 @@ public class FrmVehiculos extends javax.swing.JFrame {
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
         try {
             Reporte_Tipo_Transmisionexcel();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | SQLException | JRException | IOException e) {
+           
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TransmisionReporteExcel"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton14ActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
         try {
             Reporte_Tipo_Transmisionpdf();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | IOException | SQLException | JRException e) {
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TransmisionReportePDF"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton13ActionPerformed
 
@@ -3748,19 +4152,240 @@ public class FrmVehiculos extends javax.swing.JFrame {
     }//GEN-LAST:event_tblTipoTransmisionMouseClicked
 
     private void btnDesactivar6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar6ActionPerformed
+
+        try{
         DesactivarTransmision();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TransmisionDesactivar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnDesactivar6ActionPerformed
 
     private void btnLimpiar6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar6ActionPerformed
+        try{
         LimpiarNuevoTipoTransmision();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TransmisionLimpiar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnLimpiar6ActionPerformed
 
     private void btnModificar6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar6ActionPerformed
+        try{
         ModificarTransmision();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TransmisionModificar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnModificar6ActionPerformed
 
     private void btnAgregar6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar6ActionPerformed
-
+        try{
+            AgregarTransmision();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TransmisionAgregar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnAgregar6ActionPerformed
 
     private void txtTipoTransmisionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTipoTransmisionKeyTyped
@@ -3795,14 +4420,59 @@ public class FrmVehiculos extends javax.swing.JFrame {
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         try {
             Reporte_Numero_Asientosexcel();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | SQLException | JRException | IOException e) {
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"AsientosReporteExcel"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }//GEN-LAST:event_jButton12ActionPerformed
@@ -3810,14 +4480,59 @@ public class FrmVehiculos extends javax.swing.JFrame {
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         try {
             Reporte_Numero_Asientospdf();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | IOException | SQLException | JRException e) {
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"AsientosReportesPDF"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton11ActionPerformed
 
@@ -3849,22 +4564,242 @@ public class FrmVehiculos extends javax.swing.JFrame {
     }//GEN-LAST:event_tblNumeroAsientosMouseClicked
 
     private void btnDesactivar8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar8ActionPerformed
+        try{
         DesactivarNumeroAsientos();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"AsientosDesactivar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnDesactivar8ActionPerformed
 
     private void btnLimpiar8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar8ActionPerformed
         //  cmbIDNumeroAsientos.setSelectedIndex(1);
+        try{
         LimpiarNuevoNumeroAsientos();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"AsientosLimpiar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
     }//GEN-LAST:event_btnLimpiar8ActionPerformed
 
     private void btnModificar8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar8ActionPerformed
+
+        try{
         ModificarNumeroAsientos();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"NumeroAsientosModificar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnModificar8ActionPerformed
 
     private void btnAgregar8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar8ActionPerformed
+        try{
         AgregarNumeroAsientos();
-
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"AsientosAgregar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnAgregar8ActionPerformed
 
     private void txtNumeroAsientosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumeroAsientosKeyTyped
@@ -3899,28 +4834,119 @@ public class FrmVehiculos extends javax.swing.JFrame {
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         try {
             Reporte_Tipo_Gasolinaexcel();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | SQLException | JRException | IOException e) {
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"CombustibleReporteExcel"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         try {
             Reporte_Tipo_Gasolinapdf();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | IOException | JRException | SQLException e) {
+            
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"CombustibleReportePDF"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton9ActionPerformed
 
@@ -3952,19 +4978,240 @@ public class FrmVehiculos extends javax.swing.JFrame {
     }//GEN-LAST:event_tblTipoGasolinaMouseClicked
 
     private void btnDesactivar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar5ActionPerformed
+        try{
         DesactivarTipoCombustible();
+        }catch(Exception e){
+        try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"CombustibleDesactivar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnDesactivar5ActionPerformed
 
     private void btnLimpiar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar5ActionPerformed
+        try{
         LimpiarNuevoTipoGasolina();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"CombustibleLimpiar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnLimpiar5ActionPerformed
 
     private void btnModificar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar5ActionPerformed
+
+        try{
         ModificarTipoCombustible();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"CombustibleModificar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnModificar5ActionPerformed
 
     private void btnAgregar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar5ActionPerformed
+        try{
         AgregarTipoCombustible();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"CombustibleAgregar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnAgregar5ActionPerformed
 
     private void txtTipoGasolinaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTipoGasolinaKeyTyped
@@ -3999,28 +5246,118 @@ public class FrmVehiculos extends javax.swing.JFrame {
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         try {
             Reporte_Tipo_Cabinaexcel();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | SQLException | JRException | IOException e) {
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TipoCabinaReporteExcel"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         try {
             Reporte_Tipo_Cabinapdf();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | IOException | SQLException | JRException e) {
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TipoCabinaReportePDF"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
@@ -4052,21 +5389,244 @@ public class FrmVehiculos extends javax.swing.JFrame {
     }//GEN-LAST:event_tblTipoCabinaMouseClicked
 
     private void btnDesactivar4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar4ActionPerformed
-
+        try{
+            DesactivarTipoCabina();
+            
+        }
+        catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TipoCabinaDesactivar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnDesactivar4ActionPerformed
 
     private void btnLimpiar4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar4ActionPerformed
         // cmbIDTipoCabina.setSelectedIndex(1);
+        try{
         LimpiarNuevoTipoCabina();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TipoCabinaLimpiar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
     }//GEN-LAST:event_btnLimpiar4ActionPerformed
 
     private void btnModificar4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar4ActionPerformed
+        try{
         ModificarTipoCabina();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TipoCabinaModificar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnModificar4ActionPerformed
 
     private void btnAgregar4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar4ActionPerformed
+
+        try{
         AgregarTipoCabina();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TipoCabinaAgregar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnAgregar4ActionPerformed
 
     private void txtTipoCabinaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTipoCabinaKeyTyped
@@ -4087,28 +5647,118 @@ public class FrmVehiculos extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         try {
             Reporte_Tipo_Vehiculoexcel();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | SQLException | JRException | IOException e) {
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TipoVehiculoReporteExcel"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         try {
             Reporte_Tipo_Vehiculopdf();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | IOException | JRException | SQLException e) {
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TipoVehiculoReportePDF"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -4140,19 +5790,241 @@ public class FrmVehiculos extends javax.swing.JFrame {
     }//GEN-LAST:event_tblTipoVehiculoMouseClicked
 
     private void btnDesactivar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar3ActionPerformed
+       try{
         DesactivarTipoVehiculo();
+       }catch(Exception e){
+           try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TipoVehiculoDesactivar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+       }
     }//GEN-LAST:event_btnDesactivar3ActionPerformed
 
     private void btnLimpiar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar3ActionPerformed
+        try{
         LimpiarNuevoTipoVehiculo();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TipoVehiculoLimpiar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnLimpiar3ActionPerformed
 
     private void btnModificar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar3ActionPerformed
-        ModificarTipoVehiculo();
+        
+        try {
+            ModificarTipoVehiculo();
+        } catch (Exception e) {
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TipoVehiculoModificar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnModificar3ActionPerformed
 
     private void btnAgregar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar3ActionPerformed
+
+        try{
         AgregarTipoVehiculo();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"TipoVehiculoAgregar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnAgregar3ActionPerformed
 
     private void txtTipoVehiculoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTipoVehiculoKeyTyped
@@ -4187,28 +6059,118 @@ public class FrmVehiculos extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         try {
             Reporte_Colorexcel();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | SQLException | JRException | IOException e) {
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh;
+                fh = new FileHandler("./"+"ReporteColorExcel"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+             } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
             Reporte_Colorpdf();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | IOException | SQLException | JRException e) {
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"ReporteColorPDF"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -4240,19 +6202,241 @@ public class FrmVehiculos extends javax.swing.JFrame {
     }//GEN-LAST:event_tblColorMouseClicked
 
     private void btnDesactivar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar2ActionPerformed
+        try{
         DesactivarColor();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"ColorDesactivar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnDesactivar2ActionPerformed
 
     private void btnLimpiar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar2ActionPerformed
+        try{
         LimpiarNuevoColor();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"ColorLimpiar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
     }//GEN-LAST:event_btnLimpiar2ActionPerformed
 
     private void btnModificar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar2ActionPerformed
-
+        try{
+        ModificarColor();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"ColorModificar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnModificar2ActionPerformed
 
     private void btnAgregar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar2ActionPerformed
+
+        try{
         AgregarColor();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"ColorAgregar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnAgregar2ActionPerformed
 
     private void txtColorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtColorKeyTyped
@@ -4287,22 +6471,120 @@ public class FrmVehiculos extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             Reporte_Marcaexcel();
-        } catch (ClassNotFoundException | SQLException | JRException | IOException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | SQLException | JRException | IOException e) {
+            
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"MarcaReporteExcel"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             Reporte_Marcapdf();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | IOException | SQLException | JRException e) {
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"MarcaReportePDF"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -4334,21 +6616,241 @@ public class FrmVehiculos extends javax.swing.JFrame {
     }//GEN-LAST:event_tblMarcaMouseClicked
 
     private void btnDesactivar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivar1ActionPerformed
+
+        try{
         DesactivarMarca();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"MarcaDesactivar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnDesactivar1ActionPerformed
 
     private void btnLimpiar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar1ActionPerformed
+        try{
         //cmbIDMarca.setSelectedIndex(1);
         LimpiarMarca();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"MarcaLimpiar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnLimpiar1ActionPerformed
 
     private void btnModificar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar1ActionPerformed
+        try{
         ModificarMarca();
-
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"MarcaModificar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnModificar1ActionPerformed
 
     private void btnAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar1ActionPerformed
+        try{
         AgregarMarca();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"MarcaAgregar"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnAgregar1ActionPerformed
 
     private void txtMarcaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMarcaKeyTyped
@@ -4371,8 +6873,62 @@ public class FrmVehiculos extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbIDMarcaItemStateChanged
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-
+        try{
         createTableBusqueda();
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"BuscarVehiculos"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarActionPerformed
@@ -4443,101 +6999,180 @@ public class FrmVehiculos extends javax.swing.JFrame {
     }//GEN-LAST:event_chkMarcaItemStateChanged
 
     private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
-         try{
+        try{
    Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
+        
+        
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         
         JasperReport reporte = null;
-        try {
+        
             reporte = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Reporte_Historico_Precio_Vehiculo.jrxml");
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         HashMap param = new HashMap();
         param.put("Empleado", labelempleado.getText());
         JasperPrint print = null;
-        try {
+        
             print = JasperFillManager.fillReport(reporte, param,con);
             //JasperViewer.viewReport(print);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
             net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter exporter = new net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter();
             exporter.setParameter(net.sf.jasperreports.engine.export.JRXlsExporterParameter.JASPER_PRINT, print);
             exporter.setParameter(net.sf.jasperreports.engine.export.JRXlsExporterParameter.OUTPUT_FILE_NAME, "C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteHistorialPrecioVehiculos.xlsx");
 
-        try {
+        
             exporter.exportReport();
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
             
             ProcessBuilder p = new ProcessBuilder();
         p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\reporteHistorialPrecioVehiculos.xlsx");
         
-        try {
+        
             p.start();
-        }catch (IOException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (Exception e) {
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"HistorialVehiculoExcel"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton18ActionPerformed
 
     private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
-           try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        try{   
         
-            try {
+            Class.forName("com.mysql.jdbc.Driver");
+        
+        
+           
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
         JasperReport reporteFactura = null;
-        try {
+        
             reporteFactura = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Reporte_Historico_Precio_Vehiculo.jrxml");
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         HashMap param = new HashMap();
          param.put("Empleado", labelempleado.getText());
 
          JasperPrint print= null;
-        try {
+        
                 print = JasperFillManager.fillReport(reporteFactura, param,con);
                 //JasperViewer.viewReport(print);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         
         File pdf = null;
-        try {
+       
             pdf = File.createTempFile("Reporte Historico Precios Vehículos"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
-        } catch (IOException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
-        try {
             JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
-        } catch (FileNotFoundException | JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         //JOptionPane.showMessageDialog(null,pdf.getPath());
         ProcessBuilder p = new ProcessBuilder();
         p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
-        try {
+        
             p.start();
-        } catch (IOException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"HistoricoVehiculoPDF"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton17ActionPerformed
 
@@ -4555,7 +7190,9 @@ public class FrmVehiculos extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbPrecioHistoricoItemStateChanged
 
     private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
-               if(tbBusqueda.getRowCount()==0){
+
+        try{
+        if(tbBusqueda.getRowCount()==0){
             JOptionPane.showMessageDialog(null, "No hay ningún Vehículo en la tabla","Error!",0);
             return;
         }
@@ -4563,24 +7200,16 @@ public class FrmVehiculos extends javax.swing.JFrame {
             
         }
 
-            try {
+            
             Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
-            try {
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/carsoft","root","");
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         
         JasperReport reporteFactura = null;
-        try {
+        
             reporteFactura = JasperCompileManager.compileReport("C:\\CarSoft-Version-2.1\\src\\main\\java\\Reportes\\Reporte_BuscarVehiculos.jrxml");
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         HashMap param = new HashMap();
          param.put("Empleado",labelempleado.getText());
         param.put("ID", tbBusqueda.getModel().getValueAt(0, 0).toString());
@@ -4593,40 +7222,138 @@ public class FrmVehiculos extends javax.swing.JFrame {
         param.put("Precio", tbBusqueda.getModel().getValueAt(0, 7).toString());
         param.put("Estado", tbBusqueda.getModel().getValueAt(0, 8).toString());
          JasperPrint print= null;
-        try {
+        
                 print = JasperFillManager.fillReport(reporteFactura, param,con);
                 //JasperViewer.viewReport(print);
-        } catch (JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         
         File pdf = null;
-        try {
-            pdf = File.createTempFile("Reporte Buscar Vehiculos"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
-        } catch (IOException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
-        try {
+            pdf = File.createTempFile("Reporte Buscar Vehiculos"+"-"+".", ".pdf",new File("C:\\CarSoft-Version-2.1\\Reportes"));
+        
+        
+        
             JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
-        } catch (FileNotFoundException | JRException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         //JOptionPane.showMessageDialog(null,pdf.getPath());
         ProcessBuilder p = new ProcessBuilder();
         p.command("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe","/c",pdf.getPath());
-        try {
+        
             p.start();
-        } catch (IOException ex) {
-            Logger.getLogger(FrmEmpleados.class.getName()).log(Level.SEVERE, null, ex);
+        
+        }catch(Exception e){
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"ReportePDFBuscarVehiculos"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton19ActionPerformed
 
     private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
    try {
             ReporteBuscarVehiculos();
-        } catch (ClassNotFoundException | SQLException | JRException | IOException ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | SQLException | JRException | IOException e) {
+            try {
+                Calendar fecha = new GregorianCalendar();
+                String fecha1;
+                String aux1,aux2,aux3;
+                aux1 = Integer.toString(fecha.get(Calendar.YEAR));
+                aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH));
+                switch(aux2){
+                    case "01":
+                        aux2= "01";
+                        break;
+                    case "02":
+                        aux2= "02";
+                        break;case "03":
+                            aux2= "03";
+                            break;case "04":
+                                aux2= "04";
+                                break;case "05":
+                                    aux2= "05";
+                                    break;case "06":
+                                        aux2= "06";
+                                        break;case "07":
+                                            aux2= "07";
+                                            break;case "08":
+                                                aux2= "08";
+                                                break;case "09":
+                                                    aux2= "09";
+                                                    break;
+                                                case "010":
+                                                    aux2= "10";
+                                                    break;
+                                                case "011":
+                                                    aux2= "11";
+                                                    break;
+                                                case "012":
+                                                    aux2= "12";
+                                                    break;
+                                                default:
+                                                    break;
+                }
+                aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                Logger logger = Logger.getLogger(FrmVehiculos.class.getName());
+                FileHandler fh = null;
+                fh = new FileHandler("./"+"ReporteExcelBuscarVehiculos"+fecha1+".log");
+                logger.addHandler(fh);
+                fh.setFormatter(new SimpleFormatter());
+                logger.setLevel(Level.WARNING);
+                logger.log(Level.SEVERE,e.getMessage());
+                fh.close();
+            } catch (IOException | SecurityException ex) {
+                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
     }//GEN-LAST:event_jButton20ActionPerformed
 public void ReporteBuscarVehiculos()  throws ClassNotFoundException, SQLException, JRException, IOException{
@@ -4658,7 +7385,7 @@ public void ReporteBuscarVehiculos()  throws ClassNotFoundException, SQLExceptio
         p.command("cmd.exe","/c","C:\\CarSoft-Version-2.1\\Reportes\\reporteBuscarVehiculo.xlsx");
         p.start();
 }
-    public boolean AgregarMarca(){
+    public boolean AgregarMarca() throws Exception{
     
         
         
@@ -4728,11 +7455,9 @@ public void ReporteBuscarVehiculos()  throws ClassNotFoundException, SQLExceptio
                 Marca m = new Marca();
                 m.setEstado(true);
                 m.setMarca(txtMarca.getText());
-                /*try {
-                    Marcadao.create(m);
-                } catch (Exception ex) {
-                    Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                
+                Marcadao.create(m);
+                
                 Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
                 //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
                 //cmbIDMarca.setSelectedIndex(1);
@@ -4762,7 +7487,7 @@ public void ReporteBuscarVehiculos()  throws ClassNotFoundException, SQLExceptio
         return false;
         }
 }
-public boolean ModificarMarca(){
+public boolean ModificarMarca() throws Exception{
     if(cmbIDMarca.getSelectedIndex()==0){
             //JOptionPane.showMessageDialog(null, "Tipo de Marca no encontrada");
             return false;
@@ -4826,11 +7551,9 @@ public boolean ModificarMarca(){
                     Marca m;
                     m=Marcadao.findMarca(cmbIDMarca.getSelectedIndex());
                     m.setMarca(txtMarca.getText());
-                    /*try {
+                    
                         Marcadao.edit(m);
-                    } catch (Exception ex) {
-                        Logger.getLogger(Marca.class.getName()).log(Level.SEVERE, null, ex);
-                    }*/
+                    
                    // cmbIDMarca.setSelectedIndex(1);
                    Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
                 //JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
@@ -4857,7 +7580,7 @@ public boolean ModificarMarca(){
         btnAgregar1.setEnabled(true);
         btnModificar1.setEnabled(false);
         btnDesactivar1.setEnabled(false);
-}public boolean DesactivarMarca(){
+}public boolean DesactivarMarca() throws Exception{
             Marca temp;
         temp = Marcadao.findMarca(cmbIDMarca.getSelectedIndex());
         if(temp.isEstado()){
@@ -4870,11 +7593,9 @@ public boolean ModificarMarca(){
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
             //JOptionPane.showMessageDialog(null,"Marca Activada exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        /*try {
+        
             Marcadao.edit(temp);
-        } catch (Exception ex) {
-            Logger.getLogger(Marca.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        
         createTableMarca();
         btnActivarDesactivarMarca();
         LimpiarMarca();
@@ -4882,7 +7603,7 @@ public boolean ModificarMarca(){
         btnAgregar1.setEnabled(true);
         btnModificar1.setEnabled(false);
         return true;
-}public boolean AgregarColor(){
+}public boolean AgregarColor() throws Exception{
     
         if(cmbIDColor.getSelectedIndex()!=0){
             //JOptionPane.showMessageDialog(null, "El ID Color siempre debe estar en el ITEM de Nuevo para agregar un nuevo Color","Error!", JOptionPane.ERROR_MESSAGE);
@@ -4951,11 +7672,9 @@ public boolean ModificarMarca(){
                 Tipo_color cc = new Tipo_color();
                 cc.setEstado(true);
                 cc.setTipo_color(txtColor.getText());
-                /*try {
-                    Colorrdao.create(cc);
-                } catch (Exception ex) {
-                    Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                
+                Colorrdao.create(cc);
+                
                 Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
                 //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
                 //cmbIDColor.setSelectedIndex(1);
@@ -4972,7 +7691,7 @@ public boolean ModificarMarca(){
             }
         }
         return true;
-}public boolean ModificarColor(){
+}public boolean ModificarColor() throws Exception{
            if(cmbIDColor.getSelectedIndex()==0){
             //JOptionPane.showMessageDialog(null, "Color no encontrado");
             return false;
@@ -5037,11 +7756,9 @@ public boolean ModificarMarca(){
                     Tipo_color cc;
                     cc=Colorrdao.findTipo_color(cmbIDColor.getSelectedIndex());
                     cc.setTipo_color(txtColor.getText());
-                    /*try {
+                    
                         Colorrdao.edit(cc);
-                    } catch (Exception ex) {
-                        Logger.getLogger(Color.class.getName()).log(Level.SEVERE, null, ex);
-                    }*/
+                    
                     //cmbIDColor.setSelectedIndex(1);
                     Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
                 //JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
@@ -5068,7 +7785,7 @@ public boolean ModificarMarca(){
         btnDesactivar2.setEnabled(false);
         createTableColor();
         createComboBoxColor();
-}public boolean DesactivarColor(){
+}public boolean DesactivarColor() throws Exception{
     Tipo_color temp;
         temp = Colorrdao.findTipo_color(cmbIDColor.getSelectedIndex());
         if(temp.isEstado()){
@@ -5081,11 +7798,9 @@ public boolean ModificarMarca(){
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
             //JOptionPane.showMessageDialog(null,"Color Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        /*try {
-            Colorrdao.edit(temp);
-        } catch (Exception ex) {
-            Logger.getLogger(Color.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        
+         Colorrdao.edit(temp);
+        
         createTableColor();
         btnActivarDesactivarColor();
         LimpiarNuevoColor();
@@ -5093,7 +7808,7 @@ public boolean ModificarMarca(){
         btnAgregar2.setEnabled(true);
         btnModificar2.setEnabled(false);
         return true;
-}public boolean AgregarTipoVehiculo(){
+}public boolean AgregarTipoVehiculo() throws Exception{
     
         if(cmbIDTipoVehiculo.getSelectedIndex()!=0){
             //JOptionPane.showMessageDialog(null, "El ID Tipo de Vehículo siempre debe estar en el ITEM de Nuevo para agregar un nuevo Tipo de Vehículo","Error!", JOptionPane.ERROR_MESSAGE);
@@ -5163,11 +7878,9 @@ public boolean ModificarMarca(){
                 TipoVehiculo tp = new TipoVehiculo();
                 tp.setEstado(true);
                 tp.setTipoVehiculo(txtTipoVehiculo.getText());
-                /*try {
+                
                     TipoVehiculodao.create(tp);
-                } catch (Exception ex) {
-                    Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                
                 Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
            //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
                 //cmbIDTipoVehiculo.setSelectedIndex(1);
@@ -5186,7 +7899,7 @@ public boolean ModificarMarca(){
             }
         }
         return true;
-}public boolean ModificarTipoVehiculo(){
+}public boolean ModificarTipoVehiculo() throws Exception{
     if(cmbIDTipoVehiculo.getSelectedIndex()==0){
             //JOptionPane.showMessageDialog(null, "Tipo de  Vehículo no encontrado");
             return false;
@@ -5252,11 +7965,9 @@ public boolean ModificarMarca(){
                     TipoVehiculo tp;
                     tp=TipoVehiculodao.findTipoVehiculo(cmbIDTipoVehiculo.getSelectedIndex());
                     tp.setTipoVehiculo(txtTipoVehiculo.getText());
-                    /*try {
-                        TipoVehiculodao.edit(tp);
-                    } catch (Exception ex) {
-                        Logger.getLogger(TipoVehiculo.class.getName()).log(Level.SEVERE, null, ex);
-                    }*/
+                    
+                       TipoVehiculodao.edit(tp);
+                    
                     //cmbIDTipoVehiculo.setSelectedIndex(1);
                     Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
                 //JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
@@ -5283,7 +7994,7 @@ public boolean ModificarMarca(){
         btnDesactivar3.setEnabled(false);
         createTableTipoVehiculo();
         createComboBoxTipoVehiculo();
-}public boolean DesactivarTipoVehiculo(){
+}public boolean DesactivarTipoVehiculo() throws Exception{
      TipoVehiculo temp;
         temp = TipoVehiculodao.findTipoVehiculo(cmbIDTipoVehiculo.getSelectedIndex());
         if(temp.isEstado()){
@@ -5296,11 +8007,9 @@ public boolean ModificarMarca(){
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
             //JOptionPane.showMessageDialog(null,"Tipo de Vehículo Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        /*try {
-            TipoVehiculodao.edit(temp);
-        } catch (Exception ex) {
-            Logger.getLogger(TipoVehiculo.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+       
+         TipoVehiculodao.edit(temp);
+        
         createTableTipoVehiculo();
         btnActivarDesactivarTipoVehiculo();
         LimpiarNuevoTipoVehiculo();
@@ -5308,7 +8017,7 @@ public boolean ModificarMarca(){
         btnAgregar3.setEnabled(true);
         btnModificar3.setEnabled(false);
         return true;
-}public boolean AgregarTipoCabina(){
+}public boolean AgregarTipoCabina() throws Exception{
     
         if(cmbPiezaClave.getSelectedIndex()!=0){
             //JOptionPane.showMessageDialog(null, "El ID Tipo de Cabina siempre debe estar en el ITEM de Nuevo para agregar un nuevo Tipo de Cabina","Error!", JOptionPane.ERROR_MESSAGE);
@@ -5377,11 +8086,9 @@ public boolean ModificarMarca(){
                 TipoCabina tp = new TipoCabina();
                 tp.setEstado(true);
                 tp.setTipoCabina(txtTipoCabina.getText());
-                /*try {
-                    TipoCabinadao.create(tp);
-                } catch (Exception ex) {
-                    Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+               
+                TipoCabinadao.create(tp);
+                
                 //cmbIDTipoCabina.setSelectedIndex(1);
                 Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
            //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
@@ -5396,7 +8103,7 @@ public boolean ModificarMarca(){
             }
         }
         return true;
-}public boolean ModificarTipoCabina(){
+}public boolean ModificarTipoCabina() throws Exception{
    if(cmbPiezaClave.getSelectedIndex()==0){
             JOptionPane.showMessageDialog(null, "Tipo de Cabina no encontrada");
         }
@@ -5460,11 +8167,9 @@ public boolean ModificarMarca(){
                     TipoCabina tp;
                     tp=TipoCabinadao.findTipoCabina(cmbPiezaClave.getSelectedIndex());
                     tp.setTipoCabina(txtTipoCabina.getText());
-                    /*try {
-                        TipoCabinadao.edit(tp);
-                    } catch (Exception ex) {
-                        Logger.getLogger(TipoCabina.class.getName()).log(Level.SEVERE, null, ex);
-                    }*/
+                   
+                    TipoCabinadao.edit(tp);
+                   
                    // cmbIDTipoCabina.setSelectedIndex(1);
                    Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
                 //JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
@@ -5488,7 +8193,7 @@ public boolean ModificarMarca(){
         btnDesactivar4.setEnabled(false);
         createTableTipoCabina();
         createComboBoxTipoCabina();
-}public boolean DesactivarTipoCabina(){
+}public boolean DesactivarTipoCabina() throws Exception{
      TipoCabina temp;
         temp = TipoCabinadao.findTipoCabina(cmbPiezaClave.getSelectedIndex());
         if(temp.isEstado()){
@@ -5501,16 +8206,14 @@ public boolean ModificarMarca(){
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
             //JOptionPane.showMessageDialog(null,"Tipo de Cabina Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        /*try {
-            TipoCabinadao.edit(temp);
-        } catch (Exception ex) {
-            Logger.getLogger(TipoCabina.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        
+        TipoCabinadao.edit(temp);
+        
         createTableTipoCabina();
         btnActivarDesactivarTipoCabina();
         LimpiarNuevoTipoCabina();
         return true;
-}public boolean AgregarTipoCombustible(){
+}public boolean AgregarTipoCombustible() throws Exception{
     
         if(cmbIDTipoGasolina.getSelectedIndex()!=0){
             //JOptionPane.showMessageDialog(null, "El ID Tipo de Combustible siempre debe estar en el ITEM de Nuevo para agregar un nuevo Tipo de Gasolina","Error!", JOptionPane.ERROR_MESSAGE);
@@ -5579,11 +8282,9 @@ public boolean ModificarMarca(){
                 TipoGasolina tp = new TipoGasolina();
                 tp.setEstado(true);
                 tp.setTipoGasolina(txtTipoGasolina.getText());
-                /*try {
-                    TipoGasolinadao.create(tp);
-                } catch (Exception ex) {
-                    Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                
+                TipoGasolinadao.create(tp);
+                
                 //cmbIDTipoGasolina.setSelectedIndex(1);
                 Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
                 //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
@@ -5599,7 +8300,7 @@ public boolean ModificarMarca(){
             }
         }
         return true;
-}public boolean ModificarTipoCombustible(){
+}public boolean ModificarTipoCombustible() throws Exception{
     if(cmbIDTipoGasolina.getSelectedIndex()==0){
             //JOptionPane.showMessageDialog(null, "Tipo de Combustible no encontrado");
             return false;
@@ -5664,11 +8365,9 @@ public boolean ModificarMarca(){
                     TipoGasolina tp;
                     tp=TipoGasolinadao.findTipoGasolina(cmbIDTipoGasolina.getSelectedIndex());
                     tp.setTipoGasolina(txtTipoGasolina.getText());
-                    /*try {
+                   
                         TipoGasolinadao.edit(tp);
-                    } catch (Exception ex) {
-                        Logger.getLogger(TipoGasolina.class.getName()).log(Level.SEVERE, null, ex);
-                    }*/
+                    
                     //cmbIDTipoGasolina.setSelectedIndex(1);
                     cmbIDTipoGasolina.setSelectedIndex(0);
                     createTableTipoGasolina();
@@ -5689,7 +8388,7 @@ public boolean ModificarMarca(){
         btnDesactivar5.setEnabled(false);
         createTableTipoGasolina();
         createComboBoxTipoGasolina();
-}public boolean DesactivarTipoCombustible(){
+}public boolean DesactivarTipoCombustible() throws Exception{
     TipoGasolina temp;
         temp = TipoGasolinadao.findTipoGasolina(cmbIDTipoGasolina.getSelectedIndex());
         if(temp.isEstado()){
@@ -5702,16 +8401,14 @@ public boolean ModificarMarca(){
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
             //JOptionPane.showMessageDialog(null,"Tipo de Combustible Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        /*try {
-            TipoGasolinadao.edit(temp);
-        } catch (Exception ex) {
-            Logger.getLogger(TipoGasolina.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        
+        TipoGasolinadao.edit(temp);
+        
         createTableTipoGasolina();
         btnActivarDesactivarTipoGasolina();
         LimpiarNuevoTipoGasolina();
         return true;
-}public boolean AgregarTransmision(){
+}public boolean AgregarTransmision()throws Exception{
     
         if(cmbIDTipoTransmision.getSelectedIndex()!=0){
             //JOptionPane.showMessageDialog(null, "El ID Tipo de Transmisión siempre debe estar en el ITEM de Nuevo para agregar un nuevo Tipo de Transmisión","Error!", JOptionPane.ERROR_MESSAGE);
@@ -5780,11 +8477,9 @@ public boolean ModificarMarca(){
                 transmision tp = new transmision();
                 tp.setEstado(true);
                 tp.setTransmision(txtTipoTransmision.getText());
-                /*try {
+                
                     TipoTransmisiondao.create(tp);
-                } catch (Exception ex) {
-                    Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                
                // cmbIDTipoTransmision.setSelectedIndex(1);
                Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
            //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
@@ -5799,7 +8494,7 @@ public boolean ModificarMarca(){
             }
         }
         return true;
-}public boolean ModificarTransmision(){
+}public boolean ModificarTransmision() throws Exception{
            if(cmbIDTipoTransmision.getSelectedIndex()==0){
             //JOptionPane.showMessageDialog(null, "Tipo de Transmisión no encontrado");
             return false;
@@ -5863,11 +8558,9 @@ public boolean ModificarMarca(){
                     transmision tp;
                     tp=TipoTransmisiondao.findtransmision(cmbIDTipoTransmision.getSelectedIndex());
                     tp.setTransmision(txtTipoTransmision.getText());
-                    /*try {
-                        TipoTransmisiondao.edit(tp);
-                    } catch (Exception ex) {
-                        Logger.getLogger(transmision.class.getName()).log(Level.SEVERE, null, ex);
-                    }*/
+                    
+                       TipoTransmisiondao.edit(tp);
+                    
                     //cmbIDTipoTransmision.setSelectedIndex(1);
                     Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
                 //JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
@@ -5891,7 +8584,7 @@ public boolean ModificarMarca(){
         btnDesactivar6.setEnabled(false);
         createTableTipoTransmision();
         createComboBoxTipoTransmision();
-}public boolean DesactivarTransmision(){
+}public boolean DesactivarTransmision() throws Exception{
     transmision temp;
         temp = TipoTransmisiondao.findtransmision(cmbIDTipoTransmision.getSelectedIndex());
         if(temp.isEstado()){
@@ -5904,16 +8597,13 @@ public boolean ModificarMarca(){
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
             //JOptionPane.showMessageDialog(null,"Tipo de Transmisión Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        /*try {
             TipoTransmisiondao.edit(temp);
-        } catch (Exception ex) {
-            Logger.getLogger(transmision.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        
         createTableTipoTransmision();
         btnActivarDesactivarTipoTransmision();
         LimpiarNuevoTipoTransmision();
         return true;
-}public boolean DesactivarVehiculo(){
+}public boolean DesactivarVehiculo()throws Exception{
             Vehiculo temp;
         temp = vehiculoDao.findVehiculo(cmbIDVehiculo.getSelectedIndex());
         if(temp.isEstado()){
@@ -5926,16 +8616,14 @@ public boolean ModificarMarca(){
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
             //JOptionPane.showMessageDialog(null,"Tipo de pieza Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        /*try {
+        
             vehiculoDao.edit(temp);
-        } catch (Exception ex) {
-            Logger.getLogger(FrmPieza.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+       
         createTableVehiculosAgregar();
         btnActivarDesactivarVehiculo();
         limpiar();
         return true;
-}public boolean ModificarVehiculo(){
+}public boolean ModificarVehiculo() throws Exception{
 if(cmbMarcaVehiculo.getSelectedIndex()==0){
             //JOptionPane.showMessageDialog(null,"Seleccione una marca","Error!",JOptionPane.ERROR_MESSAGE);
             return false;
@@ -6199,11 +8887,9 @@ if(cmbMarcaVehiculo.getSelectedIndex()==0){
            temp.setTotal_cilindraje(Double.parseDouble(txtCilindraje.getText()));
            temp.setVin(txtVin.getText());
            
-        /*try {
+       
             vehiculoDao.edit(temp);
-        } catch (Exception ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        
            
        
         
@@ -6240,11 +8926,9 @@ if(cmbMarcaVehiculo.getSelectedIndex()==0){
        // temp2.setId_vehiculo(cmbIDVehiculo.getSelectedIndex());
         
         
-            /*try {
+           
                 historicoPrecioVehiculoDao.edit(temp2);
-            } catch (Exception ex) {
-                Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
+            
             
             aux1 = Integer.toString(fecha.get(Calendar.YEAR));
             aux2 = (fecha.get(Calendar.MONTH)<10)? "0"+(Integer.toString(fecha.get(Calendar.MONTH)+1)) : Integer.toString(fecha.get(Calendar.MONTH)+1);
@@ -6268,7 +8952,7 @@ if(cmbMarcaVehiculo.getSelectedIndex()==0){
         createcmbIDVehiculo();
         limpiar();
         return true;
-}public boolean AgregarVehiculos(){
+}public boolean AgregarVehiculos()throws Exception{
      if(cmbIDVehiculo.getSelectedIndex()!=0){
             //JOptionPane.showMessageDialog(null, "El ID Vehículo siempre debe estar en el ITEM de Nuevo para agregar un Vehículo","Error!", JOptionPane.ERROR_MESSAGE);
             cmbIDVehiculo.setSelectedIndex(0);
@@ -6533,11 +9217,9 @@ if(cmbMarcaVehiculo.getSelectedIndex()==0){
            temp.setTotal_cilindraje(Double.parseDouble(txtCilindraje.getText()));
            temp.setVin(txtVin.getText());
            
-        /*try {
+        
             vehiculoDao.create(temp);
-        } catch (Exception ex) {
-            Logger.getLogger(FrmVehiculos.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        
            
         HistoricoPrecioVehiculos temp2 = new HistoricoPrecioVehiculos();   
         
@@ -6609,7 +9291,7 @@ if(cmbMarcaVehiculo.getSelectedIndex()==0){
         } else{
         return false;
         }
-    }  public boolean AgregarNumeroAsientos(){
+    }  public boolean AgregarNumeroAsientos() throws Exception{
     if(cmbIDNumeroAsientos.getSelectedIndex()!=0){
             //JOptionPane.showMessageDialog(null, "El ID Número de Asientos siempre debe estar en el ITEM de Nuevo para agregar un nuevo Número de Asientos","Error!", JOptionPane.ERROR_MESSAGE);
             cmbIDNumeroAsientos.setSelectedIndex(0);
@@ -6653,11 +9335,9 @@ if(cmbMarcaVehiculo.getSelectedIndex()==0){
                 Numero_Asientos tp = new Numero_Asientos();
                 tp.setEstado(true);
                 tp.setNumero_Asientos(txtNumeroAsientos.getText());
-                /*try {
+                
                     NumeroAsientosdao.create(tp);
-                } catch (Exception ex) {
-                    Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                
                 //cmbIDNumeroAsientos.setSelectedIndex(1);
                 Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
                 //JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
@@ -6672,7 +9352,7 @@ if(cmbMarcaVehiculo.getSelectedIndex()==0){
             }
         }
         return true;
-}public boolean ModificarNumeroAsientos(){
+}public boolean ModificarNumeroAsientos()throws Exception{
     if(cmbIDNumeroAsientos.getSelectedIndex()==0){
             //JOptionPane.showMessageDialog(null, "Número de Asientos no encontrado");
             return false;
@@ -6713,11 +9393,9 @@ if(cmbMarcaVehiculo.getSelectedIndex()==0){
                     Numero_Asientos tp;
                     tp=NumeroAsientosdao.findNumero_Asientos(cmbIDNumeroAsientos.getSelectedIndex());
                     tp.setNumero_Asientos(txtNumeroAsientos.getText());
-                    /*try {
-                        NumeroAsientosdao.edit(tp);
-                    } catch (Exception ex) {
-                        Logger.getLogger(TipoGasolina.class.getName()).log(Level.SEVERE, null, ex);
-                    }*/
+                   
+                    NumeroAsientosdao.edit(tp);
+                    
                     //cmbIDNumeroAsientos.setSelectedIndex(1);
                     Icon icono = new ImageIcon(getClass().getResource("/Img/modificar.png"));
                 //JOptionPane.showMessageDialog(null,"Datos Modificados exitosamente","Modificado",JOptionPane.PLAIN_MESSAGE, icono);
@@ -6741,7 +9419,7 @@ if(cmbMarcaVehiculo.getSelectedIndex()==0){
         btnDesactivar8.setEnabled(false);
         createTableNumeroAsientos();
         createComboBoxNumeroAsientos();
-}public boolean DesactivarNumeroAsientos(){
+}public boolean DesactivarNumeroAsientos()throws Exception{
     Numero_Asientos temp;
         temp = NumeroAsientosdao.findNumero_Asientos(cmbIDNumeroAsientos.getSelectedIndex());
         if(temp.isEstado()){
@@ -6754,11 +9432,9 @@ if(cmbMarcaVehiculo.getSelectedIndex()==0){
             Icon icono = new ImageIcon(getClass().getResource("/Img/Activar.png"));
             //JOptionPane.showMessageDialog(null,"Número de Asientos Activado exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE, icono);
         }
-        /*try {
-            NumeroAsientosdao.edit(temp);
-        } catch (Exception ex) {
-            Logger.getLogger(transmision.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        
+        NumeroAsientosdao.edit(temp);
+        
         createTableNumeroAsientos();
         btnActivarDesactivarNumeroAsientos();
         LimpiarNuevoNumeroAsientos();

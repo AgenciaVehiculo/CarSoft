@@ -125,8 +125,8 @@
                               </Group>
                               <EmptySpace min="-2" pref="536" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="btnAgregar1" min="-2" pref="121" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -137,13 +137,12 @@
                                       <Component id="btnDesactivar1" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="jScrollPane8" alignment="0" min="-2" pref="1346" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="630" max="-2" attributes="0"/>
+                                      <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                               <EmptySpace min="149" pref="393" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="630" max="-2" attributes="0"/>
-                              <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="203" pref="981" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -1676,7 +1675,7 @@
                               <Component id="txtEmpleadoSueldo" min="-2" pref="113" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="628" max="32767" attributes="0"/>
+                      <EmptySpace pref="630" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
@@ -1709,10 +1708,10 @@
                       <Component id="jScrollPane6" min="-2" pref="187" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="btnGenerar6" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnGenerar6" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="btnGenerar5" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="165" max="32767" attributes="0"/>
+                      <EmptySpace pref="170" max="32767" attributes="0"/>
                       <Component id="btnRegresar3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="288" max="-2" attributes="0"/>
                   </Group>
