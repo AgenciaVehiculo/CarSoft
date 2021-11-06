@@ -31,16 +31,20 @@ public class FrmMenu extends javax.swing.JFrame {
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/Img/CarSoft-removebg-preview.png")).getImage());
         this.setExtendedState(MAXIMIZED_BOTH);
+        this.getContentPane().setBackground(new Color(0, 75, 143));
         this.btnClientes.setBackground( new Color(14, 209, 69));
         this.btnEmpleados.setBackground( new Color(14, 209, 69));
         this.btnBancos.setBackground( new Color(14, 209, 69));
         this.btnPedidos.setBackground( new Color(14, 209, 69));
         this.btnVehículos.setBackground( new Color(14, 209, 69));
         this.btnPiezas.setBackground( new Color(14, 209, 69));
+        FrmMenu.btnSeguridad.setBackground( new Color(14, 209, 69));
         this.btnVentas.setBackground( new Color(14, 209, 69));
         this.btnCerrar.setBackground( new Color(14, 209, 69));
         this.btnSalir.setBackground( new Color(236, 28, 36));
         labelEmple1.setVisible(false);
+        lIDEmpleado.setVisible(false);
+
         
         //jLabel5.setForeground(Color.WHITE);
         //jFrame.setForeground(Color.CYAN);
@@ -63,6 +67,7 @@ public class FrmMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnSeguridad = new javax.swing.JButton();
         btnClientes = new javax.swing.JButton();
         btnVentas = new javax.swing.JButton();
         btnEmpleados = new javax.swing.JButton();
@@ -84,14 +89,22 @@ public class FrmMenu extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         txtBienvenido = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         lIDEmpleado = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(new java.awt.Color(255, 255, 255));
-        getContentPane().setLayout(null);
+
+        btnSeguridad.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnSeguridad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Seguridad.png"))); // NOI18N
+        btnSeguridad.setText("Seguridad");
+        btnSeguridad.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnSeguridad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeguridadActionPerformed(evt);
+            }
+        });
 
         btnClientes.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Cliente.png"))); // NOI18N
@@ -102,8 +115,6 @@ public class FrmMenu extends javax.swing.JFrame {
                 btnClientesActionPerformed(evt);
             }
         });
-        getContentPane().add(btnClientes);
-        btnClientes.setBounds(73, 260, 220, 109);
 
         btnVentas.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Ventas.png"))); // NOI18N
@@ -114,8 +125,6 @@ public class FrmMenu extends javax.swing.JFrame {
                 btnVentasActionPerformed(evt);
             }
         });
-        getContentPane().add(btnVentas);
-        btnVentas.setBounds(73, 534, 220, 109);
 
         btnEmpleados.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnEmpleados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Empleado.png"))); // NOI18N
@@ -126,12 +135,8 @@ public class FrmMenu extends javax.swing.JFrame {
                 btnEmpleadosActionPerformed(evt);
             }
         });
-        getContentPane().add(btnEmpleados);
-        btnEmpleados.setBounds(73, 398, 220, 109);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/CarSoft-removebg-preview.png"))); // NOI18N
-        getContentPane().add(jLabel1);
-        jLabel1.setBounds(589, 0, 200, 195);
 
         btnBancos.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnBancos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Banco.png"))); // NOI18N
@@ -142,8 +147,6 @@ public class FrmMenu extends javax.swing.JFrame {
                 btnBancosActionPerformed(evt);
             }
         });
-        getContentPane().add(btnBancos);
-        btnBancos.setBounds(323, 260, 220, 109);
 
         btnPiezas.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnPiezas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Pieza.png"))); // NOI18N
@@ -154,8 +157,6 @@ public class FrmMenu extends javax.swing.JFrame {
                 btnPiezasActionPerformed(evt);
             }
         });
-        getContentPane().add(btnPiezas);
-        btnPiezas.setBounds(576, 398, 220, 109);
 
         btnVehículos.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnVehículos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Vehiculo.png"))); // NOI18N
@@ -166,8 +167,6 @@ public class FrmMenu extends javax.swing.JFrame {
                 btnVehículosActionPerformed(evt);
             }
         });
-        getContentPane().add(btnVehículos);
-        btnVehículos.setBounds(576, 260, 220, 109);
 
         btnPedidos.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnPedidos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Pedidos.png"))); // NOI18N
@@ -178,22 +177,15 @@ public class FrmMenu extends javax.swing.JFrame {
                 btnPedidosActionPerformed(evt);
             }
         });
-        getContentPane().add(btnPedidos);
-        btnPedidos.setBounds(323, 398, 220, 109);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        getContentPane().add(jLabel3);
-        jLabel3.setBounds(1440, 486, 0, 278);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Visión");
-        getContentPane().add(jLabel2);
-        jLabel2.setBounds(1031, 340, 72, 29);
 
         labelEmple1.setText("root");
-        getContentPane().add(labelEmple1);
-        labelEmple1.setBounds(80, 220, 240, 16);
 
         btnCerrar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Cerrar sesion.png"))); // NOI18N
@@ -204,8 +196,6 @@ public class FrmMenu extends javax.swing.JFrame {
                 btnCerrarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnCerrar);
-        btnCerrar.setBounds(576, 534, 220, 109);
 
         btnSalir.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Salir.png"))); // NOI18N
@@ -216,57 +206,160 @@ public class FrmMenu extends javax.swing.JFrame {
                 btnSalirActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSalir);
-        btnSalir.setBounds(1253, 10, 110, 41);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("en la comercialización de piezas ");
-        getContentPane().add(jLabel6);
-        jLabel6.setBounds(980, 410, 190, 20);
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Ser una empresa especializada");
-        getContentPane().add(jLabel7);
-        jLabel7.setBounds(980, 390, 190, 20);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("y vehículos nuevos. Contar con ");
-        getContentPane().add(jLabel8);
-        jLabel8.setBounds(980, 430, 180, 20);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("tecnología de punta que");
-        getContentPane().add(jLabel9);
-        jLabel9.setBounds(980, 470, 180, 20);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("garantice siempre un servicio");
-        getContentPane().add(jLabel10);
-        jLabel10.setBounds(980, 490, 180, 20);
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("integral de máxima calidad.");
-        getContentPane().add(jLabel11);
-        jLabel11.setBounds(980, 510, 180, 20);
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("personal altamente calificado y");
-        getContentPane().add(jLabel13);
-        jLabel13.setBounds(980, 450, 180, 20);
 
         txtBienvenido.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         txtBienvenido.setForeground(new java.awt.Color(255, 255, 255));
-        getContentPane().add(txtBienvenido);
-        txtBienvenido.setBounds(80, 50, 450, 35);
-
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Fondo.jpg"))); // NOI18N
-        jLabel4.setText("jLabel4");
-        getContentPane().add(jLabel4);
-        jLabel4.setBounds(0, 0, 1965, 1080);
 
         lIDEmpleado.setText("0");
-        getContentPane().add(lIDEmpleado);
-        lIDEmpleado.setBounds(170, 120, 7, 16);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtBienvenido, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(90, 90, 90)
+                                .addComponent(lIDEmpleado)))
+                        .addGap(59, 59, 59)
+                        .addComponent(jLabel1)
+                        .addGap(464, 464, 464)
+                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(btnClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(btnBancos, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(488, 488, 488)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(576, 576, 576)
+                        .addComponent(btnVehículos, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(labelEmple1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(980, 980, 980)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(btnEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(btnVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSeguridad, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnPiezas, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(184, 184, 184)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(595, 595, 595))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(50, 50, 50)
+                                .addComponent(txtBienvenido, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(35, 35, 35)
+                                .addComponent(lIDEmpleado))
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(btnSalir)))
+                        .addGap(65, 65, 65)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnClientes)
+                            .addComponent(btnBancos)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(80, 80, 80)
+                                .addComponent(jLabel2)))
+                        .addGap(21, 21, 21)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(144, 144, 144)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnVentas)
+                                    .addComponent(btnSeguridad)
+                                    .addComponent(btnCerrar)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addComponent(btnPedidos))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addComponent(btnPiezas))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(260, 260, 260)
+                        .addComponent(btnVehículos))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(220, 220, 220)
+                        .addComponent(labelEmple1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(410, 410, 410)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(398, 398, 398)
+                        .addComponent(btnEmpleados)))
+                .addGap(437, 437, 437))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -740,6 +833,13 @@ public class FrmMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnPedidosActionPerformed
 
+    private void btnSeguridadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeguridadActionPerformed
+
+        FrmSeguridad1 p = new FrmSeguridad1();
+        p.setVisible(true);
+
+    }//GEN-LAST:event_btnSeguridadActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -753,6 +853,7 @@ public class FrmMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnPedidos;
     private javax.swing.JButton btnPiezas;
     private javax.swing.JButton btnSalir;
+    public static javax.swing.JButton btnSeguridad;
     private javax.swing.JButton btnVehículos;
     private javax.swing.JButton btnVentas;
     private javax.swing.JLabel jLabel1;
@@ -761,7 +862,6 @@ public class FrmMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

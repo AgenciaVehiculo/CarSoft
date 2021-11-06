@@ -35,6 +35,7 @@
     <class>Clases.TipoPago</class>
     <class>Clases.RazonSocial</class>
     <class>Clases.informacionFiscal</class>
+    <class>Clases.Acceso</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/carsoft?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

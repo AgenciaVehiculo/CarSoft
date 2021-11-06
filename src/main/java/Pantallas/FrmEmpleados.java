@@ -5,6 +5,7 @@
  */
 package Pantallas;
 
+import Clases.Acceso;
 import Clases.Cargo_empleado;
 import Clases.Empleado;
 import Clases.FacturaJRADATASOURCE;
@@ -17,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import Clases.Usuarios;
 import FormModales.ModalCliente;
 import FormModales.ModalEmpleado;
+import JPAController.AccesoJpaController;
 import JPAController.Cargo_empleadoJpaController;
 import JPAController.EmpleadoJpaController;
 import JPAController.HistoricoCargo_empleadoJpaController;
@@ -123,6 +125,7 @@ public final class FrmEmpleados extends javax.swing.JFrame {
     Tipo_DocumentoJpaController TipoDocumentodao = new Tipo_DocumentoJpaController(emf);
     PersonaJpaController Personadao = new PersonaJpaController(emf);
     EmpleadoJpaController Empleadodao = new EmpleadoJpaController(emf);
+    AccesoJpaController accesoDao = new AccesoJpaController(emf);
     Connection con;
     
     public FrmEmpleados() {
@@ -1891,7 +1894,7 @@ private void btnActivarDesactivarEmpleado(){
                 .addGap(47, 47, 47)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnGenerar6)
                     .addComponent(btnGenerar5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
@@ -2807,8 +2810,9 @@ public boolean AgregarUsuario()throws Exception{
             usu.setEstado(true);
            
                 UsuariosDao.create(usu);
-            
-
+                Acceso access  = new Acceso();
+                access.setIdUsuario(UsuariosDao.getUsuariosCount());
+                accesoDao.create(access);
             //NUEVO
             Icon icono = new ImageIcon(getClass().getResource("/Img/agregar.png"));
             JOptionPane.showMessageDialog(null,"Datos Guardados exitosamente","Guardado",JOptionPane.PLAIN_MESSAGE,icono);
@@ -4377,7 +4381,7 @@ public boolean ModificarEmpleado() throws Exception{
                                                     break;
                 }
                 aux3 = (fecha.get(Calendar.DAY_OF_MONTH)<10)? "0"+Integer.toString(fecha.get(Calendar.DAY_OF_MONTH)) : Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
-                fecha1 = aux1+"-"+aux2+"-"+aux3+" "+fecha.get(Calendar.HOUR_OF_DAY)+" "+fecha.get(Calendar.MINUTE)+" "+fecha.get(Calendar.SECOND);
+                fecha1 = aux1+""+aux2+""+aux3+"-"+fecha.get(Calendar.HOUR_OF_DAY)+""+fecha.get(Calendar.MINUTE)+""+fecha.get(Calendar.SECOND);
                 Logger logger = Logger.getLogger(FrmEmpleados.class.getName());
                 FileHandler fh = null;
                 fh = new FileHandler("./"+"EmpleadoAgregar"+fecha1+".log");

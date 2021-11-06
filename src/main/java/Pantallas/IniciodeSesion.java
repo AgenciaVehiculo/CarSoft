@@ -52,6 +52,7 @@ public class IniciodeSesion extends javax.swing.JFrame {
         this.btnIngresar.setBackground( new Color(14, 209, 69));
         this.btnSalir.setBackground( new Color(236, 28, 36));
         labelEmple1.setVisible(false);
+        this.getContentPane().setBackground(new Color(0, 75, 143));
     }
     
 
@@ -73,10 +74,9 @@ public class IniciodeSesion extends javax.swing.JFrame {
         btnIngresar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         btnSalir = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(null);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btn_password.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -88,34 +88,31 @@ public class IniciodeSesion extends javax.swing.JFrame {
                 btn_passwordKeyTyped(evt);
             }
         });
-        getContentPane().add(btn_password);
-        btn_password.setBounds(670, 420, 130, 30);
+        getContentPane().add(btn_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 420, 144, 30));
 
         txt_usuario.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_usuarioKeyTyped(evt);
             }
         });
-        getContentPane().add(txt_usuario);
-        txt_usuario.setBounds(670, 380, 130, 30);
+        getContentPane().add(txt_usuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 380, 144, 30));
 
         labelEmple1.setText("jLabel5");
-        getContentPane().add(labelEmple1);
-        labelEmple1.setBounds(140, 130, 340, 14);
+        getContentPane().add(labelEmple1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 130, 340, -1));
 
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("Usuario:");
-        getContentPane().add(jLabel1);
-        jLabel1.setBounds(570, 390, 90, 14);
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 390, 70, -1));
 
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Contraseña:");
-        getContentPane().add(jLabel2);
-        jLabel2.setBounds(570, 430, 90, 14);
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 430, 70, -1));
 
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setIcon(new javax.swing.ImageIcon("C:\\CarSoft-Version-2.1\\src\\main\\resources\\Img\\CarSoft-removebg-preview.png")); // NOI18N
-        getContentPane().add(jLabel3);
-        jLabel3.setBounds(600, 10, 200, 190);
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 19, 240, 190));
 
         btnIngresar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnIngresar.setIcon(new javax.swing.ImageIcon("C:\\CarSoft-Version-2.1\\src\\main\\resources\\Img\\Ingresar.png")); // NOI18N
@@ -126,13 +123,13 @@ public class IniciodeSesion extends javax.swing.JFrame {
                 btnIngresarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnIngresar);
-        btnIngresar.setBounds(640, 500, 170, 59);
+        getContentPane().add(btnIngresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 500, 170, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Inicio de Sesión");
-        getContentPane().add(jLabel4);
-        jLabel4.setBounds(650, 320, 108, 17);
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 325, 240, -1));
 
         btnSalir.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnSalir.setIcon(new javax.swing.ImageIcon("C:\\CarSoft-Version-2.1\\src\\main\\resources\\Img\\Salir.png")); // NOI18N
@@ -143,13 +140,7 @@ public class IniciodeSesion extends javax.swing.JFrame {
                 btnSalirActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSalir);
-        btnSalir.setBounds(1233, 20, 110, 41);
-
-        jLabel6.setIcon(new javax.swing.ImageIcon("C:\\CarSoft-Version-2.1\\src\\main\\resources\\Img\\Fondo.jpg")); // NOI18N
-        jLabel6.setText("jLabel6");
-        getContentPane().add(jLabel6);
-        jLabel6.setBounds(-10, -30, 1750, 1130);
+        getContentPane().add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(1243, 19, 110, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -288,6 +279,7 @@ public boolean InicioSesion(){
             FrmMenu.txtBienvenido.setText("Bienvenido "+temp3.getNombre()+" "+temp3.getApellido());
             FrmMenu.lIDEmpleado.setText(String.valueOf(temp2.getId_Empleado()));
             FrmMenu.labelEmple1.setText(temp3.getNombre()+" "+temp3.getApellido());
+            FrmMenu.btnSeguridad.setVisible(false);
             this.dispose();
             
         }
@@ -330,6 +322,8 @@ public boolean InicioSesion(){
             if("root".equals(txt_usuario.getText())){
                 if("admin".equals(btn_password.getText())){
                     FrmMenu menu = new FrmMenu();
+                    FrmMenu.btnSeguridad.setVisible(true);
+                    
                     menu.setVisible(true);
                     this.setVisible(false);
                 }
@@ -384,7 +378,6 @@ public boolean InicioSesion(){
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
     public javax.swing.JLabel labelEmple1;
     public javax.swing.JTextField txt_usuario;
     // End of variables declaration//GEN-END:variables

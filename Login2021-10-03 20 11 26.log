@@ -1,0 +1,2 @@
+nov 03, 2021 8:11:26 PM Pantallas.IniciodeSesion btnIngresarActionPerformed
+GRAVE: org.hibernate.exception.JDBCConnectionException: could not extract ResultSet
