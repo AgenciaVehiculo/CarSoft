@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0000000000000016"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Empleado" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select SYSDATE() as 'HoraSistema', cargo_empleado.id_cargo as 'ID Cargo', cargo_empleado.cargo as 'Cargo', If(cargo_empleado.estado=true, 'Activo', 'Inactivo') as 'Estado' from cargo_empleado order by cargo_empleado.id_cargo;]]>
+	</queryString>
+	<field name="HoraSistema" class="java.sql.Timestamp"/>
+	<field name="ID Cargo" class="java.lang.Integer"/>
+	<field name="Cargo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Estado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="121" splitType="Stretch">
+			<staticText>
+				<reportElement x="197" y="57" width="101" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Correo Eléctronico:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="311" y="38" width="210" height="20"/>
+				<text><![CDATA[Comayagua, Comayagua]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="197" y="38" width="101" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="311" y="57" width="210" height="20"/>
+				<text><![CDATA[Exampleujcv.edu.hn]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="197" y="18" width="101" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Teléfono:]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="129" height="97"/>
+				<imageExpression><![CDATA["C:\\CarSoft-Version-2.1\\src\\main\\resources\\Img\\CarSoft-removebg-preview.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="311" y="18" width="210" height="20"/>
+				<text><![CDATA[2272-0000]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="110" width="555" height="11" forecolor="#FF6666" backcolor="#FF6666"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="177" y="77" width="122" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Reporte generado por:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="311" y="77" width="210" height="20"/>
+				<textFieldExpression><![CDATA[$P{Empleado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="35"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="22" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de Cargos]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="11" forecolor="#FF6666" backcolor="#FF6666"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="209" y="41" width="153" height="20"/>
+				<text><![CDATA[Cargo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="421" y="41" width="100" height="20"/>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="41" width="100" height="20"/>
+				<text><![CDATA[ID Cargo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="47" splitType="Stretch">
+			<textField>
+				<reportElement x="209" y="18" width="153" height="20"/>
+				<textFieldExpression><![CDATA[$F{Cargo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="421" y="18" width="100" height="20"/>
+				<textFieldExpression><![CDATA[$F{Estado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="51" y="18" width="100" height="20"/>
+				<textFieldExpression><![CDATA[$F{ID Cargo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="11" forecolor="#FF6666" backcolor="#FF6666"/>
+			</rectangle>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="102" y="0" width="345" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA["EN DIOS CONFIAMOS"]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="457" y="0" width="100" height="20"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20"/>
+				<textFieldExpression><![CDATA[$F{HoraSistema}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,2 @@
+nov 07, 2021 8:59:35 PM Pantallas.FrmEmpleados btnAgregarActionPerformed
+GRAVE: org.hibernate.exception.ConstraintViolationException: could not execute statement

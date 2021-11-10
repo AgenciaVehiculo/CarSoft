@@ -1,0 +1,2 @@
+nov 03, 2021 12:05:51 PM Pantallas.FrmCliente btnDesactivarActionPerformed
+GRAVE: org.hibernate.exception.JDBCConnectionException: could not prepare statement

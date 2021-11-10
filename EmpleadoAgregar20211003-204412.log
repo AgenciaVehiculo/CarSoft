@@ -1,0 +1,2 @@
+nov 03, 2021 8:44:12 PM Pantallas.FrmEmpleados btnAgregar1ActionPerformed
+GRAVE: org.hibernate.exception.JDBCConnectionException: could not extract ResultSet

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="925" pageHeight="595" orientation="Landscape" columnWidth="885" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" >
+	<property name="ireport.zoom" value="0.9090909090909095"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Empleado" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT vehiculo.ID_vehiculo as 'ID', vehiculo.VIN as 'Modelo', marca.marca as 'Marca', tipo_color.tipo_color as 'Color', tipo_gasolina.tipo_gasolina as 'Combustible',transmision.transmision as 'Transmision',vehiculo.Stock as 'Inventario',FORMAT(historico_precio_vehiculos.precio,2,'en_US') as 'Precio',IF(vehiculo.estado=1,'Activo','Inactivo') as 'Estado' from vehiculo, tipo_color, tipo_gasolina,marca,transmision, historico_precio_vehiculos WHERE vehiculo.id_marca=marca.id_marca and vehiculo.id_tipo_color=tipo_color.id_tipo_color and vehiculo.id_tipo_gasolina=tipo_gasolina.id_tipo_gasolina and vehiculo.id_transmision=transmision.id_transmision and vehiculo.ID_vehiculo = historico_precio_vehiculos.ID_vehiculo ORDER by vehiculo.ID_vehiculo]]>
+	</queryString>
+	<field name="ID" class="java.lang.Integer"/>
+	<field name="Modelo" class="java.lang.String"/>
+	<field name="Marca" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Color" class="java.lang.String"/>
+	<field name="Combustible" class="java.lang.String"/>
+	<field name="Transmision" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Inventario" class="java.lang.Integer"/>
+	<field name="Precio" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Estado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="137" splitType="Stretch">
+			<image>
+				<reportElement x="135" y="0" width="128" height="112" />
+				<imageExpression><![CDATA["C:\\CarSoft-Version-2.1\\src\\main\\resources\\Img\\CarSoft-removebg-preview.png"]]></imageExpression>
+			</image>
+			<rectangle>
+				<reportElement x="0" y="126" width="886" height="11" forecolor="#FF6666" backcolor="#FF6666" />
+			</rectangle>
+			<staticText>
+				<reportElement x="532" y="73" width="173" height="20" />
+				<text><![CDATA[Exampleujcv.edu.hn]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="429" y="53" width="90" height="20" />
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="405" y="73" width="114" height="20" />
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Correo Eléctronico:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="532" y="92" width="213" height="20" />
+				<textFieldExpression><![CDATA[$P{Empleado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="532" y="53" width="162" height="20" />
+				<text><![CDATA[Comayagua, Comayagua]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="429" y="33" width="90" height="20" />
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Teléfono:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="532" y="33" width="100" height="20" />
+				<text><![CDATA[2272-0000]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="394" y="92" width="125" height="20" />
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Reporte generado por:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="886" height="35" />
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="22" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de Vehículos]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="63" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="24" width="53" height="20" />
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="62" y="24" width="100" height="20" />
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Marca]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="186" y="24" width="100" height="20" />
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Modelo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="303" y="24" width="100" height="20" />
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Color]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="419" y="24" width="100" height="20" />
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Combustible]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="532" y="24" width="100" height="20" />
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Transmisión]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="646" y="24" width="63" height="20" />
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Inventario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="726" y="24" width="72" height="20" />
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Precio]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="-1" y="0" width="886" height="11" forecolor="#FF6666" backcolor="#FF6666" />
+			</rectangle>
+			<staticText>
+				<reportElement x="813" y="24" width="72" height="20" />
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="10" width="53" height="20" />
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="62" y="10" width="100" height="20" />
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Marca}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="186" y="10" width="100" height="20" />
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Modelo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="303" y="10" width="100" height="20" />
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Color}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="419" y="10" width="100" height="20" />
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Combustible}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="532" y="10" width="100" height="20" />
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Transmision}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="646" y="10" width="63" height="20" />
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Inventario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="726" y="10" width="72" height="20" />
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Precio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="813" y="10" width="73" height="20" />
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Estado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="15" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="55" splitType="Stretch">
+			<textField>
+				<reportElement x="785" y="22" width="100" height="20" />
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="-1" y="22" width="100" height="20" />
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="383" y="22" width="133" height="20" />
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA["EN DIOS CONFIAMOS"]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="0" width="885" height="11" forecolor="#FF6666" backcolor="#FF6666" />
+			</rectangle>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
