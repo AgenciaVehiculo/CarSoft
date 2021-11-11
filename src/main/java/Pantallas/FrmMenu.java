@@ -378,7 +378,18 @@ public class FrmMenu extends javax.swing.JFrame {
 
     private void btnVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVentasActionPerformed
         try{
-        Ventas v = new Ventas();
+        
+            List<Acceso> a = accesoDao.findAccesoEntities();
+            Acceso parametro=null;
+            for(Acceso acc : a){
+                    if(acc.getIdUsuario()==identificadorU){
+                    parametro=acc;
+                    break;
+                    }
+            }
+            
+            
+        Ventas v = new Ventas(parametro);
         v.setCmbEmpleado(Integer.parseInt(lIDEmpleado.getText()));
         v.setEmpNomb(labelEmple1.getText());
         v.setVisible(true);
@@ -457,7 +468,16 @@ public class FrmMenu extends javax.swing.JFrame {
 
     private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
         try{
-        FrmCliente m = new FrmCliente();
+        List<Acceso> a = accesoDao.findAccesoEntities();
+            Acceso parametro=null;
+            for(Acceso acc : a){
+                    if(acc.getIdUsuario()==identificadorU){
+                    parametro=acc;
+                    break;
+                    }
+            }
+            
+            FrmCliente m = new FrmCliente(parametro);
         m.setEmpNomb(labelEmple1.getText());
         m.setVisible(true);
         }catch(Exception e){
@@ -522,7 +542,17 @@ public class FrmMenu extends javax.swing.JFrame {
 
     private void btnPiezasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPiezasActionPerformed
         try{
-        FrmPieza m = new FrmPieza();
+            List<Acceso> a = accesoDao.findAccesoEntities();
+            Acceso parametro=null;
+            for(Acceso acc : a){
+                    if(acc.getIdUsuario()==identificadorU){
+                    parametro=acc;
+                    break;
+                    }
+            }
+            
+            
+        FrmPieza m = new FrmPieza(parametro);
         m.labelempleado.setText(labelEmple1.getText());
         m.setVisible(true);
         }catch(Exception e){
@@ -585,7 +615,16 @@ public class FrmMenu extends javax.swing.JFrame {
 
     private void btnEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpleadosActionPerformed
         try{
-        FrmEmpleados m = new FrmEmpleados();
+        List<Acceso> a = accesoDao.findAccesoEntities();
+            Acceso parametro=null;
+            for(Acceso acc : a){
+                    if(acc.getIdUsuario()==identificadorU){
+                    parametro=acc;
+                    break;
+                    }
+            }  
+            
+        FrmEmpleados m = new FrmEmpleados(parametro);
         m.labelempleado.setText(labelEmple1.getText());
         m.setVisible(true);
         }catch(Exception e){
@@ -651,7 +690,16 @@ public class FrmMenu extends javax.swing.JFrame {
     private void btnVehículosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVehículosActionPerformed
 
         try{
-        FrmVehiculos v= new FrmVehiculos();
+        List<Acceso> a = accesoDao.findAccesoEntities();
+            Acceso parametro=null;
+            for(Acceso acc : a){
+                    if(acc.getIdUsuario()==identificadorU){
+                    parametro=acc;
+                    break;
+                    }
+            }
+            
+        FrmVehiculos v= new FrmVehiculos(parametro);
         v.setEmpNomb(labelEmple1.getText());
         v.setVisible(true);
         }catch(Exception e){
@@ -792,7 +840,17 @@ public class FrmMenu extends javax.swing.JFrame {
 
     private void btnPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPedidosActionPerformed
         try{
-        FrmPedidos p = new FrmPedidos();
+        List<Acceso> a = accesoDao.findAccesoEntities();
+            Acceso parametro=null;
+            for(Acceso acc : a){
+                    if(acc.getIdUsuario()==identificadorU){
+                    parametro=acc;
+                    break;
+                    }
+            }    
+            
+            
+        FrmPedidos p = new FrmPedidos(parametro);
         p.setEmpNomb(labelEmple1.getText());
         p.setVisible(true);
         }catch(Exception e){

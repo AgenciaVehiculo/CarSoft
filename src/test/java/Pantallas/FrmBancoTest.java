@@ -47,7 +47,7 @@ public class FrmBancoTest {
         String txtNombreContacto = "Allan Rodriguez";
         String txtTelContacto = "95904010";
         String txtCorreoBanco = "Allan.rod@ujcv.edu.hn";
-        FrmBanco instance = new FrmBanco();
+        FrmBanco instance = new FrmBanco(0);
         int expResult = 100;
         int result = instance.btnAgregarActionPerfomed(txtNombreBanco, txtNombreContacto, txtTelContacto, txtCorreoBanco);
         try{
@@ -67,7 +67,7 @@ public class FrmBancoTest {
         String txtNombreContacto = "Allan Rodriguez";
         String txtTelContacto = "95904010";
         String txtCorreoBanco = "Allan.rod@ujcv.edu.hn";
-        FrmBanco instance = new FrmBanco();
+        FrmBanco instance = new FrmBanco(0);
         int expResult = 100;
         int result = instance.btnModificarActionPerfomed(cmbIDBanco, txtNombreBanco, txtNombreContacto, txtTelContacto, txtCorreoBanco);
         try{

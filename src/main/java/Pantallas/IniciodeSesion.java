@@ -265,8 +265,8 @@ public boolean InicioSesion(){
         }
         if(flag && flag2 && flag3){
             FrmMenu menu = new FrmMenu(valorDeUsuario);
-            FrmEmpleados empleados = new FrmEmpleados();
-            FrmCliente clientes = new FrmCliente();
+//            FrmEmpleados empleados = new FrmEmpleados();
+//            FrmCliente clientes = new FrmCliente();
             menu.setVisible(true);
             List<Acceso> tempa = accesoDao.findAccesoEntities();
             Empleado temp2 = new Empleado();
@@ -308,7 +308,7 @@ public boolean InicioSesion(){
                     FrmMenu.btnBancos.setBackground(new java.awt.Color(236, 28, 36));
                 }
                 
-                if(tpp.getPermisoSeccionEmpleadosAgregar()==false){
+                /*if(tpp.getPermisoSeccionEmpleadosAgregar()==false){
                     empleados.btnAgregar1.setVisible(false);
                 }
                 if(tpp.getPermisoSeccionEmpleadosModificar()==false){
@@ -378,10 +378,10 @@ public boolean InicioSesion(){
                 }
                 if(tpp.getPermisoSeccionHistorialCargosReporteExcel()==false){
                     empleados.btnGenerar7.setVisible(false);
-                }
+                }*/
                 }
                 
-                if(tpp.getPermisoSeccionClientesAgregar()==false){
+               /* if(tpp.getPermisoSeccionClientesAgregar()==false){
                     clientes.btnAgregar.setVisible(false);
                 }
                 if(tpp.getPermisoSeccionClientesModificar()==false){
@@ -414,7 +414,7 @@ public boolean InicioSesion(){
                 }
                 if(tpp.getPermisoSeccionTipoDocumentoReporteExcel()==false){
                     clientes.btnImprimirReporteExcel1.setVisible(false);
-                }
+                }*/
                 
             }
         try {
