@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="900" pageHeight="595" orientation="Landscape" columnWidth="860" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" >
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Empleado" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT informacionfiscal.ID_inf as 'ID', informacionfiscal.CAI AS 'CAI',
+		informacionfiscal.fechaInicio as 'Fecha de Inicio', 
+        informacionfiscal.fechaFinal as 'Fecha de Finalización',
+        informacionfiscal.inicio as 'De',
+        informacionfiscal.fin as 'Hasta',
+        IF(informacionfiscal.estado=true,'Activo','Inactivo') as 'Estado'
+        FROM
+        	informacionfiscal]]>
+	</queryString>
+	<field name="ID" class="java.lang.Integer"/>
+	<field name="CAI" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Fecha de Inicio" class="java.sql.Date"/>
+	<field name="Fecha de Finalización" class="java.sql.Date"/>
+	<field name="De" class="java.lang.String"/>
+	<field name="Hasta" class="java.lang.String"/>
+	<field name="Estado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="97" splitType="Stretch">
+			<staticText>
+				<reportElement x="364" y="18" width="100" height="20" />
+				<text><![CDATA[2272-0000]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="364" y="38" width="162" height="20" />
+				<text><![CDATA[Comayagua, Comayagua]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="58" width="114" height="20" />
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Correo Eléctronico:]]></text>
+			</staticText>
+			<image>
+				<reportElement x="44" y="0" width="129" height="97" />
+				<imageExpression><![CDATA["C:\\CarSoft-Version-2.1\\src\\main\\resources\\Img\\CarSoft-removebg-preview.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="364" y="58" width="173" height="20" />
+				<text><![CDATA[Exampleujcv.edu.hn]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="261" y="38" width="90" height="20" />
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="261" y="18" width="90" height="20" />
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Teléfono:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="77" width="114" height="20" />
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Reporte Generado Por:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="364" y="77" width="294" height="20" />
+				<textFieldExpression><![CDATA[$P{Empleado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="57" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="860" height="11" forecolor="#FF6666" backcolor="#FF6666" />
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="11" width="860" height="35" />
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="22" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de CAI]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="46" width="860" height="11" forecolor="#FF6666" backcolor="#FF6666" />
+			</rectangle>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="21" y="28" width="100" height="20" />
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="137" y="28" width="100" height="20" />
+				<text><![CDATA[CAI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="28" width="100" height="20" />
+				<text><![CDATA[Fecha de Inicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="364" y="28" width="100" height="20" />
+				<text><![CDATA[Fecha de Finalización]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="490" y="28" width="100" height="20" />
+				<text><![CDATA[De]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="614" y="28" width="100" height="20" />
+				<text><![CDATA[Hasta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="728" y="28" width="100" height="20" />
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="46" splitType="Stretch">
+			<textField>
+				<reportElement x="21" y="26" width="100" height="20" />
+				<textFieldExpression><![CDATA[$F{ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="121" y="26" width="100" height="20" />
+				<textFieldExpression><![CDATA[$F{CAI}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="237" y="26" width="100" height="20" />
+				<textFieldExpression><![CDATA[$F{Fecha de Inicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="364" y="26" width="100" height="20" />
+				<textFieldExpression><![CDATA[$F{Fecha de Finalización}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="490" y="26" width="100" height="20" />
+				<textFieldExpression><![CDATA[$F{De}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="614" y="26" width="100" height="20" />
+				<textFieldExpression><![CDATA[$F{Hasta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="728" y="26" width="100" height="20" />
+				<textFieldExpression><![CDATA[$F{Estado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="860" height="11" forecolor="#FF6666" backcolor="#FF6666" />
+			</rectangle>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="261" y="20" width="345" height="20" />
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA["EN DIOS CONFIAMOS"]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="728" y="20" width="100" height="20" />
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="21" y="20" width="100" height="20" />
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
