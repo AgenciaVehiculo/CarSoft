@@ -14170,7 +14170,7 @@ private  void createComboBoxAcceso(){
        try {
                 DesactivarPermisoSeccionClientesAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionClienteAgregar");
             }
 
     }//GEN-LAST:event_btnDesactivar13ActionPerformed
@@ -14180,7 +14180,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionClientesModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+               Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionClienteModificar");
             }
 
     }//GEN-LAST:event_btnDesactivar23ActionPerformed
@@ -14189,7 +14189,7 @@ private  void createComboBoxAcceso(){
                     try {
                 DesactivarPermisoSeccionClientesDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionClienteDesactivar");
             }
 
     }//GEN-LAST:event_btnDesactivar24ActionPerformed
@@ -14198,7 +14198,7 @@ private  void createComboBoxAcceso(){
                     try {
                 DesactivarPermisoSeccionClientesReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionClienteReportePdf");
             }
  
     }//GEN-LAST:event_btnDesactivar25ActionPerformed
@@ -14207,7 +14207,7 @@ private  void createComboBoxAcceso(){
                     try {
                 DesactivarPermisoSeccionClientesBuscar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionClienteBuscar");
             }
 
     }//GEN-LAST:event_btnDesactivar26ActionPerformed
@@ -14216,7 +14216,7 @@ private  void createComboBoxAcceso(){
                    try {
                 DesactivarPermisoSeccionClientesReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionClienteReporteExcel");
             }
 
     }//GEN-LAST:event_btnDesactivar27ActionPerformed
@@ -14226,7 +14226,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionTipoDocumentoAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoDocumentoAgregar");
             }
 
     }//GEN-LAST:event_btnDesactivar28ActionPerformed
@@ -14235,7 +14235,7 @@ private  void createComboBoxAcceso(){
                     try {
                 DesactivarPermisoSeccionTipoDocumentoModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoDocumentoModificar");
             }
 
     }//GEN-LAST:event_btnDesactivar29ActionPerformed
@@ -14244,7 +14244,7 @@ private  void createComboBoxAcceso(){
                     try {
                 DesactivarPermisoSeccionTipoDocumentoReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoDocumentoReporteExcel");
             }
     }//GEN-LAST:event_btnDesactivar31ActionPerformed
 
@@ -14252,7 +14252,7 @@ private  void createComboBoxAcceso(){
                     try {
                 DesactivarPermisoSeccionTipoDocumentoReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoDocumentoReportePdf");
             }
 
     }//GEN-LAST:event_btnDesactivar32ActionPerformed
@@ -14265,7 +14265,7 @@ private  void createComboBoxAcceso(){
                     try {
                 DesactivarPermisoSeccionPedidosAgregarVehiculo();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionPedidosAgregarVehiculo");
             }
 
     }//GEN-LAST:event_btnDesactivar30ActionPerformed
@@ -14274,7 +14274,7 @@ private  void createComboBoxAcceso(){
                    try {
                 DesactivarPermisoSeccionPedidosAgregarPieza();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionPedidosAgregarPieza");
             }
 
     }//GEN-LAST:event_btnDesactivar33ActionPerformed
@@ -14283,7 +14283,7 @@ private  void createComboBoxAcceso(){
                     try {
                 DesactivarPermisoSeccionPedidosBuscarPieza();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionPedidosBuscarPieza");
             }
 
     }//GEN-LAST:event_btnDesactivar36ActionPerformed
@@ -14292,7 +14292,7 @@ private  void createComboBoxAcceso(){
                     try {
                 DesactivarPermisoSeccionPedidosBuscarVehiculo();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionPedidosBuscarVehiculo");
             }
 
     }//GEN-LAST:event_btnDesactivar37ActionPerformed
@@ -14301,7 +14301,7 @@ private  void createComboBoxAcceso(){
                     try {
                 DesactivarPermisoSeccionListadoPedidosReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionPedidosReportePdf");
             }
 
     }//GEN-LAST:event_btnDesactivar39ActionPerformed
@@ -14310,7 +14310,7 @@ private  void createComboBoxAcceso(){
                     try {
                 DesactivarPermisoSeccionListadoPedidosReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionPedidosReporteExcel");
             }
     }//GEN-LAST:event_btnDesactivar43ActionPerformed
 
@@ -14318,7 +14318,7 @@ private  void createComboBoxAcceso(){
                     try {
                DesactivarPermisoSeccionListadoPedidosDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionPedidosDesactivar");
             }
 
     }//GEN-LAST:event_btnDesactivar45ActionPerformed
@@ -14328,7 +14328,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionEmpleadosReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionEmpleadosReporteExcel");
             }
     }//GEN-LAST:event_btnDesactivar44ActionPerformed
 
@@ -14337,7 +14337,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionEmpleadosDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionEmpleadosDesactivar");
             }
 
     }//GEN-LAST:event_btnDesactivar42ActionPerformed
@@ -14347,7 +14347,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionEmpleadosReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionEmpleadosReportePdf");
             }
     }//GEN-LAST:event_btnDesactivar41ActionPerformed
 
@@ -14356,7 +14356,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionEmpleadosBuscar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionEmpleadosBuscar");
             }
 
     }//GEN-LAST:event_btnDesactivar40ActionPerformed
@@ -14366,7 +14366,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionEmpleadosModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionEmpleadosModificar");
             }
 
 
@@ -14376,7 +14376,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionEmpleadosAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionEmpleadosAgregar");
             }
 
     }//GEN-LAST:event_btnDesactivar7ActionPerformed
@@ -14385,7 +14385,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionCargosAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionCargoAgregar");
             }
 
     }//GEN-LAST:event_btnDesactivar46ActionPerformed
@@ -14395,7 +14395,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionCargosModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionCargoModificar");
             }
 
     }//GEN-LAST:event_btnDesactivar80ActionPerformed
@@ -14405,7 +14405,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionCargosReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionCargoReportePdf");
             }
 
     }//GEN-LAST:event_btnDesactivar82ActionPerformed
@@ -14415,7 +14415,7 @@ private  void createComboBoxAcceso(){
             try {
                DesactivarPermisoSeccionCargosDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionCargoDesactivar");
             }
 
     }//GEN-LAST:event_btnDesactivar83ActionPerformed
@@ -14425,7 +14425,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionCargosReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionCargoReporteExcel");
             }
     }//GEN-LAST:event_btnDesactivar84ActionPerformed
 
@@ -14433,7 +14433,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionUsuariosAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionUsuarioAgregar");
             }
     
     }//GEN-LAST:event_btnDesactivar81ActionPerformed
@@ -14443,7 +14443,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionUsuariosModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionUsuarioModificar");
             }
 
     }//GEN-LAST:event_btnDesactivar85ActionPerformed
@@ -14452,7 +14452,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionUsuariosBuscarEmpleado();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionUsuarioBuscarEmpleado");
             }
             
     }//GEN-LAST:event_btnDesactivar86ActionPerformed
@@ -14461,7 +14461,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionUsuariosReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionUsuarioReportePdf");
             }
             
     }//GEN-LAST:event_btnDesactivar87ActionPerformed
@@ -14470,7 +14470,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionUsuariosBuscarUsuario();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionUsuarioBuscarUsuario");
             }
             
     }//GEN-LAST:event_btnDesactivar88ActionPerformed
@@ -14479,7 +14479,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionUsuariosReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionUsuarioReporteExcel");
             }
             
     }//GEN-LAST:event_btnDesactivar89ActionPerformed
@@ -14489,7 +14489,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionUsuariosDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionUsuarioDesactivar");
             }
             
     }//GEN-LAST:event_btnDesactivar90ActionPerformed
@@ -14499,7 +14499,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionHistorialSueldosReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionHistorialSueldosReportePdf");
             }
             
     }//GEN-LAST:event_btnDesactivar94ActionPerformed
@@ -14508,7 +14508,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionHistorialSueldosReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionSeccionHistorialSueldosReporteExcel");
             }
 
     }//GEN-LAST:event_btnDesactivar96ActionPerformed
@@ -14518,7 +14518,7 @@ private  void createComboBoxAcceso(){
             try {
                DesactivarPermisoSeccionHistorialCargosReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionHistorialSueldosReportePdf");
             }
 
     }//GEN-LAST:event_btnDesactivar97ActionPerformed
@@ -14527,7 +14527,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionHistorialCargosReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionSeccionHistorialCargoReporteExcel");
             }
     }//GEN-LAST:event_btnDesactivar99ActionPerformed
 
@@ -14536,7 +14536,7 @@ private  void createComboBoxAcceso(){
                        try {
                 DesactivarPermisoSeccionBuscarPiezaReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionBuscarPiezaReporteExcel");
             }
 
     }//GEN-LAST:event_btnDesactivar110ActionPerformed
@@ -14545,7 +14545,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionBuscarPiezaBuscar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionBuscarPiezaBuscar");
             }
     }//GEN-LAST:event_btnDesactivar109ActionPerformed
 
@@ -14553,7 +14553,7 @@ private  void createComboBoxAcceso(){
                     try {
                 DesactivarPermisoSeccionBuscarPiezaReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionBuscarPiezaReportePdf");
             }
 
     }//GEN-LAST:event_btnDesactivar108ActionPerformed
@@ -14562,7 +14562,7 @@ private  void createComboBoxAcceso(){
         try {
                DesactivarPermisoSeccionHistorialPreciosPiezaReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionHistorialPiezaReporteExcel");
             }
 
     }//GEN-LAST:event_btnDesactivar116ActionPerformed
@@ -14572,7 +14572,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionHistorialPreciosPiezaBuscar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionHistorialPrecioPiezaBuscar");
             }
             
             
@@ -14582,7 +14582,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionHistorialPreciosPiezaReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionHistorialPreciosPiezaReportePdf");
             }
             
     }//GEN-LAST:event_btnDesactivar114ActionPerformed
@@ -14591,7 +14591,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionPiezasReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionPiezaReporteExcel");
             }
     }//GEN-LAST:event_btnDesactivar52ActionPerformed
 
@@ -14600,7 +14600,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionPiezasDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionPiezaDesactivar");
             }
 
     }//GEN-LAST:event_btnDesactivar51ActionPerformed
@@ -14609,7 +14609,7 @@ private  void createComboBoxAcceso(){
                     try {
                 DesactivarPermisoSeccionPiezasReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionPiezasReportePdf");
             }
             
     }//GEN-LAST:event_btnDesactivar50ActionPerformed
@@ -14618,7 +14618,7 @@ private  void createComboBoxAcceso(){
                     try {
                 DesactivarPermisoSeccionPiezasModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                 Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionPiezasModificar");
             }
     }//GEN-LAST:event_btnDesactivar48ActionPerformed
 
@@ -14626,7 +14626,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionPiezasAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionPiezasAgregar");
             }
 
     }//GEN-LAST:event_btnDesactivar47ActionPerformed
@@ -14635,7 +14635,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoPiezaAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoPiezaAgregar");
             }
             
     }//GEN-LAST:event_btnDesactivar49ActionPerformed
@@ -14644,7 +14644,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoPiezaModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoPiezaModificar");
             }
             
     }//GEN-LAST:event_btnDesactivar91ActionPerformed
@@ -14653,7 +14653,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoPiezaReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoPiezaReportePdf");
             }
             
     }//GEN-LAST:event_btnDesactivar92ActionPerformed
@@ -14662,7 +14662,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoPiezaDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoPiezaDesactivar");
             }
             
     }//GEN-LAST:event_btnDesactivar93ActionPerformed
@@ -14671,7 +14671,7 @@ private  void createComboBoxAcceso(){
                 try {
                 DesactivarPermisoSeccionTipoPiezaReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoPiezaReporteExcel");
             }
   
     }//GEN-LAST:event_btnDesactivar100ActionPerformed
@@ -14680,7 +14680,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionVehiculosAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionVehiculosAgregar");
             }
             
     }//GEN-LAST:event_btnDesactivar53ActionPerformed
@@ -14689,7 +14689,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionVehiculosModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionVehiculosModificar");
             }
             
     }//GEN-LAST:event_btnDesactivar54ActionPerformed
@@ -14698,7 +14698,7 @@ private  void createComboBoxAcceso(){
         try {
                DesactivarPermisoSeccionVehiculosReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionVehiculosReportePdf");
             }
             
     }//GEN-LAST:event_btnDesactivar55ActionPerformed
@@ -14707,7 +14707,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionVehiculosDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionVehiculosDesactivar");
             }
             
     }//GEN-LAST:event_btnDesactivar56ActionPerformed
@@ -14716,7 +14716,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionVehiculosReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionVehiculosReporteExcel");
             }
             
     }//GEN-LAST:event_btnDesactivar57ActionPerformed
@@ -14725,7 +14725,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionHistorialPreciosVehiculoReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionHistorialPreciosVehiculoReportePdf");
             }
             
     }//GEN-LAST:event_btnDesactivar117ActionPerformed
@@ -14735,7 +14735,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionHistorialPreciosVehiculoBuscar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionHistorialPreciosVehiculoBuscar");
             }
             
     }//GEN-LAST:event_btnDesactivar118ActionPerformed
@@ -14744,7 +14744,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionHistorialPreciosVehiculoReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionHistorialPreciosVehiculoReporteExcel");
             }
             
     }//GEN-LAST:event_btnDesactivar119ActionPerformed
@@ -14753,7 +14753,7 @@ private  void createComboBoxAcceso(){
         try {
                DesactivarPermisoSeccionMarcaAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionMarcaAgregar");
             }
             
     }//GEN-LAST:event_btnDesactivar58ActionPerformed
@@ -14762,7 +14762,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionMarcaModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionMarcaModificar");
             }
             
     }//GEN-LAST:event_btnDesactivar101ActionPerformed
@@ -14771,7 +14771,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionMarcaReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionMarcaReportePdf");
             }
             
     }//GEN-LAST:event_btnDesactivar102ActionPerformed
@@ -14780,7 +14780,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionMarcaDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionMarcaDesactivar");
             }
             
     }//GEN-LAST:event_btnDesactivar103ActionPerformed
@@ -14789,7 +14789,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionMarcaReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionMarcaReporteExcel");
             }
             
             
@@ -14799,7 +14799,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionBuscarVehiculoReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionBuscarVehiculoReportePdf");
             }
 
     }//GEN-LAST:event_btnDesactivar111ActionPerformed
@@ -14809,7 +14809,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionBuscarVehiculoBuscar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionBuscarVehiculoBuscar");
             }
             
     }//GEN-LAST:event_btnDesactivar112ActionPerformed
@@ -14818,7 +14818,7 @@ private  void createComboBoxAcceso(){
                     try {
                 DesactivarPermisoSeccionBuscarVehiculoExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionBuscarVehiculoExcel");
             }
     }//GEN-LAST:event_btnDesactivar113ActionPerformed
 
@@ -14827,7 +14827,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionColorAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionColorAgregar");
             }
             
     }//GEN-LAST:event_btnDesactivar59ActionPerformed
@@ -14836,7 +14836,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionColorModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionColorModificar");
             }
             
     }//GEN-LAST:event_btnDesactivar105ActionPerformed
@@ -14845,7 +14845,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionColorReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionColorReportePdf");
             }
             
     }//GEN-LAST:event_btnDesactivar106ActionPerformed
@@ -14854,7 +14854,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionColorDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionColorDesactivar");
             }
             
     }//GEN-LAST:event_btnDesactivar107ActionPerformed
@@ -14863,7 +14863,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionColorReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionColorReporteExcel");
             }
             
             
@@ -14873,7 +14873,7 @@ private  void createComboBoxAcceso(){
            try {
                 DesactivarPermisoSeccionTipoVehiculoAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoVehiculoAgregar");
             }
             
     }//GEN-LAST:event_btnDesactivar60ActionPerformed
@@ -14882,7 +14882,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoVehiculoModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoVehiculoModificar");
             }
             
     }//GEN-LAST:event_btnDesactivar121ActionPerformed
@@ -14891,7 +14891,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoVehiculoReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoVehiculoReportePdf");
             }
         
            
@@ -14901,7 +14901,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoVehiculoDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoVehiculoDesactivar");
             }
             
     }//GEN-LAST:event_btnDesactivar123ActionPerformed
@@ -14910,7 +14910,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoVehiculoReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoVehiculoReporteExcel");
             }
         
     }//GEN-LAST:event_btnDesactivar124ActionPerformed
@@ -14919,7 +14919,7 @@ private  void createComboBoxAcceso(){
                try {
                 DesactivarPermisoSeccionTipoCabinaAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoCabinaAgregar");
             }
             
     }//GEN-LAST:event_btnDesactivar61ActionPerformed
@@ -14928,7 +14928,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoCabinaModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoCabinaModificar");
             }
             
     }//GEN-LAST:event_btnDesactivar125ActionPerformed
@@ -14937,7 +14937,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoCabinaReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoCabinaReportePdf");
             }
             
     }//GEN-LAST:event_btnDesactivar126ActionPerformed
@@ -14946,7 +14946,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoCabinaDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoCabinaDesactivar");
             }
             
     }//GEN-LAST:event_btnDesactivar127ActionPerformed
@@ -14955,7 +14955,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoCabinaReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoCabinaReporteExcel");
             }    
     }//GEN-LAST:event_btnDesactivar128ActionPerformed
 
@@ -14964,7 +14964,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionTipoCombustibleAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoCombustibleAgregar");
             }
             
     }//GEN-LAST:event_btnDesactivar62ActionPerformed
@@ -14973,7 +14973,7 @@ private  void createComboBoxAcceso(){
         try {
                DesactivarPermisoSeccionTipoCombustibleModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoCombustibleModificar");
             }
              
     }//GEN-LAST:event_btnDesactivar129ActionPerformed
@@ -14982,7 +14982,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoCombustibleReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoCombustibleReportePdf");
             }
             
     }//GEN-LAST:event_btnDesactivar130ActionPerformed
@@ -14991,7 +14991,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoCombustibleDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoCombustibleDesactivar");
             }
             
     }//GEN-LAST:event_btnDesactivar131ActionPerformed
@@ -15000,7 +15000,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoCombustibleReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoCombustibleReporteExcel");
             }
             
             
@@ -15012,7 +15012,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionNumeroAsientosAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionNumeroAsientosAgregar");
             }
             
     }//GEN-LAST:event_btnDesactivar63ActionPerformed
@@ -15021,7 +15021,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionNumeroAsientosModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionNumeroAsientosModificar");
             }
             
     }//GEN-LAST:event_btnDesactivar133ActionPerformed
@@ -15030,7 +15030,7 @@ private  void createComboBoxAcceso(){
         try {
             DesactivarPermisoSeccionNumeroAsientosReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionNumeroAsientosReportePdf");
             }
 
             
@@ -15042,7 +15042,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionNumeroAsientosDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionNumeroAsientosDesactivar");
             }
  
     }//GEN-LAST:event_btnDesactivar135ActionPerformed
@@ -15051,7 +15051,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionNumeroAsientosReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionNumeroAsientosReporteExcel");
             }
             
     }//GEN-LAST:event_btnDesactivar136ActionPerformed
@@ -15060,7 +15060,7 @@ private  void createComboBoxAcceso(){
                 try {
                 DesactivarPermisoSeccionTipoTransmisionAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoTransmisionAgregar");
             }
             
     }//GEN-LAST:event_btnDesactivar64ActionPerformed
@@ -15069,7 +15069,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoTransmisionModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoTransmisionModificar");
             }
             
     }//GEN-LAST:event_btnDesactivar137ActionPerformed
@@ -15078,7 +15078,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoTransmisionReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoTransmisionReportePdf");
             }
             
     }//GEN-LAST:event_btnDesactivar138ActionPerformed
@@ -15087,7 +15087,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoTransmisionDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoTransmisionDesactivar");
             }
             
     }//GEN-LAST:event_btnDesactivar139ActionPerformed
@@ -15096,7 +15096,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoTransmisionReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoTransmisionReporteExcel");
             }
             
     }//GEN-LAST:event_btnDesactivar140ActionPerformed
@@ -15105,7 +15105,7 @@ private  void createComboBoxAcceso(){
                             try {
                 DesactivarPermisoSeccionReporteBuscar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionReporteBuscar");
             }
     }//GEN-LAST:event_btnDesactivar66ActionPerformed
 
@@ -15114,7 +15114,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionReporteReportePdfTabla();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionReporteReportePdfTabla");
             }
     }//GEN-LAST:event_btnDesactivar68ActionPerformed
 
@@ -15122,7 +15122,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoFacturaAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoFacturaAgregar");
             }
             
     }//GEN-LAST:event_btnDesactivar70ActionPerformed
@@ -15131,7 +15131,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoFacturaModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoFacturaModificar");
             }
             
     }//GEN-LAST:event_btnDesactivar144ActionPerformed
@@ -15140,7 +15140,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoFacturaReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoFacturaReportePdf");
             }
             
     }//GEN-LAST:event_btnDesactivar145ActionPerformed
@@ -15149,7 +15149,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoFacturaDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoFacturaDesactivar");
             }
             
     }//GEN-LAST:event_btnDesactivar146ActionPerformed
@@ -15158,7 +15158,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoFacturaReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoFacturaReporteExcel");
             }
             
     }//GEN-LAST:event_btnDesactivar147ActionPerformed
@@ -15169,7 +15169,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionCaiAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionCaiAgregar");
             }
 
     }//GEN-LAST:event_btnDesactivar71ActionPerformed
@@ -15178,7 +15178,7 @@ private  void createComboBoxAcceso(){
                     try {
                 DesactivarPermisoSeccionCaiModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionCaiModificar");
             }
             
     }//GEN-LAST:event_btnDesactivar148ActionPerformed
@@ -15187,7 +15187,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionCaiReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionCaiReportePdf");
             }
             
     }//GEN-LAST:event_btnDesactivar149ActionPerformed
@@ -15196,7 +15196,7 @@ private  void createComboBoxAcceso(){
                 try {
                 DesactivarPermisoSeccionCaiDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionCaiDesactivar");
             }
     }//GEN-LAST:event_btnDesactivar150ActionPerformed
 
@@ -15205,7 +15205,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionCaiReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionCaiReporteExcel");
             }
 
     }//GEN-LAST:event_btnDesactivar151ActionPerformed
@@ -15215,7 +15215,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionTipoPagoAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoPagoAgregar");
             }
             
     }//GEN-LAST:event_btnDesactivar72ActionPerformed
@@ -15224,7 +15224,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoPagoModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoPagoModificar");
             }
             
     }//GEN-LAST:event_btnDesactivar152ActionPerformed
@@ -15233,7 +15233,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoPagoReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoPagoReportePdf");
             }
             
     }//GEN-LAST:event_btnDesactivar153ActionPerformed
@@ -15242,7 +15242,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoPagoDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoPagoDesactivar");
             }
             
     }//GEN-LAST:event_btnDesactivar154ActionPerformed
@@ -15251,7 +15251,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionTipoPagoReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoPagoReporteExcel");
             }
 
     }//GEN-LAST:event_btnDesactivar155ActionPerformed
@@ -15260,7 +15260,7 @@ private  void createComboBoxAcceso(){
                     try {
                 DesactivarPermisoSeccionFacturasRechazadasBuscar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionFacturasRechazadasBuscar");
             }
 
     }//GEN-LAST:event_btnDesactivar73ActionPerformed
@@ -15270,7 +15270,7 @@ private  void createComboBoxAcceso(){
             try {
                 DesactivarPermisoSeccionFacturasRechazadasRechazar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionFacturasRechazadasRechazar");
             }
 
     }//GEN-LAST:event_btnDesactivar156ActionPerformed
@@ -15279,7 +15279,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionVentasAgregarVehiculo();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionVentasAgregarVehiculo");
             }
             
     }//GEN-LAST:event_btnDesactivar65ActionPerformed
@@ -15288,7 +15288,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionVentasAgregarPieza();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionVentasAgregarPieza");
             }
             
     }//GEN-LAST:event_btnDesactivar67ActionPerformed
@@ -15297,7 +15297,7 @@ private  void createComboBoxAcceso(){
         try {
              DesactivarPermisoSeccionVentasGenerarVenta();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionVentasGenerarVenta");
             }
             
     }//GEN-LAST:event_btnDesactivar69ActionPerformed
@@ -15306,7 +15306,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionVentasBuscarPieza();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionVentasBuscarPieza");
             }
             
     }//GEN-LAST:event_btnDesactivar77ActionPerformed
@@ -15315,7 +15315,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionVentasBuscarVehiculo();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionVentasBuscarVehiculo");
             }
             
     }//GEN-LAST:event_btnDesactivar78ActionPerformed
@@ -15324,7 +15324,7 @@ private  void createComboBoxAcceso(){
                     try {
                 DesactivarPermisoSeccionTipoDocumentoDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionTipoDocumentoDesactivar");
             }
 
     }//GEN-LAST:event_btnDesactivar74ActionPerformed
@@ -15333,7 +15333,7 @@ private  void createComboBoxAcceso(){
         try {
                 DesactivarPermisoSeccionPedidosAgregarPedido();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"DesactivarPermisoSeccionPedidosAgregarPedido");
             }
 
     }//GEN-LAST:event_btnDesactivar35ActionPerformed
@@ -15714,771 +15714,771 @@ if((seleccionado).equals(tp.getId_Nombre())){
         try {
                 btnActivarDesactivarMenuCliente();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarMenuEmpleado();
 
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarMenuVentas();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarMenuPedidos();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarMenuBancos();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarMenuPiezas();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarMenuVehiculos();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             try {
                 btnActivarDesactivarPermisoSeccionEmpleadosAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionEmpleadosModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionEmpleadosDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionEmpleadosBuscar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionEmpleadosReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionEmpleadosReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
 
             try {
                 btnActivarDesactivarPermisoSeccionCargosAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionCargosModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionCargosDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionCargosReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionCargosReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionUsuariosAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionUsuariosModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionUsuariosDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionUsuariosBuscarUsuario();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionUsuariosBuscarEmpleado();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionUsuariosReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionUsuariosReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             try {
                 btnActivarDesactivarPermisoSeccionHistorialSueldosReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionHistorialSueldosReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             try {
                 btnActivarDesactivarPermisoSeccionHistorialCargosReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionHistorialCargosReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             try {
                 btnActivarDesactivarPermisoSeccionClientesAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionClientesModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionClientesDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionClientesBuscar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionClientesReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionClientesReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
 
             try {
                 btnActivarDesactivarPermisoSeccionTipoDocumentoAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoDocumentoModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoDocumentoDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoDocumentoReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoDocumentoReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
         
         
         try {
                 btnActivarDesactivarPermisoSeccionBancosAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionBancosModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionBancosDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionBancosBuscar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionBancosReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionBancosReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             
             try {
                 btnActivarDesactivarPermisoSeccionPrestamosAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionPrestamosModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionPrestamosDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionPrestamosBuscarCliente();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionPrestamosBuscarBanco();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionPrestamosReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionPrestamosReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionPedidosAgregarPedido();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionPedidosAgregarPieza();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionPedidosAgregarVehiculo();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionPedidosBuscarVehiculo();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionPedidosBuscarPieza();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionListadoPedidosDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionListadoPedidosReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionListadoPedidosReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             try {
                 btnActivarDesactivarPermisoSeccionPiezasAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionPiezasModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionPiezasDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionPiezasReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionPiezasReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             try {
                 btnActivarDesactivarPermisoSeccionTipoPiezaAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoPiezaModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoPiezaDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoPiezaReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoPiezaReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             try {
                 btnActivarDesactivarPermisoSeccionHistorialPreciosPiezaBuscar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionHistorialPreciosPiezaReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionHistorialPreciosPiezaReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             try {
                 btnActivarDesactivarPermisoSeccionBuscarPiezaBuscar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionBuscarPiezaReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionBuscarPiezaReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             
             try {
                 btnActivarDesactivarPermisoSeccionVehiculosAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionVehiculosModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionVehiculosDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionVehiculosReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionVehiculosReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionMarcaAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionMarcaModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionMarcaDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionMarcaReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionMarcaReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             
             try {
                 btnActivarDesactivarPermisoSeccionColorAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionColorModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionColorDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionColorReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionColorReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             try {
                 btnActivarDesactivarPermisoSeccionTipoCabinaAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoCabinaModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoCabinaDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoCabinaReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoCabinaReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             
             try {
                 btnActivarDesactivarPermisoSeccionTipoCombustibleAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoCombustibleModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoCombustibleDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoCombustibleReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoCombustibleReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             try {
                 btnActivarDesactivarPermisoSeccionTipoTransmisionAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoTransmisionModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoTransmisionDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoTransmisionReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoTransmisionReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             
             try {
                 btnActivarDesactivarPermisoSeccionNumeroAsientosAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionNumeroAsientosModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionNumeroAsientosDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionNumeroAsientosReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionNumeroAsientosReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             
             try {
                 btnActivarDesactivarPermisoSeccionTipoVehiculoAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoVehiculoModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoVehiculoDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoVehiculoReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoVehiculoReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
         
             try {
                 btnActivarDesactivarPermisoSeccionHistorialPreciosVehiculoBuscar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionHistorialPreciosVehiculoReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionHistorialPreciosVehiculoReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             try {
                 btnActivarDesactivarPermisoSeccionBuscarVehiculoBuscar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionBuscarVehiculoReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionBuscarVehiculoExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             try {
                 btnActivarDesactivarPermisoSeccionVentasAgregarVehiculo();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionVentasAgregarPieza();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionVentasBuscarPieza();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionVentasBuscarVehiculo();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionVentasGenerarVenta();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoFacturaAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoFacturaModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoFacturaDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoFacturaReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoFacturaReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             try {
                 btnActivarDesactivarPermisoSeccionTipoPagoAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoPagoModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoPagoDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoPagoReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionTipoPagoReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             
             try {
                 btnActivarDesactivarPermisoSeccionCaiAgregar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionCaiModificar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionCaiDesactivar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionCaiReportePdf();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionCaiReporteExcel();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             
             try {
                 btnActivarDesactivarPermisoSeccionFacturasRechazadasRechazar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionFacturasRechazadasBuscar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionReporteBuscar();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
             try {
                 btnActivarDesactivarPermisoSeccionReporteReportePdfTabla();
             } catch (Exception ex) {
-                Logger.getLogger(FrmSeguridad1.class.getName()).log(Level.SEVERE, null, ex);
+                Validaciones.modulolog( FrmSeguridad1.class.getName(),ex,"SeleccionIDUsuario");
             }
         }
     }
